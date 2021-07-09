@@ -1,0 +1,41 @@
+######################
+######################
+####                               ####
+####     Perks System     ####
+####                               ####
+######################
+######################
+
+# command, edit the perks command
+command:
+  cmd: "perk"
+  desc: "Open the Perk UI"
+  usage: "§cUsage: /perk"
+  aliases: "perks"
+
+# message, edit the perks messages
+message:
+  no-perms: "§cYou don't have any permission!"
+  button:
+    no-perms: "§4Blocked"
+    disable: "§cDisable"
+    enable: "§aEnable"
+  ui:
+    title: "§dPerks"
+    text: "§aSelect a Perk:"
+    # %status% => this will show your current status
+    # permissions => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
+    speed: "§1Speed\n§8» %status%"
+    speed-perms: perk.speed
+    jump:  "§2Jump\n§8» %status%"
+    jump-perms: perk.jump
+    haste: "§3Haste\n§8» %status%"
+    haste-perms: perk.haste
+    night-vision: "§4Night Vision\n§8» %status%"
+    night-vision-perms: perk.night-vision
+    no-hunger: "§5No Hunger\n§8» %status%"
+    no-hunger-perms: perk.no-hunger
+    no-falldamage: "§6No Falldamage\n§8» %status%"
+    no-falldamage-perms: perk.no-falldamage
+    fast-regeneration: "§7Fast Regeneration\n§8» %status%"
+    fast-regeneration-perms: perk.fast-regeneration
