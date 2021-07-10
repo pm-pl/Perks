@@ -42,16 +42,25 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        if (!$player->hasPlayedBefore()) {
+        if (!$players->exists("speed")) {
             $players->set("speed", false);
+            $players->set("speed-buy", false);
             $players->set("jump", false);
+            $players->set("jump-buy", false);
             $players->set("haste", false);
+            $players->set("haste-buy", false);
             $players->set("night-vision", false);
+            $players->set("night-vision-buy", false);
             $players->set("no-hunger", false);
+            $players->set("no-hunger-buy", false);
             $players->set("no-falldamage", false);
+            $players->set("no-falldamage-buy", false);
             $players->set("fast-regeneration", false);
+            $players->set("fast-regeneration-buy", false);
             $players->set("keep-inventory", false);
+            $players->set("keep-inventory-buy", false);
             $players->set("dopple-xp", false);
+            $players->set("dopple-xp-buy", false);
             $players->save();
         }
         if ($players->get("speed") == true) {

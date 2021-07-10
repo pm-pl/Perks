@@ -20,9 +20,6 @@ class Main extends PluginBase
     {
         @mkdir($this->getDataFolder() . "players/");
         $this->saveResource("config.yml");
-        if (!$this->getServer()->getPluginManager()->getPlugin("FormAPI")) {
-            $this->getLogger()->warning("Please install FormAPI!");
-        }
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getServer()->getCommandMap()->register("Perks", new PerkCommand($this));
     }
