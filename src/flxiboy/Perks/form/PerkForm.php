@@ -63,31 +63,43 @@ class PerkForm
                 case "regeneration":
                     $this->getCheckPerk($player, "fast-regeneration");
                     break;
+                case "inventory":
+                    $this->getCheckPerk($player, "keep-inventory");
+                    break;
+                case "xp":
+                    $this->getCheckPerk($player, "dopple-xp");
+                    break;
             }
         });
         $form->setTitle($config->getNested("message.ui.title"));
         $form->setContent($config->getNested("message.ui.text"));
         $speed = $config->getNested("message.ui.speed");
         $speed = str_replace("%status%", $this->getStatus($player, "speed"), $speed);
-        $form->addButton($speed, -1, "", "speed");
         $jump = $config->getNested("message.ui.jump");
         $jump = str_replace("%status%", $this->getStatus($player, "jump"), $jump);
-        $form->addButton($jump, -1, "", "jump");
         $haste = $config->getNested("message.ui.haste");
         $haste = str_replace("%status%", $this->getStatus($player, "haste"), $haste);
-        $form->addButton($haste, -1, "", "haste");
         $night = $config->getNested("message.ui.night-vision");
         $night = str_replace("%status%", $this->getStatus($player, "night-vision"), $night);
-        $form->addButton($night, -1, "", "night");
         $hunger = $config->getNested("message.ui.no-hunger");
         $hunger = str_replace("%status%", $this->getStatus($player, "no-hunger"), $hunger);
-        $form->addButton($hunger, -1, "", "hunger");
         $fall = $config->getNested("message.ui.no-falldamage");
         $fall = str_replace("%status%", $this->getStatus($player, "no-falldamage"), $fall);
-        $form->addButton($fall, -1, "", "fall");
         $regeneration = $config->getNested("message.ui.fast-regeneration");
         $regeneration = str_replace("%status%", $this->getStatus($player, "fast-regeneration"), $regeneration);
+        $inventory = $config->getNested("message.ui.keep-inventory");
+        $inventory = str_replace("%status%", $this->getStatus($player, "keep-inventory"), $inventory);
+        $xp = $config->getNested("message.ui.dopple-xp");
+        $xp = str_replace("%status%", $this->getStatus($player, "dopple-xp"), $xp);
+        $form->addButton($speed, -1, "", "speed");
+        $form->addButton($jump, -1, "", "jump");
+        $form->addButton($haste, -1, "", "haste");
+        $form->addButton($night, -1, "", "night");
+        $form->addButton($hunger, -1, "", "hunger");
+        $form->addButton($fall, -1, "", "fall");
         $form->addButton($regeneration, -1, "", "regeneration");
+        $form->addButton($inventory, -1, "", "inventory");
+        $form->addButton($xp, -1, "", "xp");
         $form->sendToPlayer($player);
         return $form;
     }
@@ -131,15 +143,16 @@ class PerkForm
         } elseif ($check == "fast-regeneration") { 
             $effect = Effect::REGENERATION;
         }
+        $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp"];
         if ($config->getNested("message.ui." . $check . "-perms") !== false) {
             if ($players->get($check) == true) {
                 $players->set($check, false);
-                if ($check !== "no-hunger" and $check !== "no-falldamage") {
+                if (!in_array($check, $block)) {
                     $player->removeEffect($effect);
                 }
             } else {
                 $players->set($check, true);
-                if ($check !== "no-hunger" and $check !== "no-falldamage") {
+                if (!in_array($check, $block)) {
                     $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, 1, false));
                 }
             }

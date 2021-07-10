@@ -39,3 +39,7 @@ message:
     no-falldamage-perms: perk.no-falldamage
     fast-regeneration: "§7Fast Regeneration\n§8» %status%"
     fast-regeneration-perms: perk.fast-regeneration
+    keep-inventory: "§8Keep Inventory\n§8» %status%"
+    keep-inventory-perms: perk.keep-inventory
+    dopple-xp: "§dDopple XP\n§8» %status%"
+    dopple-xp-perms: perk.dopple-xp

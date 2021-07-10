@@ -5,7 +5,8 @@ namespace flxiboy\Perks\event;
 use pocketmine\event\player\{
     PlayerQuitEvent,
     PlayerJoinEvent,
-    PlayerExhaustEvent
+    PlayerExhaustEvent,
+    PlayerDeathEvent
 };
 use pocketmine\entity\{
     EffectInstance,
@@ -15,6 +16,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\utils\Config;
 use flxiboy\Perks\Main;
+use pocketmine\event\block\BlockBreakEvent;
 
 /**
  * Class EventListener
@@ -48,6 +50,8 @@ class EventListener implements Listener
             $players->set("no-hunger", false);
             $players->set("no-falldamage", false);
             $players->set("fast-regeneration", false);
+            $players->set("keep-inventory", false);
+            $players->set("dopple-xp", false);
             $players->save();
         }
         if ($players->get("speed") == true) {
@@ -85,6 +89,30 @@ class EventListener implements Listener
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         if ($players->get("no-hunger") == true) {
             $player->setFood(20);
+        }
+    }
+
+    /**
+     * @param BlockBreakEvent $event
+     */
+    public function onBreak(BlockBreakEvent $event) 
+    {
+        $player = $event->getPlayer();
+        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        if ($players->get("dopple-xp") == true) {
+            $event->setXpDropAmount($event->getXpDropAmount() * 2);
+        }
+    }
+
+    /**
+     * @param PlayerDeathEvent $event
+     */
+    public function onDeath(PlayerDeathEvent $event) 
+    {
+        $player = $event->getPlayer();
+        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        if ($players->get("keep-inventory") == true) {
+            $event->setKeepInventory();
         }
     }
     
