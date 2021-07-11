@@ -90,7 +90,7 @@ class EventListener implements Listener
             $player->addEffect(new EffectInstance(Effect::getEffect(Effect::STRENGTH), 107374182, 1, false));
         }
         if ($players->get("no-firedamage") == true) {
-            $player->addEffect(new EffecInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 107374182, 1, false));
+            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 107374182, 1, false));
         }
         if ($players->get("fly") == true) {
             $player->setFlying(true);
