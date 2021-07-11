@@ -96,3 +96,21 @@ perk:
     perms: perk.dopple-xp
     price: 10000
     msg: "Dopple xp"
+  strength:
+    enable: true
+    button: "§bStrength\n§8» %status%"
+    perms: perk.stren
+    price: 10000
+    msg: "Strength"
+  no-firedamage:
+    enable: true
+    button: "§eNo Firedamage\n§8» %status%"
+    perms: perk.no-firedamage
+    price: 10000
+    msg: "No firedamage"
+  fly:
+    enable: true
+    button: "§aFly\n§8» %status%"
+    perms: perk.fly
+    price: 10000
+    msg: "Fly"

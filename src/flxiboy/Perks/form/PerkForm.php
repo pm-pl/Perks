@@ -69,6 +69,15 @@ class PerkForm
                 case "xp":
                     $this->getCheckPerk($player, "dopple-xp");
                     break;
+                case "strength":
+                    $this->getCheckPerk($player, "strength");
+                    break;
+                case "fire":
+                    $this->getCheckPerk($player, "no-firedamage");
+                    break;
+                case "fly":
+                    $this->getCheckPerk($player, "fly");
+                    break;
             }
         });
         $form->setTitle($config->getNested("message.ui.title"));
@@ -117,6 +126,21 @@ class PerkForm
             $xp = $config->getNested("perk.dopple-xp.button");
             $xp = str_replace("%status%", $this->getStatus($player, "dopple-xp"), $xp);
             $form->addButton($xp, -1, "", "xp");
+        }
+        if ($config->getNested("perk.strength.enable") == true) {
+            $strength = $config->getNested("perk.strength.button");
+            $strength = str_replace("%status%", $this->getStatus($player, "strength"), $strength);
+            $form->addButton($strength, -1, "", "strength");
+        }
+        if ($config->getNested("perk.no-firedamage.enable") == true) {
+            $fire = $config->getNested("perk.no-firedamage.button");
+            $fire = str_replace("%status%", $this->getStatus($player, "no-firedamage"), $fire);
+            $form->addButton($fire, -1, "", "fire");
+        }
+        if ($config->getNested("perk.fly.enable") == true) {
+            $fly = $config->getNested("perk.fly.button");
+            $fly = str_replace("%status%", $this->getStatus($player, "fly"), $fly);
+            $form->addButton($fly, -1, "", "fly");
         }
         $form->sendToPlayer($player);
         return $form;
@@ -186,8 +210,12 @@ class PerkForm
             $effect = Effect::NIGHT_VISION;
         } elseif ($check == "fast-regeneration") { 
             $effect = Effect::REGENERATION;
+        } elseif ($check == "strength") { 
+            $effect = Effect::STRENGTH;
+        } elseif ($check == "no-firedamage") { 
+            $effect = Effect::FIRE_RESISTANCE;
         }
-        $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp"];
+        $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly"];
         if ($config->getNested("command.economy-api") == true) {
             $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
             $money = $eco->myMoney($player);
@@ -196,6 +224,10 @@ class PerkForm
                     $players->set($check, false);
                     if (!in_array($check, $block)) {
                         $player->removeEffect($effect);
+                    }
+                    if ($check == "fly") {
+                        $player->setFlying(false);
+                        $player->setAllowFlight(false);
                     }
                     $msg = $config->getNested("message.mode.disable");
                     $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
@@ -230,6 +262,10 @@ class PerkForm
                         if (!in_array($check, $block)) {
                             $player->removeEffect($effect);
                         }
+                        if ($check == "fly") {
+                            $player->setFlying(false);
+                            $player->setAllowFlight(false);
+                        }
                         $msg = $config->getNested("message.mode.disable");
                         $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
                         $player->sendMessage($config->getNested("message.prefix") . $msg);
@@ -237,6 +273,10 @@ class PerkForm
                         $players->set($check, true);
                         if (!in_array($check, $block)) {
                             $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, 1, false));
+                        }
+                        if ($check == "fly") {
+                            $player->setFlying(true);
+                            $player->setAllowFlight(true);
                         }
                         $msg = $config->getNested("message.mode.enable");
                         $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
@@ -249,6 +289,10 @@ class PerkForm
                             if (!in_array($check, $block)) {
                                 $player->removeEffect($effect);
                             }
+                            if ($check == "fly") {
+                                $player->setFlying(false);
+                                $player->setAllowFlight(false);
+                            }
                             $msg = $config->getNested("message.mode.disable");
                             $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
                             $player->sendMessage($config->getNested("message.prefix") . $msg);
@@ -256,6 +300,10 @@ class PerkForm
                             $players->set($check, true);
                             if (!in_array($check, $block)) {
                                 $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, 1, false));
+                            }
+                            if ($check == "fly") {
+                                $player->setFlying(true);
+                                $player->setAllowFlight(true);
                             }
                             $msg = $config->getNested("message.mode.enable");
                             $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);

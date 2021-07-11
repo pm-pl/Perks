@@ -42,25 +42,33 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        if (!$players->exists("speed")) {
-            $players->set("speed", false);
-            $players->set("speed-buy", false);
-            $players->set("jump", false);
-            $players->set("jump-buy", false);
-            $players->set("haste", false);
-            $players->set("haste-buy", false);
-            $players->set("night-vision", false);
-            $players->set("night-vision-buy", false);
-            $players->set("no-hunger", false);
-            $players->set("no-hunger-buy", false);
-            $players->set("no-falldamage", false);
-            $players->set("no-falldamage-buy", false);
-            $players->set("fast-regeneration", false);
-            $players->set("fast-regeneration-buy", false);
-            $players->set("keep-inventory", false);
-            $players->set("keep-inventory-buy", false);
-            $players->set("dopple-xp", false);
-            $players->set("dopple-xp-buy", false);
+        if (!$players->exists("strength")) {
+            if (!$players->exists("speed")) {
+                $players->set("speed", false);
+                $players->set("speed-buy", false);
+                $players->set("jump", false);
+                $players->set("jump-buy", false);
+                $players->set("haste", false);
+                $players->set("haste-buy", false);
+                $players->set("night-vision", false);
+                $players->set("night-vision-buy", false);
+                $players->set("no-hunger", false);
+                $players->set("no-hunger-buy", false);
+                $players->set("no-falldamage", false);
+                $players->set("no-falldamage-buy", false);
+                $players->set("fast-regeneration", false);
+                $players->set("fast-regeneration-buy", false);
+                $players->set("keep-inventory", false);
+                $players->set("keep-inventory-buy", false);
+                $players->set("dopple-xp", false);
+                $players->set("dopple-xp-buy", false);
+            }
+            $players->set("strength", false);
+            $players->set("strength-buy", false);
+            $players->set("no-firedamage", false);
+            $players->set("no-firedamage-buy", false);
+            $players->set("fly", false);
+            $players->set("fly-buy", false);
             $players->save();
         }
         if ($players->get("speed") == true) {
@@ -78,15 +86,27 @@ class EventListener implements Listener
         if ($players->get("fast-regeneration") == true) {
             $player->addEffect(new EffectInstance(Effect::getEffect(Effect::REGENERATION), 107374182, 1, false));
         }
+        if ($players->get("strength") == true) {
+            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::STRENGTH), 107374182, 1, false));
+        }
+        if ($players->get("no-firedamage") == true) {
+            $player->addEffect(new EffecInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 107374182, 1, false));
+        }
+        if ($players->get("fly") == true) {
+            $player->setFlying(true);
+            $player->setAllowFlight(true);
+        }
     }
 
     /**
      * @param PlayerQuitEvent $event
      */
-    public function onQuit (PlayerQuitEvent $event) 
+    public function onQuit(PlayerQuitEvent $event) 
     {
         $player = $event->getPlayer();
         $player->removeAllEffects();
+        $player->setFlying(false);
+        $player->setAllowFlight(false);
     }
 
     /**

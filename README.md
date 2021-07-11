@@ -1,4 +1,4 @@
-# Perks System v1.3
+# Perks System v2.0
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
@@ -16,7 +16,7 @@ You can all funktion edit in **config.yml**
 - [X] Enable/Disable perks
 - [X] General permission
 
-### Perks list
+### Perks list [12]
 - [X] Speed
 - [X] Jump boost
 - [X] Haste
@@ -26,9 +26,11 @@ You can all funktion edit in **config.yml**
 - [X] Fast Regeneration
 - [X] Keep Inventory
 - [X] Dopple XP
+- [X] Strength
+- [X] No Firedamage
+- [X] Fly
 
 ### Todo to next Update
-- [ ] More Perks
 - [ ] Pictures on button
 - [ ] Switch Perks Strength
 - [ ] Fix Bugs
