@@ -199,6 +199,7 @@ class PerkForm
                     $buy = str_replace("%perk%", $config->getNested("perk.$check.msg"), $buy);
                     $buy = str_replace("%money%", $config->getNested("perk.$check.price"), $buy);
                     $player->sendMessage($config->getNested("message.prefix") . $buy);
+		    $eco->reduceMoney($player, $config->getNested("perk.$check.price"));
                 } else {
                     $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-money"));
                 }
