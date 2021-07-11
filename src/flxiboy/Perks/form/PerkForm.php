@@ -73,33 +73,51 @@ class PerkForm
         });
         $form->setTitle($config->getNested("message.ui.title"));
         $form->setContent($config->getNested("message.ui.text"));
-        $speed = $config->getNested("perk.speed.button");
-        $speed = str_replace("%status%", $this->getStatus($player, "speed"), $speed);
-        $jump = $config->getNested("perk.jump.button");
-        $jump = str_replace("%status%", $this->getStatus($player, "jump"), $jump);
-        $haste = $config->getNested("perk.haste.button");
-        $haste = str_replace("%status%", $this->getStatus($player, "haste"), $haste);
-        $night = $config->getNested("perk.night-vision.button");
-        $night = str_replace("%status%", $this->getStatus($player, "night-vision"), $night);
-        $hunger = $config->getNested("perk.no-hunger.button");
-        $hunger = str_replace("%status%", $this->getStatus($player, "no-hunger"), $hunger);
-        $fall = $config->getNested("perk.no-falldamage.button");
-        $fall = str_replace("%status%", $this->getStatus($player, "no-falldamage"), $fall);
-        $regeneration = $config->getNested("perk.fast-regeneration.button");
-        $regeneration = str_replace("%status%", $this->getStatus($player, "fast-regeneration"), $regeneration);
-        $inventory = $config->getNested("perk.keep-inventory.button");
-        $inventory = str_replace("%status%", $this->getStatus($player, "keep-inventory"), $inventory);
-        $xp = $config->getNested("perk.dopple-xp.button");
-        $xp = str_replace("%status%", $this->getStatus($player, "dopple-xp"), $xp);
-        $form->addButton($speed, -1, "", "speed");
-        $form->addButton($jump, -1, "", "jump");
-        $form->addButton($haste, -1, "", "haste");
-        $form->addButton($night, -1, "", "night");
-        $form->addButton($hunger, -1, "", "hunger");
-        $form->addButton($fall, -1, "", "fall");
-        $form->addButton($regeneration, -1, "", "regeneration");
-        $form->addButton($inventory, -1, "", "inventory");
-        $form->addButton($xp, -1, "", "xp");
+        if ($config->getNested("perk.speed.enable") == true) {
+            $speed = $config->getNested("perk.speed.button");
+            $speed = str_replace("%status%", $this->getStatus($player, "speed"), $speed);
+            $form->addButton($speed, -1, "", "speed");
+        }
+        if ($config->getNested("perk.jump.enable") == true) {
+            $jump = $config->getNested("perk.jump.button");
+            $jump = str_replace("%status%", $this->getStatus($player, "jump"), $jump);
+            $form->addButton($jump, -1, "", "jump");
+        }
+        if ($config->getNested("perk.haste.enable") == true) {
+            $haste = $config->getNested("perk.haste.button");
+            $haste = str_replace("%status%", $this->getStatus($player, "haste"), $haste);
+            $form->addButton($haste, -1, "", "haste");
+        }
+        if ($config->getNested("perk.night-vision.enable") == true) {
+            $night = $config->getNested("perk.night-vision.button");
+            $night = str_replace("%status%", $this->getStatus($player, "night-vision"), $night);
+            $form->addButton($night, -1, "", "night");
+        }
+        if ($config->getNested("perk.no-hunger.enable") == true) {
+            $hunger = $config->getNested("perk.no-hunger.button");
+            $hunger = str_replace("%status%", $this->getStatus($player, "no-hunger"), $hunger);
+            $form->addButton($hunger, -1, "", "hunger");
+        }
+        if ($config->getNested("perk.no-falldamage.enable") == true) {
+            $fall = $config->getNested("perk.no-falldamage.button");
+            $fall = str_replace("%status%", $this->getStatus($player, "no-falldamage"), $fall);
+            $form->addButton($fall, -1, "", "fall");
+        }
+        if ($config->getNested("perk.fast-regeneration.enable") == true) {
+            $regeneration = $config->getNested("perk.fast-regeneration.button");
+            $regeneration = str_replace("%status%", $this->getStatus($player, "fast-regeneration"), $regeneration);
+            $form->addButton($regeneration, -1, "", "regeneration");
+        }
+        if ($config->getNested("perk.keep-inventory.enable") == true) {
+            $inventory = $config->getNested("perk.keep-inventory.button");
+            $inventory = str_replace("%status%", $this->getStatus($player, "keep-inventory"), $inventory);
+            $form->addButton($inventory, -1, "", "inventory");
+        }
+        if ($config->getNested("perk.dopple-xp.enable") == true) {
+            $xp = $config->getNested("perk.dopple-xp.button");
+            $xp = str_replace("%status%", $this->getStatus($player, "dopple-xp"), $xp);
+            $form->addButton($xp, -1, "", "xp");
+        }
         $form->sendToPlayer($player);
         return $form;
     }
@@ -199,7 +217,7 @@ class PerkForm
                     $buy = str_replace("%perk%", $config->getNested("perk.$check.msg"), $buy);
                     $buy = str_replace("%money%", $config->getNested("perk.$check.price"), $buy);
                     $player->sendMessage($config->getNested("message.prefix") . $buy);
-		    $eco->reduceMoney($player, $config->getNested("perk.$check.price"));
+                    $eco->reduceMoney($player, $config->getNested("perk.$check.price"));
                 } else {
                     $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-money"));
                 }

@@ -40,7 +40,16 @@ class PerkCommand extends PluginCommand
 	 */
     public function execute(CommandSender $player, string $alias, array $args) 
     {
-        if (!$player instanceof Player) return;
+        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
+
+        if (!$player instanceof Player) {
+            $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-ingame"));
+            return;
+        }
+        if ($config->getNested("command.permission") !== false and !$player->hasPermission($config->getNested("command.permission"))) {
+            $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-perms"));
+            return;
+        }
 
         $perk = new PerkForm($this->plugin, $player);
         $perk->getPerks($player);

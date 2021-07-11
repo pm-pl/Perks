@@ -12,6 +12,8 @@ command:
   desc: "Open the Perk UI"
   usage: "§cUsage: /perk"
   aliases: "perks"
+  # if false, then this does not apply.
+  permission: false
   # If this is true, you can only buy with the price! If this is false, it goes to Permissions.
   economy-api: false
 
@@ -20,6 +22,7 @@ message:
   # %perk% => is the perk name
   # %money% => is the perk price
   prefix: "§dPerks §8» "
+  no-ingame: "§cPlease go to InGame!"
   no-perms: "§cYou don't have any permission!"
   no-money: "§cYou don't have enough money!"
   buy: "§aYou bought the §e%perk% §a​​Perk for §c%money%$§a!"
@@ -40,46 +43,55 @@ perk:
     # permissions => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
     # The price will only go if you have 'economy-api' to true.
   speed:
+    enable: true
     button: "§1Speed\n§8» %status%"
     perms: perk.speed
     price: 10000
     msg: "Speed"
   jump:
+    enable: true
     button: "§2Jump\n§8» %status%"
     perms: perk.jump
     price: 10000
     msg: "Jump"
   haste:
+    enable: true
     button: "§3Haste\n§8» %status%"
     perms: perk.haste
     price: 10000
     msg: "Haste"
   night-vision:
+    enable: true
     button: "§4Night Vision\n§8» %status%"
     perms: perk.night-vision
     price: 10000
     msg: "Night vision"
   no-hunger:
+    enable: true
     button: "§5No Hunger\n§8» %status%"
     perms: perk.no-hunger
     price: 10000
     msg: "No hunger"
   no-falldamage:
+    enable: true
     button: "§6No Falldamage\n§8» %status%"
     perms: perk.no-falldamage
     price: 10000
     msg: "No falldamage"
   fast-regeneration:
+    enable: true
     button: "§7Fast Regeneration\n§8» %status%"
     perms: perk.fast-regeneration
     price: 10000
     msg: "Fast regeneration"
   keep-inventory:
+    enable: true
     button: "§8Keep Inventory\n§8» %status%"
     perms: perk.keep-inventory
     price: 10000
     msg: "Keep inventory"
   dopple-xp:
+    enable: true
     button: "§9Dopple XP\n§8» %status%"
     perms: perk.dopple-xp
     price: 10000
