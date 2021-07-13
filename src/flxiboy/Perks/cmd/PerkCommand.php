@@ -19,6 +19,11 @@ class PerkCommand extends PluginCommand
 {
 
     /**
+     * @var $plugin
+     */
+    public $plugin;
+
+    /**
 	 * Commands constructor.
 	 *
 	 * @param Main $plugin
@@ -46,6 +51,7 @@ class PerkCommand extends PluginCommand
             $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-ingame"));
             return;
         }
+
         if ($config->getNested("command.permission") !== false and !$player->hasPermission($config->getNested("command.permission"))) {
             $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-perms"));
             return;

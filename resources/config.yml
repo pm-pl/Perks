@@ -6,6 +6,9 @@
 ######################
 ######################
 
+# Tip: If the plugin does not work after you have downloaded a new version, I recommend that you delete this file here in order to be up to date.
+#        However, if you have made messages, save this somewhere else for a short time.
+
 # command, edit the perks command
 command:
   cmd: "perk"
@@ -16,8 +19,6 @@ command:
   permission: false
   # If this is true, you can only buy with the price! If this is false, it goes to Permissions.
   economy-api: false
-  # !!!BETA!!! If this is true, then the beta is active. The beta includes perks strength and is currently in beta. In case of bugs, please open an issue on Github.  !!!BETA!!! 
-  beta: false
 
 # message, edit the perks messages
 message:
@@ -39,10 +40,10 @@ message:
   ui:
     title: "§dPerks"
     text: "§aSelect a Perk:"
-  strength: # !!!BETA!!!
+  strength:
     # %strength% => is the new perk strength
     title: "§dPerk strength"
-    text: "§aPlease change your Perk strength. \n§cIf you choose 0, the perk will be deactivated!\n§aYour strength"
+    text: "§aPlease change your Perk strength.\n§cIf you choose 0, the perk will be deactivated!\n§aYour strength"
     new-strength: "§aThe strength of your perk %perk% has been updated to %strength%."
 
 perk:
@@ -50,75 +51,88 @@ perk:
     # permissions => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
     # enable => is there to activate or deactivate the perks.
     # price => will only go if you have 'economy-api' to true. This sets the price of the perk.
+    # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
   speed:
     enable: true
     button: "§1Speed\n§8» %status%"
     perms: perk.speed
     price: 10000
     msg: "Speed"
+    img: "textures/ui/speed_effect"
   jump:
     enable: true
     button: "§2Jump\n§8» %status%"
     perms: perk.jump
     price: 10000
     msg: "Jump"
+    img: "textures/ui/jump_boost_effect"
   haste:
     enable: true
     button: "§3Haste\n§8» %status%"
     perms: perk.haste
     price: 10000
     msg: "Haste"
+    img: "textures/ui/haste_effect"
   night-vision:
     enable: true
     button: "§4Night Vision\n§8» %status%"
     perms: perk.night-vision
     price: 10000
     msg: "Night Vision"
+    img: "textures/items/potion_bottle_nightVision"
   no-hunger:
     enable: true
     button: "§5No Hunger\n§8» %status%"
     perms: perk.no-hunger
     price: 10000
     msg: "No Hunger"
+    img: "textures/ui/hunger_full"
   no-falldamage:
     enable: true
     button: "§6No Falldamage\n§8» %status%"
     perms: perk.no-falldamage
     price: 10000
     msg: "No Falldamage"
+    img: "textures/items/totem"
   fast-regeneration:
     enable: true
     button: "§7Fast Regeneration\n§8» %status%"
     perms: perk.fast-regeneration
     price: 10000
     msg: "Fast Regeneration"
+    img: "textures/ui/regeneration_effect"
   keep-inventory:
     enable: true
     button: "§8Keep Inventory\n§8» %status%"
     perms: perk.keep-inventory
     price: 10000
     msg: "Keep Inventory"
+    img: "textures/blocks/chest_front"
   dopple-xp:
     enable: true
     button: "§9Dopple XP\n§8» %status%"
     perms: perk.dopple-xp
     price: 10000
     msg: "Dopple XP"
+    img: "textures/ui/dust_selectable_2"
   strength:
     enable: true
     button: "§bStrength\n§8» %status%"
     perms: perk.stren
     price: 10000
     msg: "Strength"
+    img: "textures/ui/strength_effect"
   no-firedamage:
     enable: true
     button: "§eNo Firedamage\n§8» %status%"
     perms: perk.no-firedamage
     price: 10000
     msg: "No Firedamage"
+    img: "textures/ui/fire_resistance_effect"
   fly:
     enable: true
     button: "§aFly\n§8» %status%"
     perms: perk.fly
     price: 10000
     msg: "Fly"
+    img: "textures/items/feather"

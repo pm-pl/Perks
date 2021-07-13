@@ -14,6 +14,15 @@ class Main extends PluginBase
 {
 
     /**
+     * @var array
+     */
+    public $playernewperk = [];
+    /**
+     * @var array
+     */
+    public $playernewperkname = [];
+    
+    /**
      * Enable function: registering Command and Event
      */
     public function onEnable()

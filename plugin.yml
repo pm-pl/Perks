@@ -1,8 +1,11 @@
 name: Perks
-version: 2.1-BETA
-api: 3.22.0
 main: flxiboy\Perks\Main
 author: FlxiBoy
+version: 3.0
+api: ["3.21.0", "3.22.0"]
+mcpe-protocols:
+  - 440
+  - 448
 depend:
   - FormAPI
   - EconomyAPI

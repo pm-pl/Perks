@@ -3,7 +3,6 @@
 namespace flxiboy\Perks\event;
 
 use pocketmine\event\player\{
-    PlayerQuitEvent,
     PlayerJoinEvent,
     PlayerExhaustEvent,
     PlayerDeathEvent
@@ -24,6 +23,11 @@ use pocketmine\event\block\BlockBreakEvent;
  */
 class EventListener implements Listener 
 {
+
+    /**
+     * @var $plugin
+     */
+    public $plugin;
 
     /**
 	 * Listener constructor.
@@ -71,42 +75,32 @@ class EventListener implements Listener
             $players->set("fly-buy", false);
             $players->save();
         }
-        if ($players->get("speed") == true) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::SPEED), 107374182, 1, false));
+        $player->removeAllEffects();
+        if ($players->get("speed") == true and !$player->hasEffect(Effect::SPEED)) {
+            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::SPEED), 107374182, 0, false));
         }
-        if ($players->get("jump") == true) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::JUMP_BOOST), 107374182, 1, false));
+        if ($players->get("jump") == true and !$player->hasEffect(Effect::JUMP_BOOST)) {
+            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::JUMP_BOOST), 107374182, 0, false));
         }
-        if ($players->get("haste") == true) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::HASTE), 107374182, 1, false));
+        if ($players->get("haste") == true and !$player->hasEffect(Effect::HASTE)) {
+            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::HASTE), 107374182, 0, false));
         }
-        if ($players->get("night-vision") == true) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::NIGHT_VISION), 107374182, 1, false));
+        if ($players->get("night-vision") == true and !$player->hasEffect(Effect::NIGHT_VISION)) {
+            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::NIGHT_VISION), 107374182, 0, false));
         }
-        if ($players->get("fast-regeneration") == true) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::REGENERATION), 107374182, 1, false));
+        if ($players->get("fast-regeneration") == true and !$player->hasEffect(Effect::REGENERATION)) {
+            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::REGENERATION), 107374182, 0, false));
         }
-        if ($players->get("strength") == true) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::STRENGTH), 107374182, 1, false));
+        if ($players->get("strength") == true and !$player->hasEffect(Effect::STRENGTH)) {
+            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::STRENGTH), 107374182, 0, false));
         }
-        if ($players->get("no-firedamage") == true) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 107374182, 1, false));
+        if ($players->get("no-firedamage") == true and !$player->hasEffect(Effect::FIRE_RESISTANCE)) {
+            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 107374182, 0, false));
         }
-        if ($players->get("fly") == true) {
+        if ($players->get("fly") == true and $player->isFlying(false)) {
             $player->setFlying(true);
             $player->setAllowFlight(true);
         }
-    }
-
-    /**
-     * @param PlayerQuitEvent $event
-     */
-    public function onQuit(PlayerQuitEvent $event) 
-    {
-        $player = $event->getPlayer();
-        $player->removeAllEffects();
-        $player->setFlying(false);
-        $player->setAllowFlight(false);
     }
 
     /**
@@ -141,7 +135,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         if ($players->get("keep-inventory") == true) {
-            $event->setKeepInventory();
+            $event->setKeepInventory(true);
         }
     }
     

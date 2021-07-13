@@ -1,4 +1,4 @@
-# Perks System v2.1-BETA
+# Perks System v3.0
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
@@ -11,11 +11,11 @@ You can all funktion edit in **config.yml**
 - [X] Command
 - [X] Message and Command edit in config
 - [X] Ui support
-- [X] Messages
 - [X] Price for a Perk
 - [X] Enable/Disable perks
 - [X] General permission
-- [X] !!!BETA!!! Switch Perks Strength !!!BETA!!!
+- [X] Switch Perks Strength
+- [X] Pictures on button
 
 ### Perks list [12]
 - [X] Speed
@@ -32,6 +32,8 @@ You can all funktion edit in **config.yml**
 - [X] Fly
 
 ### Todo to next Update
-- [ ] Pictures on button
 - [ ] Fix Bugs
 - [ ] And more...
+
+### Bugs?
+If you have a bug or an idea, please feel free to report this to: [Issues](https://github.com/FlxiBoy1313/Perks/issues/new)
