@@ -21,6 +21,15 @@ class PerkForm
 {
 
     /**
+     * @var array
+     */
+    public $playernewperk = [];
+    /**
+     * @var array
+     */
+    public $playernewperkname = [];
+
+    /**
 	 * Listener constructor.
 	 *
 	 * @param Main $plugin
@@ -79,6 +88,7 @@ class PerkForm
                     $this->getCheckPerk($player, "fly");
                     break;
             }
+            return true;
         });
         $form->setTitle($config->getNested("message.ui.title"));
         $form->setContent($config->getNested("message.ui.text"));
@@ -142,6 +152,67 @@ class PerkForm
             $fly = str_replace("%status%", $this->getStatus($player, "fly"), $fly);
             $form->addButton($fly, -1, "", "fly");
         }
+        $form->sendToPlayer($player);
+        return $form;
+    }
+
+    /**
+	 * @param Player $player
+     * @param string $check
+     * @param string $effect
+	 */
+    public function getPerkSwitch(Player $player, string $check, string $effect)
+    {
+        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
+        $api = Server::getInstance()->getPluginManager()->getPlugin("FormAPI");
+        $form = $api->createCustomForm(function (Player $player, $data = null) { 
+            if ($data === null) {
+                return; 
+            }
+            if (isset($this->playernewperkname[$player->getName()])) {
+                $check = $this->playernewperkname[$player->getName()];
+                if ($this->playernewperkname[$player->getName()] == "speed") { 
+                    $effect = Effect::SPEED;
+                } elseif ($this->playernewperkname[$player->getName()] == "jump") { 
+                    $effect = Effect::JUMP_BOOST;
+                } elseif ($this->playernewperkname[$player->getName()] == "haste") { 
+                    $effect = Effect::HASTE;
+                } elseif ($this->playernewperkname[$player->getName()] == "night-vision") { 
+                    $effect = Effect::NIGHT_VISION;
+                } elseif ($this->playernewperkname[$player->getName()] == "fast-regeneration") { 
+                    $effect = Effect::REGENERATION;
+                } elseif ($this->playernewperkname[$player->getName()] == "strength") { 
+                    $effect = Effect::STRENGTH;
+                } elseif ($this->playernewperkname[$player->getName()] == "no-firedamage") { 
+                    $effect = Effect::FIRE_RESISTANCE;
+                }
+            }
+            $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
+            $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+            if ($data[0] == 0) {
+                $players->set($check, false);
+                $player->removeEffect($effect);
+                if ($check == "fly") {
+                    $player->setFlying(false);
+                    $player->setAllowFlight(false);
+                }
+                $msg = $config->getNested("message.mode.disable");
+                $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
+                $player->sendMessage($config->getNested("message.prefix") . $msg);
+            } else {
+                $msg = $config->getNested("message.strength.new-strength");
+                $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
+                $msg = str_replace("%strength%", $data[0], $msg);
+                $player->sendMessage($config->getNested("message.prefix") . $msg);
+                $player->removeEffect($effect);
+                $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, $data[0] - 1, false));
+            }
+            $players->save();
+            $this->playernewperkname[$player->getName()] = null;
+            return true;
+        });
+        $form->setTitle($config->getNested("message.strength.title"));
+        $form->addStepSlider($config->getNested("message.strength.text"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
         $form->sendToPlayer($player);
         return $form;
     }
@@ -220,27 +291,7 @@ class PerkForm
             $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
             $money = $eco->myMoney($player);
             if ($players->get("$check-buy") == true) {
-                if ($players->get($check) == true) {
-                    $players->set($check, false);
-                    if (!in_array($check, $block)) {
-                        $player->removeEffect($effect);
-                    }
-                    if ($check == "fly") {
-                        $player->setFlying(false);
-                        $player->setAllowFlight(false);
-                    }
-                    $msg = $config->getNested("message.mode.disable");
-                    $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
-                    $player->sendMessage($config->getNested("message.prefix") . $msg);
-                } else {
-                    $players->set($check, true);
-                    if (!in_array($check, $block)) {
-                        $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, 1, false));
-                    }
-                    $msg = $config->getNested("message.mode.enable");
-                    $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
-                    $player->sendMessage($config->getNested("message.prefix") . $msg);
-                }
+                $this->playernewperk[] = $player->getName();
             } else {
                 if ($money >= $config->getNested("perk.$check.price")) {
                     $players->set("$check", false);
@@ -257,11 +308,24 @@ class PerkForm
         } else {
             if ($config->getNested("perk.$check.perms") !== false) {
                 if ($players->get("$check-buy") == true) {
-                    if ($players->get($check) == true) {
+                        $this->playernewperk[] = $player->getName();
+                } else {
+                    if ($player->hasPermission($config->getNested("perk.$check.perms"))) {
+                        $this->playernewperk[] = $player->getName();
+                    } else {
+                        $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-perms"));
+                    }
+                }
+            } else {
+                $this->playernewperk[] = $player->getName();
+            }
+        }
+        if (in_array($player->getName(), $this->playernewperk)) {
+            unset($this->playernewperk[array_search($player->getName(), $this->playernewperk)]);
+            if ($config->getNested("command.beta") == true) {
+                if ($players->get($check) == true) {
+                    if (in_array($check, $block)) {
                         $players->set($check, false);
-                        if (!in_array($check, $block)) {
-                            $player->removeEffect($effect);
-                        }
                         if ($check == "fly") {
                             $player->setFlying(false);
                             $player->setAllowFlight(false);
@@ -270,48 +334,47 @@ class PerkForm
                         $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
                         $player->sendMessage($config->getNested("message.prefix") . $msg);
                     } else {
-                        $players->set($check, true);
-                        if (!in_array($check, $block)) {
-                            $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, 1, false));
-                        }
-                        if ($check == "fly") {
-                            $player->setFlying(true);
-                            $player->setAllowFlight(true);
-                        }
-                        $msg = $config->getNested("message.mode.enable");
-                        $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
-                        $player->sendMessage($config->getNested("message.prefix") . $msg);
+                        $this->playernewperkname[$player->getName()] = $check;
+                        $this->getPerkSwitch($player, $check, $effect);
                     }
                 } else {
-                    if ($player->hasPermission($config->getNested("perk.$check.perms"))) {
-                        if ($players->get($check) == true) {
-                            $players->set($check, false);
-                            if (!in_array($check, $block)) {
-                                $player->removeEffect($effect);
-                            }
-                            if ($check == "fly") {
-                                $player->setFlying(false);
-                                $player->setAllowFlight(false);
-                            }
-                            $msg = $config->getNested("message.mode.disable");
-                            $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
-                            $player->sendMessage($config->getNested("message.prefix") . $msg);
-                        } else {
-                            $players->set($check, true);
-                            if (!in_array($check, $block)) {
-                                $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, 1, false));
-                            }
-                            if ($check == "fly") {
-                                $player->setFlying(true);
-                                $player->setAllowFlight(true);
-                            }
-                            $msg = $config->getNested("message.mode.enable");
-                            $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
-                            $player->sendMessage($config->getNested("message.prefix") . $msg);
-                        }
-                    } else {
-                        $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-perms"));
+                    $players->set($check, true);
+                    if (!in_array($check, $block)) {
+                        $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, 0, false));
                     }
+                    if ($check == "fly") {
+                        $player->setFlying(true);
+                        $player->setAllowFlight(true);
+                    }
+                    $msg = $config->getNested("message.mode.enable");
+                    $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
+                    $player->sendMessage($config->getNested("message.prefix") . $msg);
+                }
+            } else {
+                if ($players->get($check) == true) {
+                    $players->set($check, false);
+                    if (!in_array($check, $block)) {
+                        $player->removeEffect($effect);
+                    }
+                    if ($check == "fly") {
+                        $player->setFlying(false);
+                        $player->setAllowFlight(false);
+                    }
+                    $msg = $config->getNested("message.mode.disable");
+                    $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
+                    $player->sendMessage($config->getNested("message.prefix") . $msg);
+                } else {
+                    $players->set($check, true);
+                    if (!in_array($check, $block)) {
+                        $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, 0, false));
+                    }
+                    if ($check == "fly") {
+                        $player->setFlying(true);
+                        $player->setAllowFlight(true);
+                    }
+                    $msg = $config->getNested("message.mode.enable");
+                    $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
+                    $player->sendMessage($config->getNested("message.prefix") . $msg);
                 }
             }
         }

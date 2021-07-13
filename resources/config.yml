@@ -16,6 +16,8 @@ command:
   permission: false
   # If this is true, you can only buy with the price! If this is false, it goes to Permissions.
   economy-api: false
+  # !!!BETA!!! If this is true, then the beta is active. The beta includes perks strength and is currently in beta. In case of bugs, please open an issue on Github.  !!!BETA!!! 
+  beta: false
 
 # message, edit the perks messages
 message:
@@ -37,11 +39,17 @@ message:
   ui:
     title: "§dPerks"
     text: "§aSelect a Perk:"
+  strength: # !!!BETA!!!
+    # %strength% => is the new perk strength
+    title: "§dPerk strength"
+    text: "§aPlease change your Perk strength. \n§cIf you choose 0, the perk will be deactivated!\n§aYour strength"
+    new-strength: "§aThe strength of your perk %perk% has been updated to %strength%."
 
 perk:
     # %status% => this will show your current status
     # permissions => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
-    # The price will only go if you have 'economy-api' to true.
+    # enable => is there to activate or deactivate the perks.
+    # price => will only go if you have 'economy-api' to true. This sets the price of the perk.
   speed:
     enable: true
     button: "§1Speed\n§8» %status%"
@@ -65,37 +73,37 @@ perk:
     button: "§4Night Vision\n§8» %status%"
     perms: perk.night-vision
     price: 10000
-    msg: "Night vision"
+    msg: "Night Vision"
   no-hunger:
     enable: true
     button: "§5No Hunger\n§8» %status%"
     perms: perk.no-hunger
     price: 10000
-    msg: "No hunger"
+    msg: "No Hunger"
   no-falldamage:
     enable: true
     button: "§6No Falldamage\n§8» %status%"
     perms: perk.no-falldamage
     price: 10000
-    msg: "No falldamage"
+    msg: "No Falldamage"
   fast-regeneration:
     enable: true
     button: "§7Fast Regeneration\n§8» %status%"
     perms: perk.fast-regeneration
     price: 10000
-    msg: "Fast regeneration"
+    msg: "Fast Regeneration"
   keep-inventory:
     enable: true
     button: "§8Keep Inventory\n§8» %status%"
     perms: perk.keep-inventory
     price: 10000
-    msg: "Keep inventory"
+    msg: "Keep Inventory"
   dopple-xp:
     enable: true
     button: "§9Dopple XP\n§8» %status%"
     perms: perk.dopple-xp
     price: 10000
-    msg: "Dopple xp"
+    msg: "Dopple XP"
   strength:
     enable: true
     button: "§bStrength\n§8» %status%"
@@ -107,7 +115,7 @@ perk:
     button: "§eNo Firedamage\n§8» %status%"
     perms: perk.no-firedamage
     price: 10000
-    msg: "No firedamage"
+    msg: "No Firedamage"
   fly:
     enable: true
     button: "§aFly\n§8» %status%"

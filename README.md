@@ -1,4 +1,4 @@
-# Perks System v2.0
+# Perks System v2.1-BETA
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
@@ -15,6 +15,7 @@ You can all funktion edit in **config.yml**
 - [X] Price for a Perk
 - [X] Enable/Disable perks
 - [X] General permission
+- [X] !!!BETA!!! Switch Perks Strength !!!BETA!!!
 
 ### Perks list [12]
 - [X] Speed
@@ -32,6 +33,5 @@ You can all funktion edit in **config.yml**
 
 ### Todo to next Update
 - [ ] Pictures on button
-- [ ] Switch Perks Strength
 - [ ] Fix Bugs
 - [ ] And more...
