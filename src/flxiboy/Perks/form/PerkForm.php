@@ -138,13 +138,7 @@ class PerkForm
             return true;
         });
         $form->setTitle($config->getNested("message.strength.title"));
-        if ($player->hasEffect($effect)) {
-            $form->addStepSlider($config->getNested("message.strength.text"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
-        } else {
-            $players->set($check, false);
-            $players->save();
-            $form->addLabel($config->getNested("message.strength.error"));
-        }
+        $form->addStepSlider($config->getNested("message.strength.text"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
         $form->sendToPlayer($player);
         return $form;
     }
