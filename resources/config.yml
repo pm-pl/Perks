@@ -48,6 +48,7 @@ message:
     title: "§dPerk strength"
     text: "§aPlease change your Perk strength.\n§cIf you choose 0, the perk will be deactivated!\n§aYour strength"
     new-strength: "§aThe strength of your perk %perk% has been updated to %strength%."
+    error: "§cThere is an error, you don't seem to have your effect even though you are wearing the perk, the perk has been deactivated. This only follows to rule out a mistake."
 
 perk:
     # %status% => this will show your current status

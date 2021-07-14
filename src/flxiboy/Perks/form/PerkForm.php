@@ -89,6 +89,7 @@ class PerkForm
     public function getPerkSwitch(Player $player, string $check, string $effect)
     {
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
+        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $api = Server::getInstance()->getPluginManager()->getPlugin("FormAPI");
         $form = $api->createCustomForm(function (Player $player, $data = null) { 
             if ($data === null) {
@@ -137,7 +138,13 @@ class PerkForm
             return true;
         });
         $form->setTitle($config->getNested("message.strength.title"));
-        $form->addStepSlider($config->getNested("message.strength.text"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
+        if ($player->hasEffect($effect)) {
+            $form->addStepSlider($config->getNested("message.strength.text"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
+        } else {
+            $players->set($check, false);
+            $players->save();
+            $form->addLabel($config->getNested("message.strength.error"));
+        }
         $form->sendToPlayer($player);
         return $form;
     }
