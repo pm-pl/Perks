@@ -56,6 +56,10 @@ class API
         } elseif ($check == "no-firedamage") { 
             $effect = Effect::FIRE_RESISTANCE;
         }
+	if ($players->get($check) == true and !$player->hasEffect($effect)) {
+            $players->set($check, false);
+            $players->save();
+        }
         $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly"];
         if ($config->getNested("command.economy-api") == true) {
             $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
