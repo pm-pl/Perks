@@ -24,11 +24,12 @@ command:
 message:
   # %perk% => is the perk name
   # %money% => is the perk price
+  # %need-money% => This shows how much money someone still needs.
   prefix: "§dPerks §8» "
   no-ingame: "§cPlease go to InGame!"
   no-perms: "§cYou don't have any permission!"
-  no-money: "§cYou don't have enough money!"
-  buy: "§aYou bought the §e%perk% §a​​Perk for §c%money%$§a!"
+  no-money: "§cYou don't have enough money, you are still missing §a$%need-money%§c."
+  buy: "§aYou bought the §e%perk% §a​​Perk for §c$%money%§a!"
   mode:
     enable: "§aYou have activated the §e%perk% ​​§aPerk!"
     disable: "§cYou have disabled the §e%perk% ​​§cPerk!"
@@ -36,10 +37,12 @@ message:
     no-perms: "§4Blocked"
     disable: "§cDisable"
     enable: "§aEnable"
-    buy: "§5Buy §8[%money%]"
+    buy: "§5Buy §8[$%money%]"
   ui:
     title: "§dPerks"
     text: "§aSelect a Perk:"
+    # if "economy-api" is true, this is indicated, false is disable for this feature.
+    text-money: "§aYour Money: $%money%\n§aSelect a Perk:"
   strength:
     # %strength% => is the new perk strength
     title: "§dPerk strength"

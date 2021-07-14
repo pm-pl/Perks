@@ -72,7 +72,9 @@ class API
                     $player->sendMessage($config->getNested("message.prefix") . $buy);
                     $eco->reduceMoney($player, $config->getNested("perk.$check.price"));
                 } else {
-                    $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-money"));
+                    $msg = $config->getNested("message.no-money");
+                    $msg = str_replace("%need-money%", $config->getNested("perk.$check.price") - $money, $msg);
+                    $player->sendMessage($config->getNested("message.prefix") . $msg);
                 }
             }
         } else {

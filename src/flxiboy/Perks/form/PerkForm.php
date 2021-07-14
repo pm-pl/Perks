@@ -41,6 +41,7 @@ class PerkForm
 	 */
     public function getPerks(Player $player) 
     {
+        $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
         $api = Server::getInstance()->getPluginManager()->getPlugin("FormAPI");
         $form = $api->createSimpleForm(function (Player $player, $data = null) { 
@@ -53,7 +54,15 @@ class PerkForm
         });
         $checkStatus = new API($this->plugin, $player);
         $form->setTitle($config->getNested("message.ui.title"));
-        $form->setContent($config->getNested("message.ui.text"));
+        if ($config->getNested("message.ui.text-money") !== false) {
+            if ($config->getNested("command.economy-api") == true) {
+                $msg = $config->getNested("message.ui.text-money");
+                $msg = str_replace("%money%", $eco->myMoney($player), $msg);
+                $form->setContent($msg);
+            } else {
+                $form->setContent($config->getNested("message.ui.text"));
+            }
+        }
         foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly"] as $name) {
             if ($config->getNested("perk.$name.enable") == true) {
                 if ($config->getNested("perk.$name.img") !== false) {

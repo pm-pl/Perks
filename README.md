@@ -1,4 +1,4 @@
-# Perks System v3.0
+# Perks System v3.1
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
@@ -32,6 +32,9 @@ You can all funktion edit in **config.yml**
 - [X] Fly
 
 ### Todo to next Update
+- [ ] More Perks
+- [ ] Giving perks to friends
+- [ ] GUI/Commands Support
 - [ ] Fix Bugs
 - [ ] And more...
 
