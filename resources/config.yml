@@ -18,7 +18,7 @@ command:
   # if false, then this does not apply.
   permission: false
   # If this is true, you can only buy with the price. If this is false, it goes to Permissions.
-  economy-api: true
+  economy-api: false
 
 # message, edit the perks messages
 message:
@@ -54,7 +54,7 @@ message:
     # %target% => is the username
     # %player% => is your name
     # if "economy-api" is true, this is indicated.
-    enable: true
+    enable: false
     button: "§2Give someone perks."
     # false is disable the picture
     button-img: "textures/ui/Friend2"
