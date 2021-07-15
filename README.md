@@ -1,4 +1,4 @@
-# Perks System v3.1
+# Perks System v3.2
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
@@ -16,8 +16,9 @@ You can all funktion edit in **config.yml**
 - [X] General permission
 - [X] Switch Perks Strength
 - [X] Pictures on button
+- [X] Giving perks to friends
 
-### Perks list [12]
+### Perks list [14]
 - [X] Speed
 - [X] Jump boost
 - [X] Haste
@@ -30,10 +31,11 @@ You can all funktion edit in **config.yml**
 - [X] Strength
 - [X] No Firedamage
 - [X] Fly
+- [X] Water breathing
+- [X] Invisibility
 
 ### Todo to next Update
-- [ ] More Perks
-- [ ] Giving perks to friends
+- [ ] Perks order
 - [ ] GUI/Commands Support
 - [ ] Fix Bugs
 - [ ] And more...

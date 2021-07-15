@@ -41,33 +41,14 @@ class API
     {
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        if ($check == "speed") { 
-            $effect = Effect::SPEED;
-        } elseif ($check == "jump") { 
-            $effect = Effect::JUMP_BOOST;
-        } elseif ($check == "haste") { 
-            $effect = Effect::HASTE;
-        } elseif ($check == "night-vision") { 
-            $effect = Effect::NIGHT_VISION;
-        } elseif ($check == "fast-regeneration") { 
-            $effect = Effect::REGENERATION;
-        } elseif ($check == "strength") { 
-            $effect = Effect::STRENGTH;
-        } elseif ($check == "no-firedamage") { 
-            $effect = Effect::FIRE_RESISTANCE;
-        }
-	if ($players->get($check) == true and !$player->hasEffect($effect)) {
-            $players->set($check, false);
-            $players->save();
-        }
+        $effect = $this->getPerkEffect($player, $check, "normal");
         $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly"];
         if ($config->getNested("command.economy-api") == true) {
             $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-            $money = $eco->myMoney($player);
             if ($players->get("$check-buy") == true) {
                 $this->plugin->playernewperk[] = $player->getName();
             } else {
-                if ($money >= $config->getNested("perk.$check.price")) {
+                if ($eco->myMoney($player) >= $config->getNested("perk.$check.price")) {
                     $players->set("$check", false);
                     $players->set("$check-buy", true);
                     $buy = $config->getNested("message.buy");
@@ -77,7 +58,7 @@ class API
                     $eco->reduceMoney($player, $config->getNested("perk.$check.price"));
                 } else {
                     $msg = $config->getNested("message.no-money");
-                    $msg = str_replace("%need-money%", $config->getNested("perk.$check.price") - $money, $msg);
+                    $msg = str_replace("%need-money%", $config->getNested("perk.$check.price") - $eco->myMoney($player), $msg);
                     $player->sendMessage($config->getNested("message.prefix") . $msg);
                 }
             }
@@ -139,6 +120,11 @@ class API
     {
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $effect = $this->getPerkEffect($player, $check, "normal");
+        if ($players->get($check) == true and !$player->hasEffect($effect)) {
+            $players->set($check, false);
+            $players->save();
+        }
         if ($config->getNested("command.economy-api") == true) {
             if ($players->get("$check-buy") == true) {
                 if ($players->get($check) == true) {
@@ -175,5 +161,57 @@ class API
             }
         }
         return $speedcheck;
+    }
+
+    /**
+     * @param Player $player
+     * @param string $check
+     * @param string $type
+     */
+    public function getPerkEffect(Player $player, string $check, string $type) 
+    {
+        $effect = null;
+        if ($type == "normal") {
+            if ($check == "speed") { 
+                $effect = Effect::SPEED;
+            } elseif ($check == "jump") { 
+                $effect = Effect::JUMP_BOOST;
+            } elseif ($check == "haste") { 
+                $effect = Effect::HASTE;
+            } elseif ($check == "night-vision") { 
+                $effect = Effect::NIGHT_VISION;
+            } elseif ($check == "fast-regeneration") { 
+                $effect = Effect::REGENERATION;
+            } elseif ($check == "strength") { 
+                $effect = Effect::STRENGTH;
+            } elseif ($check == "no-firedamage") { 
+                $effect = Effect::FIRE_RESISTANCE;
+            } elseif ($check == "water-breathing") {
+                $effect = Effect::WATER_BREATHING;
+            } elseif ($check == "invisibility") {
+                $effect = Effect::INVISIBILITY;
+            }
+        } elseif ($type == "main") {
+            if ($this->plugin->playernewperkname[$player->getName()] == "speed") { 
+                $effect = Effect::SPEED;
+            } elseif ($this->plugin->playernewperkname[$player->getName()] == "jump") { 
+                $effect = Effect::JUMP_BOOST;
+            } elseif ($this->plugin->playernewperkname[$player->getName()] == "haste") { 
+                $effect = Effect::HASTE;
+            } elseif ($this->plugin->playernewperkname[$player->getName()] == "night-vision") { 
+                $effect = Effect::NIGHT_VISION;
+            } elseif ($this->plugin->playernewperkname[$player->getName()] == "fast-regeneration") { 
+                $effect = Effect::REGENERATION;
+            } elseif ($this->plugin->playernewperkname[$player->getName()] == "strength") { 
+                $effect = Effect::STRENGTH;
+            } elseif ($this->plugin->playernewperkname[$player->getName()] == "no-firedamage") { 
+                $effect = Effect::FIRE_RESISTANCE;
+            } elseif ($this->plugin->playernewperkname[$player->getName()]  == "water-breathing") {
+                $effect = Effect::WATER_BREATHING;
+            } elseif ($this->plugin->playernewperkname[$player->getName()] == "invisibility") {
+                $effect = Effect::INVISIBILITY;
+            }
+        }
+        return $effect;
     }
 }

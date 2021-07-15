@@ -17,8 +17,8 @@ command:
   aliases: "perks"
   # if false, then this does not apply.
   permission: false
-  # If this is true, you can only buy with the price! If this is false, it goes to Permissions.
-  economy-api: false
+  # If this is true, you can only buy with the price. If this is false, it goes to Permissions.
+  economy-api: true
 
 # message, edit the perks messages
 message:
@@ -26,13 +26,13 @@ message:
   # %money% => is the perk price
   # %need-money% => This shows how much money someone still needs.
   prefix: "§dPerks §8» "
-  no-ingame: "§cPlease go to InGame!"
-  no-perms: "§cYou don't have any permission!"
+  no-ingame: "§cPlease go to InGame."
+  no-perms: "§cYou don't have any permission."
   no-money: "§cYou don't have enough money, you are still missing §a$%need-money%§c."
-  buy: "§aYou bought the §e%perk% §a​​Perk for §c$%money%§a!"
+  buy: "§aYou bought the §e%perk% §a​​Perk for §c$%money%§a."
   mode:
-    enable: "§aYou have activated the §e%perk% ​​§aPerk!"
-    disable: "§cYou have disabled the §e%perk% ​​§cPerk!"
+    enable: "§aYou have activated the §e%perk% ​​§aPerk."
+    disable: "§cYou have disabled the §e%perk% ​​§cPerk."
   button:
     no-perms: "§4Blocked"
     disable: "§cDisable"
@@ -42,12 +42,34 @@ message:
     title: "§dPerks"
     text: "§aSelect a Perk:"
     # if "economy-api" is true, this is indicated, false is disable for this feature.
-    text-money: "§aYour Money: $%money%\n§aSelect a Perk:"
+    text-money: "§aYour Money: §c$%money%\n§aSelect a Perk:"
   strength:
     # %strength% => is the new perk strength
     title: "§dPerk strength"
-    text: "§aPlease change your Perk strength.\n§cIf you choose 0, the perk will be deactivated!\n§aYour strength"
-    new-strength: "§aThe strength of your perk %perk% has been updated to %strength%."
+    text: "§aPlease change your Perk strength.\n§cIf you choose 0, the perk will be deactivated.\n§aYour strength"
+    new-strength: "§aThe strength of your perk §c%perk% §ahas been updated to §c%strength%§a."
+  friends:
+    # %perk% => is the perk name
+    # %money% => is the perk price
+    # %target% => is the username
+    # %player% => is your name
+    # if "economy-api" is true, this is indicated.
+    enable: true
+    button: "§2Give someone perks."
+    # false is disable the picture
+    button-img: "textures/ui/Friend2"
+    title: "§2Perk friends"
+    text: "§aYou can give your friend or a random user a perk here."
+    user: "§7Username here..."
+    perks: "§aSelcet a Perk:"
+    confirm-text: "§cDo you really want to give the user §a%target% §cthe perk §a%perk% §cfor §a$%money%§c? This cannot be reversed."
+    confirm-yes: "§2Yes"
+    confirm-yes-img: "textures/ui/confirm"
+    confirm-no: "§4No"
+    confirm-no-img: "textures/ui/redX1"
+    target-notfound: "§cThe Player §a%target% §cwas not found."
+    success: "§aYou bought the perk §c%perk% §afor the player §c%player%§a."
+    target-success: "§aThe player §c%player% §agave you the perk §c%perk%§a."
 
 perk:
     # %status% => this will show your current status
@@ -139,3 +161,17 @@ perk:
     price: 10000
     msg: "Fly"
     img: "textures/items/feather"
+  water-breathing:
+    enable: true
+    button: "§9Water breathing\n§8» %status%"
+    perms: perk.water-breathing
+    price: 10000
+    msg: "Water breathing"
+    img: "textures/ui/water_breathing_effect"
+  invisibility:
+    enable: true
+    button: "§7Invisibility\n§8» %status%"
+    perms: invisibility
+    price: 10000
+    msg: "Invisibility"
+    img: "textures/ui/invisibility_effect"
