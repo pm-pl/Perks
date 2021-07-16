@@ -68,7 +68,7 @@ class PerkForm
             }
         }
         if ($config->getNested("message.friends.enable") == true and $config->getNested("command.economy-api") == true) {
-            if ($config->getNested("message.friends.button-img") !== false and strpos($config->getNested("message.friends.button-img"), "textures/") !== false) { $picture = 0; } else { $picture = 1; }
+            if ($config->getNested("message.friends.button-img") !== false and strpos($config->getNested("message.friends.button-img"), "textures/") !== false) { $picturef = 0; } else { $picturef = 1; }
             $form->addButton($config->getNested("message.friends.button"), $picturef, $config->getNested("message.friends.button-img"), "friend");
         }
         foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility"] as $name) {
