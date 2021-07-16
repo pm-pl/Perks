@@ -121,9 +121,12 @@ class API
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $effect = $this->getPerkEffect($player, $check, "normal");
-        if ($players->get($check) == true and !$player->hasEffect($effect)) {
-            $players->set($check, false);
-            $players->save();
+        $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly"];
+        if ($players->get($check) == true and $effect !== null) {
+            if (!$player->hasEffect($effect) and !in_array($check, $block)) {
+                $players->set($check, false);
+                $players->save();
+            }
         }
         if ($config->getNested("command.economy-api") == true) {
             if ($players->get("$check-buy") == true) {

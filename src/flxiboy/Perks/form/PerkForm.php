@@ -68,23 +68,17 @@ class PerkForm
             }
         }
         if ($config->getNested("message.friends.enable") == true and $config->getNested("command.economy-api") == true) {
-            if ($config->getNested("message.friends.button-img") !== false and strpos($config->getNested("message.friends.button-img"), "textures/") !== false) {
-                $picturef = 0;
-            } else {
-                $picturef = 1;
-            }
+            if ($config->getNested("message.friends.button-img") !== false and strpos($config->getNested("message.friends.button-img"), "textures/") !== false) { $picture = 0; } else { $picture = 1; }
             $form->addButton($config->getNested("message.friends.button"), $picturef, $config->getNested("message.friends.button-img"), "friend");
         }
         foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility"] as $name) {
-            if ($config->getNested("perk.$name.enable") == true) {
-                if ($config->getNested("perk.$name.img") !== false and strpos($config->getNested("perk.$name.img"), "textures/") !== false) {
-                    $picture = 0;
-                } else {
-                    $picture = 1;
+            foreach ($config->getNested("perk.order") as $enable) {
+                if ($enable == $name) {
+                    if ($config->getNested("perk.$name.img") !== false and strpos($config->getNested("perk.$name.img"), "textures/") !== false) { $picture = 0; } else { $picture = 1; }
+                    $perk = $config->getNested("perk.$name.button");
+                    $perk = str_replace("%status%", $checkStatus->getStatus($player, $name), $perk);
+                    $form->addButton($perk, $picture, $config->getNested("perk.$name.img"), $name);
                 }
-                $perk = $config->getNested("perk.$name.button");
-                $perk = str_replace("%status%", $checkStatus->getStatus($player, $name), $perk);
-                $form->addButton($perk, $picture, $config->getNested("perk.$name.img"), $name);
             }
         }
         $form->sendToPlayer($player);
@@ -98,6 +92,7 @@ class PerkForm
 	 */
     public function getPerkSwitch(Player $player, string $check, string $effect)
     {
+        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
         $api = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
         $form = $api->createCustomForm(function (Player $player, $data = null) { 
@@ -134,7 +129,12 @@ class PerkForm
             return true;
         });
         $form->setTitle($config->getNested("message.strength.title"));
-        $form->addStepSlider($config->getNested("message.strength.text"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
+        if ($player->hasEffect($effect)) {
+            $form->addStepSlider($config->getNested("message.strength.text"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
+        } else {
+            $players->set($check, false);
+            $players->save();
+        }
         $form->sendToPlayer($player);
         return $form;
     }
@@ -177,8 +177,8 @@ class PerkForm
         $form->setTitle($config->getNested("message.friends.title"));
         $form->addInput($config->getNested("message.friends.text"), $config->getNested("message.friends.user"));
         $form->addDropdown($config->getNested("message.friends.perks"), [$config->getNested("perk.speed.msg"), $config->getNested("perk.jump.msg"), $config->getNested("perk.haste.msg"), $config->getNested("perk.night-vision.msg"), 
-        $config->getNested("perk.no-hunger.msg"), $config->getNested("perk.no-falldamage.msg"), $config->getNested("perk.fast-regeneration.msg"), $config->getNested("perk.keep-inventory.msg"), $config->getNested("perk.dopple-xp.msg"), 
-        $config->getNested("perk.strength.msg"), $config->getNested("perk.no-firedamage.msg"), $config->getNested("perk.fly.msg"), $config->getNested("perk.water-breathing.msg"), $config->getNested("perk.invisibility.msg")]);
+            $config->getNested("perk.no-hunger.msg"), $config->getNested("perk.no-falldamage.msg"), $config->getNested("perk.fast-regeneration.msg"), $config->getNested("perk.keep-inventory.msg"), $config->getNested("perk.dopple-xp.msg"), 
+            $config->getNested("perk.strength.msg"), $config->getNested("perk.no-firedamage.msg"), $config->getNested("perk.fly.msg"), $config->getNested("perk.water-breathing.msg"), $config->getNested("perk.invisibility.msg")]);
         $form->sendToPlayer($player);
         return $form;
     }
