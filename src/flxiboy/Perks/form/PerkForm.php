@@ -151,22 +151,22 @@ class PerkForm
             if ($data === null) {
                 return; 
             }
-            if ($data[1] == 0) { $perk = "speed";
-            } elseif ($data[1] == 1) { $perk = "jump";
-            } elseif ($data[1] == 2) { $perk = "haste";
-            } elseif ($data[1] == 3) { $perk = "night-vision";
-            } elseif ($data[1] == 4) { $perk = "no-hunger";
-            } elseif ($data[1] == 5) { $perk = "no-falldamage";
-            } elseif ($data[1] == 6) { $perk = "fast-regeneration";
-            } elseif ($data[1] == 7) { $perk = "keep-inventory";
-            } elseif ($data[1] == 8) { $perk = "dopple-xp";
-            } elseif ($data[1] == 9) { $perk = "strength";
-            } elseif ($data[1] == 10) { $perk = "no-firedamage";
-            } elseif ($data[1] == 11) { $perk = "fly";
-            } elseif ($data[1] == 12) { $perk = "water-breathing";
-            } elseif ($data[1] == 13) { $perk = "invisibility"; }
+            if ($data[1] == 0) { $perk = $config->getNested("perk.speed.msg");
+            } elseif ($data[1] == 1) { $perk = $config->getNested("perk.jump.msg");
+            } elseif ($data[1] == 2) { $perk = $config->getNested("perk.haste.msg");
+            } elseif ($data[1] == 3) { $perk = $config->getNested("perk.night-vision.msg");
+            } elseif ($data[1] == 4) { $perk = $config->getNested("perk.no-hunger.msg");
+            } elseif ($data[1] == 5) { $perk = $config->getNested("perk.no-falldamage.msg");
+            } elseif ($data[1] == 6) { $perk = $config->getNested("perk.fast-regeneration.msg");
+            } elseif ($data[1] == 7) { $perk = $config->getNested("perk.keep-inventory.msg");
+            } elseif ($data[1] == 8) { $perk = $config->getNested("perk.dopple-xp.msg");
+            } elseif ($data[1] == 9) { $perk = $config->getNested("perk.strength.msg");
+            } elseif ($data[1] == 10) { $perk = $config->getNested("perk.no-firedamage.msg");
+            } elseif ($data[1] == 11) { $perk = $config->getNested("perk.fly.msg");
+            } elseif ($data[1] == 12) { $perk = $config->getNested("perk.water-breathing.msg");
+            } elseif ($data[1] == 13) { $perk = $config->getNested("perk.invisibility.msg"); }
             
-            if (!file_exists($this->plugin->getDataFolder() . "players/" . $data[0] . ".yml") and $data[0] == null) {
+            if (!file_exists($this->plugin->getDataFolder() . "players/" . $data[0] . ".yml") or $data[0] == null) {
                 $msg = $config->getNested("message.friends.target-notfound");
                 $msg = str_replace("%target%", $data[0], $msg);
                 $player->sendMessage($config->getNested("message.prefix") . $msg);

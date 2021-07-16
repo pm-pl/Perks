@@ -68,7 +68,7 @@ message:
     confirm-no: "§4No"
     confirm-no-img: "textures/ui/redX1"
     target-notfound: "§cThe Player §a%target% §cwas not found."
-    success: "§aYou bought the perk §c%perk% §afor the player §c%player%§a."
+    success: "§aYou bought the perk §c%perk% §afor the player §c%target%§a."
     target-success: "§aThe player §c%player% §agave you the perk §c%perk%§a."
 
 perk:
@@ -173,7 +173,7 @@ perk:
     img: "textures/ui/water_breathing_effect"
   invisibility:
     button: "§7Invisibility\n§8» %status%"
-    perms: invisibility
+    perms: perk.invisibility
     price: 10000
     msg: "Invisibility"
     img: "textures/ui/invisibility_effect"
