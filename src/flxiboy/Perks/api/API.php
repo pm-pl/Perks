@@ -229,7 +229,7 @@ class API
             $messages = new Config($this->plugin->getDataFolder() . "lang/" . $config->get("language") . ".yml", Config::YAML);
             $msg = $messages->get($message);
         } else {
-            $msg = "§cThis language was not found. please change the language!!";
+            $msg = "§cThis language was not found. please change the language!";
         }
         return $msg;
     }

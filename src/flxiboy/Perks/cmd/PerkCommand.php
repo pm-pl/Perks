@@ -50,7 +50,7 @@ class PerkCommand extends PluginCommand
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
 
         if (!$player instanceof Player) {
-            $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "no-ingame"));
+            $player->sendMessage("§cPlease go InGame for this command.");
             return;
         }
 
