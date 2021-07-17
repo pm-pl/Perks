@@ -21,20 +21,34 @@ command:
     perms: perk.reload
   # if false, then this does not apply. if you write something, then the command goes.
   permission: false
+
+settings:
   # If this is true, you can only buy with the price. If this is false, it goes to Permissions.
   economy-api: false
-   # if this is true and 'economy-api' is also true, then you can give friends perks.
+  # if this is true and 'economy-api' is also true, then you can give friends perks.
   friends:
     enable: false
     menu-img: "textures/ui/Friend2"
     yes-img: "textures/ui/confirm"
     no-img: "textures/ui/redX1"
+  double-jump:
+    # This sets the strength of the double jump.
+    strength: 2
+    # if this is true, then the player does not take any fall damage
+    falldamage: true
+  auto-smelting:
+    # if this is true then the items will be melted.
+    enable: true
+    # this is what makes the price of smelting
+    price: 150
 
+# perks
 perk:
-    # perms => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
-    # price => will only go if you have 'economy-api' to true. This sets the price of the perk.
-    # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
-    # order => so you can decide the order of the perks. If you don't have the perk inside, it won't show up either. list: "speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility"
+  # perms => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
+  # price => will only go if you have 'economy-api' to true. This sets the price of the perk.
+  # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
+  # order => so you can decide the order of the perks. If you don't have the perk inside, it won't show up either. 
+  # order list: "speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"
   perms:
     # if this true, then only the perks are shown, as you also have hats or the permission, the perks should go with permission.
     enable: false
@@ -53,6 +67,9 @@ perk:
     - "fly"
     - "water-breathing"
     - "invisibility"
+    - "keep-xp"
+    - "double-jump"
+    - "auto-smelting"
   speed:
     perms: perk.speed
     price: 10000
@@ -109,3 +126,15 @@ perk:
     perms: perk.invisibility
     price: 10000
     img: "textures/ui/invisibility_effect"
+  keep-xp:
+    perms: perk.keep-xp
+    price: 10000
+    img: "textures/ui/dust_selectable_1"
+  double-jump:
+    perms: perk.double-xp
+    price: 10000
+    img: "textures/items/iron_boots"
+  auto-smelting:
+    perms: perk.auto-smelting
+    price: 10000
+    img: "textures/blocks/furnace_front_on"

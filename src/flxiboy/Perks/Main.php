@@ -17,10 +17,6 @@ class Main extends PluginBase
     /**
      * @var array
      */
-    public $playernewperk = [];
-    /**
-     * @var array
-     */
     public $playernewperkname = [];
     
     /**
@@ -29,10 +25,7 @@ class Main extends PluginBase
     public function onEnable()
     {
         @mkdir($this->getDataFolder() . "players/");
-        $this->saveResource("config.yml");
-        $this->saveResource("lang/english.yml");
-        $this->saveResource("lang/german.yml");
-        $this->saveResource("lang/russian.yml");
+        $this->loadFiles();
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         if (!file_exists($this->getDataFolder() . "lang/" . $config->get("language") . ".yml")) {
             $this->getLogger()->warning("§cThis language was not found. This Plugin was disable.");
@@ -41,5 +34,13 @@ class Main extends PluginBase
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
             $this->getServer()->getCommandMap()->register("Perks", new PerkCommand($this));
         }
+    }
+
+    public function loadFiles() 
+    {
+        $this->saveResource("config.yml");
+        $this->saveResource("lang/english.yml");
+        $this->saveResource("lang/german.yml");
+        $this->saveResource("lang/russian.yml");
     }
 }

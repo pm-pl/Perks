@@ -39,14 +39,15 @@ class API
 	 */
     public function getCheckPerk(Player $player, string $check) 
     {
+        $playernewperk = [];
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $effect = $this->getPerkEffect($player, $check, "normal");
-        $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly"];
-        if ($config->getNested("command.economy-api") == true) {
+        $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly", "keep-xp", "double-jump", "auto-smelting"];
+        if ($config->getNested("settings.economy-api") == true) {
             $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
             if ($players->get("$check-buy") == true) {
-                $this->plugin->playernewperk[] = $player->getName();
+                $playernewperk[] = $player->getName();
             } else {
                 if ($eco->myMoney($player) >= $config->getNested("perk.$check.price")) {
                     $players->set("$check", false);
@@ -65,20 +66,20 @@ class API
         } else {
             if ($config->getNested("perk.$check.perms") !== false) {
                 if ($players->get("$check-buy") == true) {
-                        $this->plugin->playernewperk[] = $player->getName();
+                        $playernewperk[] = $player->getName();
                 } else {
                     if ($player->hasPermission($config->getNested("perk.$check.perms"))) {
-                        $this->plugin->playernewperk[] = $player->getName();
+                        $playernewperk[] = $player->getName();
                     } else {
                         $player->sendMessage($this->getLanguage($player, "prefix") . $this->getLanguage($player, "no-perms"));
                     }
                 }
             } else {
-                $this->plugin->playernewperk[] = $player->getName();
+                $playernewperk[] = $player->getName();
             }
         }
-        if (in_array($player->getName(), $this->plugin->playernewperk)) {
-            unset($this->plugin->playernewperk[array_search($player->getName(), $this->plugin->playernewperk)]);
+        if (in_array($player->getName(), $playernewperk)) {
+            unset($playernewperk[array_search($player->getName(), $playernewperk)]);
             if ($players->get($check) == true) {
                 if (in_array($check, $block)) {
                     $players->set($check, false);
@@ -120,14 +121,14 @@ class API
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $effect = $this->getPerkEffect($player, $check, "normal");
-        $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly"];
+        $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly", "keep-xp", "double-jump", "auto-smelting"];
         if ($players->get($check) == true and $effect !== null) {
             if (!$player->hasEffect($effect) and !in_array($check, $block)) {
                 $players->set($check, false);
                 $players->save();
             }
         }
-        if ($config->getNested("command.economy-api") == true) {
+        if ($config->getNested("settings.economy-api") == true) {
             if ($players->get("$check-buy") == true) {
                 if ($players->get($check) == true) {
                     $speedcheck = $this->getLanguage($player, "enable-button");

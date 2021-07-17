@@ -62,10 +62,7 @@ class PerkCommand extends PluginCommand
         if (isset($args[0])) {
             if ($player->hasPermission($config->getNested("command.reload.perms"))) {
                 if ($args[0] == $api->getLanguage($player, "reload-cmd")) {
-                    $this->plugin->saveResource("config.yml");
-                    $this->plugin->saveResource("lang/english.yml");
-                    $this->plugin->saveResource("lang/german.yml");
-                    $this->plugin->saveResource("lang/russian.yml");
+                    $this->plugin->loadFiles();
                     $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "reload-success"));
                 } else {
                     $player->sendMessage($api->getLanguage($player, "prefix") . $config->getNested("command.reload.usage"));

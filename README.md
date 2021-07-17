@@ -1,4 +1,4 @@
-# Perks System v3.4-BETA
+# Perks System v3.5
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
@@ -21,26 +21,31 @@ You can all funktion edit in **config.yml**
 - [X] Perks order
 - [X] Language support
 
-### Perks list [14]
-- [X] Speed
-- [X] Jump boost
-- [X] Haste
-- [X] Night vision
-- [X] No Hunger
-- [X] No Falldamage
-- [X] Fast Regeneration
-- [X] Keep Inventory
+### Perks list [17]
+- [X] Auto smelting
 - [X] Dopple XP
-- [X] Strength
-- [X] No Firedamage
+- [X] Double Jump
+- [X] Fast Regeneration
 - [X] Fly
-- [X] Water breathing
+- [X] Haste
 - [X] Invisibility
+- [X] Jump boost
+- [X] Keep Inventory
+- [X] Keep XP
+- [X] Night vision
+- [X] No Falldamage
+- [X] No Firedamage
+- [X] No Hunger
+- [X] Strength
+- [X] Speed
+- [X] Water breathing
 
 ### Todo to next Update
-- [ ] More Perks
 - [ ] Perks categories
-- [ ] GUI/Commands Support
+- [ ] Active perks at the top
+- [ ] Hide perks when he has them (Giving perks to friends)
+- [ ] Perk enable time, certain time until deactivate
+- [ ] GUI Support
 - [ ] Fix Bugs
 - [ ] And more...
 
