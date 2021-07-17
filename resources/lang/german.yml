@@ -1,0 +1,92 @@
+################
+# Language German
+# Sprache Deutsch
+################
+
+# bedeutungen
+# %player% => ist dein ingame name
+# %money% => ist dein ingame geld
+# %moneyp% => ist der preis vom perk
+# %need-money% => ist das, was dir an geld fehlt
+# %perk% => ist der Perk name
+# %strength% => ist die neue stärke die du auswählst
+# %target% => ist der benutzername, den du angibst
+# %status% => ist der status vom perk also aktiv oder nicht aktiv
+
+# different
+prefix: "§dPerks §8» "
+no-ingame: "§cBitte gehe hierzu InGame."
+no-perms: "§cDu hast dafür keine Rechte."
+
+# command
+reload-cmd: "reload"
+reload-success: "§aDas Plugin wurde erfolgreich gespeichert."
+
+# economyapi
+no-money-economyapi: "§cDu hast nicht genügend geld, dir fehlen noch §e%need-money%€§c."
+buy-economyapi: "§aDu hast dir das Perk §e%perk% §afür §c%moneyp%€ §agekauft."
+
+# buttons
+no-perms-button: "§4Gesperrt"
+enable-button: "§aAktiviert"
+disable-button: "§cDeaktiviert"
+buy-button: "§5Kaufen §8[%moneyp%€]"
+
+# message
+enable-perk: "§aDu hast das Perk §e%perk% §aaktiviert!"
+disable-perk: "§cDu hast das Perk §e%perk% §cdeaktiviert!"
+
+# ui
+title-ui: "§dPerks"
+text-ui: "§aWähle ein Perk:"
+text-money-ui: "§aDein Geld: §c%money%€\n§aWähle ein Perk:"
+
+# perks strength
+title-strength: "§dPerk Stärke"
+text-strength: "§aHier kannst du die Stärke des Perks ändern.\n§cWenn du 0 wählst, wird das Perk deaktiviert.\n§aDeine Stärke"
+new-strength: "§aDie Stärke deines Perkes §e%perk% §awurde auf Stärke §c%strength% §ageändert."
+
+# friends
+button-friends: "§2Gebe jemand ein Perk"
+title-friends: "§2Perk schenken"
+text-friends: "§aDu kannst einem Freund oder jemand anders ein Perk schenken"
+user-friends: "§7Benutzername hier..."
+perks-friends: "§aWähle ein Perk:"
+confirm-text-friends: "§cWillst du wirklich dem User §a%target% §cdas Perk §e%perk% §cfür §c%moneyp%€ §ckaufen? Dies kann nicht zurück gemacht werden!"
+confirm-yes-friends: "§2Ja"
+confirm-no-friends: "§4Nein"
+not-yourself-friends: "§cDu kannst dir selber keine Perks schenken!"
+target-notfound-friends: "§cDer Spieler §a%target% §cwurde nicht gefunden."
+perk-buyed-friends: "§cDer Spieler §a%target% §chat bereits dieses Perk."
+success-friends: "§aDu hast das Perk §e%perk% §afür den Spieler §c%target% §agekauft."
+target-success-friends: "§aDer Spieler §c%player% §ahat dir das Perk §e%perk% §agekauft."
+
+# perks
+speed: "§1Schneller laufen\n§8» %status%"
+speed-msg: "Schneller laufen"
+jump: "§2Höher springen\n§8» %status%"
+jump-msg: "Höher springen"
+haste: "§3Schneller abbauen\n§8» %status%"
+haste-msg: "Schneller abbauen"
+night-vision: "§4Nachtsicht\n§8» %status%"
+night-vision-msg: "Nachtsicht"
+no-hunger: "§5Kein Hunger\n§8» %status%"
+no-hunger-msg: "Kein Hunger"
+no-falldamage: "§6Kein Fallschaden\n§8» %status%"
+no-falldamage-msg: "Kein Fallschaden"
+fast-regeneration: "§cSchnelles heilen\n§8» %status%"
+fast-regeneration-msg: "Schnelles heilen"
+keep-inventory: "§8Inventar behalten\n§8» %status%"
+keep-inventory-msg: "Inventar behalten"
+dopple-xp: "§9Doppel XP\n§8» %status%"
+dopple-xp-msg: "Doppel XP"
+strength: "§bStärke\n§8» %status%"
+strength-msg: "Stärke"
+no-firedamage: "§eKein Feuerschaden\n§8» %status%"
+no-firedamage-msg: "kein Feuerschaden"
+fly: "§aFliegen\n§8» %status%"
+fly-msg: "Fliegen"
+water-breathing: "§9Unterwasser atmung\n§8» %status%"
+water-breathing-msg: "Unterwasser atmung"
+invisibility: "§7Unsichtbar\n§8» %status%"
+invisibility-msg: "Unsichtbar"

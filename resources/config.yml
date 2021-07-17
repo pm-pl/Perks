@@ -6,8 +6,9 @@
 ######################
 ######################
 
-# Tip: If the plugin does not work after you have downloaded a new version, I recommend that you delete this file here in order to be up to date.
-#        However, if you have made messages, save this somewhere else for a short time.
+# language list: english, german, russian
+# more languages? please open a issues on github for a new language.
+language: english
 
 # command, edit the perks command
 command:
@@ -15,69 +16,28 @@ command:
   desc: "Open the Perk UI"
   usage: "§cUsage: /perk"
   aliases: "perks"
-  # if false, then this does not apply.
+  reload:
+    usage: "§cUsage: /perk <reload>"
+    perms: perk.reload
+  # if false, then this does not apply. if you write something, then the command goes.
   permission: false
   # If this is true, you can only buy with the price. If this is false, it goes to Permissions.
   economy-api: false
-
-# message, edit the perks messages
-message:
-  # %perk% => is the perk name
-  # %money% => is the perk price
-  # %need-money% => This shows how much money someone still needs.
-  prefix: "§dPerks §8» "
-  no-ingame: "§cPlease go to InGame."
-  no-perms: "§cYou don't have any permission."
-  no-money: "§cYou don't have enough money, you are still missing §a$%need-money%§c."
-  buy: "§aYou bought the §e%perk% §a​​Perk for §c$%money%§a."
-  mode:
-    enable: "§aYou have activated the §e%perk% ​​§aPerk."
-    disable: "§cYou have disabled the §e%perk% ​​§cPerk."
-  button:
-    no-perms: "§4Blocked"
-    disable: "§cDisable"
-    enable: "§aEnable"
-    buy: "§5Buy §8[$%money%]"
-  ui:
-    title: "§dPerks"
-    text: "§aSelect a Perk:"
-    # if "economy-api" is true, this is indicated, false is disable for this feature.
-    text-money: "§aYour Money: §c$%money%\n§aSelect a Perk:"
-  strength:
-    # %strength% => is the new perk strength
-    title: "§dPerk strength"
-    text: "§aPlease change your Perk strength.\n§cIf you choose 0, the perk will be deactivated.\n§aYour strength"
-    new-strength: "§aThe strength of your perk §c%perk% §ahas been updated to §c%strength%§a."
+   # if this is true and 'economy-api' is also true, then you can give friends perks.
   friends:
-    # %perk% => is the perk name
-    # %money% => is the perk price
-    # %target% => is the username
-    # %player% => is your name
-    # if "economy-api" is true, this is indicated.
     enable: false
-    button: "§2Give someone perks."
-    # false is disable the picture
-    button-img: "textures/ui/Friend2"
-    title: "§2Perk friends"
-    text: "§aYou can give your friend or a random user a perk here."
-    user: "§7Username here..."
-    perks: "§aSelcet a Perk:"
-    confirm-text: "§cDo you really want to give the user §a%target% §cthe perk §a%perk% §cfor §a$%money%§c? This cannot be reversed."
-    confirm-yes: "§2Yes"
-    confirm-yes-img: "textures/ui/confirm"
-    confirm-no: "§4No"
-    confirm-no-img: "textures/ui/redX1"
-    target-notfound: "§cThe Player §a%target% §cwas not found."
-    success: "§aYou bought the perk §c%perk% §afor the player §c%target%§a."
-    target-success: "§aThe player §c%player% §agave you the perk §c%perk%§a."
+    menu-img: "textures/ui/Friend2"
+    yes-img: "textures/ui/confirm"
+    no-img: "textures/ui/redX1"
 
 perk:
-    # %status% => this will show your current status
-    # permissions => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
-    # enable => is there to activate or deactivate the perks.
+    # perms => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
     # price => will only go if you have 'economy-api' to true. This sets the price of the perk.
     # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
     # order => so you can decide the order of the perks. If you don't have the perk inside, it won't show up either. list: "speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility"
+  perms:
+    # if this true, then only the perks are shown, as you also have hats or the permission, the perks should go with permission.
+    enable: false
   order:
     - "speed"
     - "jump"
@@ -94,86 +54,58 @@ perk:
     - "water-breathing"
     - "invisibility"
   speed:
-    button: "§1Speed\n§8» %status%"
     perms: perk.speed
     price: 10000
-    msg: "Speed"
     img: "textures/ui/speed_effect"
   jump:
-    button: "§2Jump\n§8» %status%"
     perms: perk.jump
     price: 10000
-    msg: "Jump"
     img: "textures/ui/jump_boost_effect"
   haste:
-    button: "§3Haste\n§8» %status%"
     perms: perk.haste
     price: 10000
-    msg: "Haste"
     img: "textures/ui/haste_effect"
   night-vision:
-    button: "§4Night Vision\n§8» %status%"
     perms: perk.night-vision
     price: 10000
-    msg: "Night Vision"
     img: "textures/items/potion_bottle_nightVision"
   no-hunger:
-    button: "§5No Hunger\n§8» %status%"
     perms: perk.no-hunger
     price: 10000
-    msg: "No Hunger"
     img: "textures/ui/hunger_full"
   no-falldamage:
-    button: "§6No Falldamage\n§8» %status%"
     perms: perk.no-falldamage
     price: 10000
-    msg: "No Falldamage"
     img: "textures/items/totem"
   fast-regeneration:
-    button: "§7Fast Regeneration\n§8» %status%"
     perms: perk.fast-regeneration
     price: 10000
-    msg: "Fast Regeneration"
     img: "textures/ui/regeneration_effect"
   keep-inventory:
-    button: "§8Keep Inventory\n§8» %status%"
     perms: perk.keep-inventory
     price: 10000
-    msg: "Keep Inventory"
     img: "textures/blocks/chest_front"
   dopple-xp:
-    button: "§9Dopple XP\n§8» %status%"
     perms: perk.dopple-xp
     price: 10000
-    msg: "Dopple XP"
     img: "textures/ui/dust_selectable_2"
   strength:
-    button: "§bStrength\n§8» %status%"
     perms: perk.stren
     price: 10000
-    msg: "Strength"
     img: "textures/ui/strength_effect"
   no-firedamage:
-    button: "§eNo Firedamage\n§8» %status%"
     perms: perk.no-firedamage
     price: 10000
-    msg: "No Firedamage"
     img: "textures/ui/fire_resistance_effect"
   fly:
-    button: "§aFly\n§8» %status%"
     perms: perk.fly
     price: 10000
-    msg: "Fly"
     img: "textures/items/feather"
   water-breathing:
-    button: "§9Water breathing\n§8» %status%"
     perms: perk.water-breathing
     price: 10000
-    msg: "Water breathing"
     img: "textures/ui/water_breathing_effect"
   invisibility:
-    button: "§7Invisibility\n§8» %status%"
     perms: perk.invisibility
     price: 10000
-    msg: "Invisibility"
     img: "textures/ui/invisibility_effect"

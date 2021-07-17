@@ -1,0 +1,91 @@
+################
+# Language English
+################
+
+# meanings
+# %player% => is your ingame name
+# %money% => is your ingame money
+# %moneyp% => is the price of the perk
+# %need-money% => is the lack of money when buying a perk
+# %perk% => is the perk name
+# %strength% => is the new strength of the perk
+# %target% => is the username you entered
+# %status% => is the status of the perk active or inactive
+
+# different
+prefix: "§dPerks §8» "
+no-ingame: "§cPlease go to InGame."
+no-perms: "§cYou don't have any permission."
+
+# command
+reload-cmd: "reload"
+reload-success: "§aThe Plugin was succesfully saved."
+
+# economyapi
+no-money-economyapi: "§cYou don't have enough money, you are still missing §a$%need-money%§c."
+buy-economyapi: "§aYou bought the §e%perk% §a​​Perk for §c$%moneyp%§a."
+
+# buttons
+no-perms-button: "§4Blocked"
+enable-button: "§aEnable"
+disable-button: "§cDisable"
+buy-button: "§5Buy §8[$%moneyp%]"
+
+# message
+enable-perk: "§aYou have activated the §e%perk% ​​§aPerk."
+disable-perk: "§cYou have disabled the §e%perk% ​​§cPerk."
+
+# ui
+title-ui: "§dPerks"
+text-ui: "§aSelect a Perk:"
+text-money-ui: "§aYour Money: §c$%money%\n§aSelect a Perk:"
+
+# perks strength
+title-strength: "§dPerk strength"
+text-strength: "§aPlease change your Perk strength.\n§cIf you choose 0, the perk will be deactivated.\n§aYour strength"
+new-strength: "§aThe strength of your perk §c%perk% §ahas been updated to §c%strength%§a."
+
+# friends
+button-friends: "§2Give someone perks."
+title-friends: "§2Perk friends"
+text-friends: "§aYou can give your friend or a random user a perk here."
+user-friends: "§7Username here..."
+perks-friends: "§aSelcet a Perk:"
+confirm-text-friends: "§cDo you really want to give the user §a%target% §cthe perk §a%perk% §cfor §a$%moneyp%§c? This cannot be reversed."
+confirm-yes-friends: "§2Yes"
+confirm-no-friends: "§4No"
+not-yourself-friends: "§cYou can't give yourself perks!"
+target-notfound-friends: "§cThe Player §a%target% §cwas not found."
+perk-buyed-friends: "§cThe Player §e%target% §calready has this perk."
+success-friends: "§aYou bought the perk §c%perk% §afor the player §c%target%§a."
+target-success-friends: "§aThe player §c%player% §agave you the perk §c%perk%§a."
+
+# perks
+speed: "§1Speed\n§8» %status%"
+speed-msg: "Speed"
+jump: "§2Jump\n§8» %status%"
+jump-msg: "Jump"
+haste: "§3Haste\n§8» %status%"
+haste-msg: "Haste"
+night-vision: "§4Night Vision\n§8» %status%"
+night-vision-msg: "Night Vision"
+no-hunger: "§5No Hunger\n§8» %status%"
+no-hunger-msg: "No Hunger"
+no-falldamage: "§6No Falldamage\n§8» %status%"
+no-falldamage-msg: "No Falldamage"
+fast-regeneration: "§cFast Regeneration\n§8» %status%"
+fast-regeneration-msg: "Fast Regeneration"
+keep-inventory: "§8Keep Inventory\n§8» %status%"
+keep-inventory-msg: "Keep Inventory"
+dopple-xp: "§9Dopple XP\n§8» %status%"
+dopple-xp-msg: "Dopple XP"
+strength: "§bStrength\n§8» %status%"
+strength-msg: "Strength"
+no-firedamage: "§eNo Firedamage\n§8» %status%"
+no-firedamage-msg: "No Firedamage"
+fly: "§aFly\n§8» %status%"
+fly-msg: "Fly"
+water-breathing: "§9Water breathing\n§8» %status%"
+water-breathing-msg: "Water breathing"
+invisibility: "§7Invisibility\n§8» %status%"
+invisibility-msg: "Invisibility"

@@ -42,42 +42,50 @@ class PerkForm
     public function getPerks(Player $player) 
     {
         $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+        $api = new API($this->plugin, $player);
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $api = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-        $form = $api->createSimpleForm(function (Player $player, $data = null) { 
+        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $apif = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+        $form = $apif->createSimpleForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
-            if ($data !== "friend") {
+            if ($data == "friend") {
+                $this->getPerkFriend($player);
+            } else {
                 $checkPerk = new API($this->plugin, $player);
                 $checkPerk->getCheckPerk($player, $data);
-            } else {
-                $this->getPerkFriend($player);
             }
             return true;
         });
-        $checkStatus = new API($this->plugin, $player);
-        $form->setTitle($config->getNested("message.ui.title"));
-        if ($config->getNested("message.ui.text-money") !== false) {
-            if ($config->getNested("command.economy-api") == true) {
-                $msg = $config->getNested("message.ui.text-money");
-                $msg = str_replace("%money%", $eco->myMoney($player), $msg);
-                $form->setContent($msg);
+        $form->setTitle($api->getLanguage($player, "title-ui"));
+        if ($config->getNested("command.economy-api") == true) {
+            $msg = $api->getLanguage($player, "text-money-ui");
+            $msg = str_replace("%money%", $eco->myMoney($player), $msg);
+            $form->setContent($msg);
+        } else {
+            $form->setContent($api->getLanguage($player, "text-ui"));
+        }
+        if ($config->getNested("command.friends.enable") == true and $config->getNested("command.economy-api") == true) {
+            if ($config->getNested("command.friends.menu-img") !== false and strpos($config->getNested("command.friends.menu-img"), "textures/") !== false) { $picturef = 0; } else { $picturef = 1; }
+            $form->addButton($api->getLanguage($player, "button-friends"), $picturef, $config->getNested("command.friends.menu-img"), "friend");
+        }
+        foreach ($config->getNested("perk.order") as $enable) {
+            $msg = $api->getLanguage($player, $enable);
+            $msg = str_replace("%status%", $api->getStatus($player, $enable), $msg);
+            if ($config->getNested("perk.perms.enable") == true) {
+                if ($players->get($enable . "-buy") == true) {
+                    if ($config->getNested("perk.$enable.img") !== false and strpos($config->getNested("perk.$enable.img"), "textures/") !== false) {
+                        $form->addButton($msg, 0, $config->getNested("perk.$enable.img"), $enable);
+                    } else { 
+                        $form->addButton($msg, 1, $config->getNested("perk.$enable.img"), $enable);
+                    }
+                }
             } else {
-                $form->setContent($config->getNested("message.ui.text"));
-            }
-        }
-        if ($config->getNested("message.friends.enable") == true and $config->getNested("command.economy-api") == true) {
-            if ($config->getNested("message.friends.button-img") !== false and strpos($config->getNested("message.friends.button-img"), "textures/") !== false) { $picturef = 0; } else { $picturef = 1; }
-            $form->addButton($config->getNested("message.friends.button"), $picturef, $config->getNested("message.friends.button-img"), "friend");
-        }
-        foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility"] as $name) {
-            foreach ($config->getNested("perk.order") as $enable) {
-                if ($enable == $name) {
-                    if ($config->getNested("perk.$name.img") !== false and strpos($config->getNested("perk.$name.img"), "textures/") !== false) { $picture = 0; } else { $picture = 1; }
-                    $perk = $config->getNested("perk.$name.button");
-                    $perk = str_replace("%status%", $checkStatus->getStatus($player, $name), $perk);
-                    $form->addButton($perk, $picture, $config->getNested("perk.$name.img"), $name);
+                if ($config->getNested("perk.$enable.img") !== false and strpos($config->getNested("perk.$enable.img"), "textures/") !== false) {
+                    $form->addButton($msg, 0, $config->getNested("perk.$enable.img"), $enable);
+                } else { 
+                    $form->addButton($msg, 1, $config->getNested("perk.$enable.img"), $enable);
                 }
             }
         }
@@ -92,45 +100,46 @@ class PerkForm
 	 */
     public function getPerkSwitch(Player $player, string $check, string $effect)
     {
+        $api = new API($this->plugin, $player);
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $api = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-        $form = $api->createCustomForm(function (Player $player, $data = null) { 
+        $apif = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+        $form = $apif->createCustomForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
+            $api = new API($this->plugin, $player);
             if (isset($this->plugin->playernewperkname[$player->getName()])) {
-                $api = new API($this->plugin, $player);
                 $check = $this->plugin->playernewperkname[$player->getName()];
                 $effect = $api->getPerkEffect($player, $this->plugin->playernewperkname[$player->getName()], "main");
             }
-            $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
             $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-            if ($data[0] == 0) {
-                $players->set($check, false);
-                if ($effect !== null) {
-                    $player->removeEffect($effect);
+            if ($data[0] !== $player->getEffect($effect)->getEffectLevel()) {
+                if ($data[0] == 0) {
+                    $players->set($check, false);
+                    if ($effect !== null) {
+                        $player->removeEffect($effect);
+                    }
+                    $msg = $api->getLanguage($player, "disable-perk");
+                    $msg = str_replace("%perk%", $api->getLanguage($player, "$check-msg"), $msg);
+                    $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                } else {
+                    if ($effect !== null) {
+                        $player->removeEffect($effect);
+                        $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, $data[0] - 1, false));
+                    }
+                    $msg = $api->getLanguage($player, "new-strength");
+                    $msg = str_replace("%perk%", $api->getLanguage($player, "$check-msg"), $msg);
+                    $msg = str_replace("%strength%", $data[0], $msg);
+                    $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
                 }
-                $msg = $config->getNested("message.mode.disable");
-                $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
-                $player->sendMessage($config->getNested("message.prefix") . $msg);
-            } else {
-                $msg = $config->getNested("message.strength.new-strength");
-                $msg = str_replace("%perk%", $config->getNested("perk.$check.msg"), $msg);
-                $msg = str_replace("%strength%", $data[0], $msg);
-                $player->sendMessage($config->getNested("message.prefix") . $msg);
-                if ($effect !== null) {
-                    $player->removeEffect($effect);
-                    $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, $data[0] - 1, false));
-                }
+                $players->save();
             }
-            $players->save();
             $this->plugin->playernewperkname[$player->getName()] = null;
             return true;
         });
-        $form->setTitle($config->getNested("message.strength.title"));
+        $form->setTitle($api->getLanguage($player, "title-strength"));
         if ($player->hasEffect($effect)) {
-            $form->addStepSlider($config->getNested("message.strength.text"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
+            $form->addStepSlider($api->getLanguage($player, "text-strength"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
         } else {
             $players->set($check, false);
             $players->save();
@@ -144,41 +153,53 @@ class PerkForm
 	 */
     public function getPerkFriend(Player $player) 
     {
+        $api = new API($this->plugin, $player);
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $api = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-        $form = $api->createCustomForm(function (Player $player, $data = null) { 
-            $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
+        $apif = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+        $form = $apif->createCustomForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
-            if ($data[1] == 0) { $perk = $config->getNested("perk.speed.msg");
-            } elseif ($data[1] == 1) { $perk = $config->getNested("perk.jump.msg");
-            } elseif ($data[1] == 2) { $perk = $config->getNested("perk.haste.msg");
-            } elseif ($data[1] == 3) { $perk = $config->getNested("perk.night-vision.msg");
-            } elseif ($data[1] == 4) { $perk = $config->getNested("perk.no-hunger.msg");
-            } elseif ($data[1] == 5) { $perk = $config->getNested("perk.no-falldamage.msg");
-            } elseif ($data[1] == 6) { $perk = $config->getNested("perk.fast-regeneration.msg");
-            } elseif ($data[1] == 7) { $perk = $config->getNested("perk.keep-inventory.msg");
-            } elseif ($data[1] == 8) { $perk = $config->getNested("perk.dopple-xp.msg");
-            } elseif ($data[1] == 9) { $perk = $config->getNested("perk.strength.msg");
-            } elseif ($data[1] == 10) { $perk = $config->getNested("perk.no-firedamage.msg");
-            } elseif ($data[1] == 11) { $perk = $config->getNested("perk.fly.msg");
-            } elseif ($data[1] == 12) { $perk = $config->getNested("perk.water-breathing.msg");
-            } elseif ($data[1] == 13) { $perk = $config->getNested("perk.invisibility.msg"); }
+            $api = new API($this->plugin, $player);
+            if ($data[1] == 0) { $perk = "speed";
+            } elseif ($data[1] == 1) { $perk = "jump";
+            } elseif ($data[1] == 2) { $perk = "haste";
+            } elseif ($data[1] == 3) { $perk = "night-vision";
+            } elseif ($data[1] == 4) { $perk = "no-hunger";
+            } elseif ($data[1] == 5) { $perk = "no-falldamage";
+            } elseif ($data[1] == 6) { $perk = "fast-regeneration";
+            } elseif ($data[1] == 7) { $perk = "keep-inventory";
+            } elseif ($data[1] == 8) { $perk = "dopple-xp";
+            } elseif ($data[1] == 9) { $perk = "strength";
+            } elseif ($data[1] == 10) { $perk = "no-firedamage";
+            } elseif ($data[1] == 11) { $perk = "fly";
+            } elseif ($data[1] == 12) { $perk = "water-breathing";
+            } elseif ($data[1] == 13) { $perk = "invisibility"; }
             
+            if ($data[0] == $player->getName()) {
+                $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "not-yourself-friends"));
+                return;
+            }
             if (!file_exists($this->plugin->getDataFolder() . "players/" . $data[0] . ".yml") or $data[0] == null) {
-                $msg = $config->getNested("message.friends.target-notfound");
+                $msg = $api->getLanguage($player, "target-notfound-friends");
                 $msg = str_replace("%target%", $data[0], $msg);
-                $player->sendMessage($config->getNested("message.prefix") . $msg);
+                $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                return;
+            }
+            $targetd = new Config($this->plugin->getDataFolder() . "players/" . $data[0] . ".yml", Config::YAML);
+            if ($targetd->get($perk) == true or $targetd->get($perk . "-buy") == true) {
+                $msg = $api->getLanguage($player, "perk-buyed-friends");
+                $msg = str_replace("%target%", $data[0], $msg);
+                $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
                 return;
             }
             $this->getPerkFriendConfim($player, $data[0], $perk);
         });
-        $form->setTitle($config->getNested("message.friends.title"));
-        $form->addInput($config->getNested("message.friends.text"), $config->getNested("message.friends.user"));
-        $form->addDropdown($config->getNested("message.friends.perks"), [$config->getNested("perk.speed.msg"), $config->getNested("perk.jump.msg"), $config->getNested("perk.haste.msg"), $config->getNested("perk.night-vision.msg"), 
-            $config->getNested("perk.no-hunger.msg"), $config->getNested("perk.no-falldamage.msg"), $config->getNested("perk.fast-regeneration.msg"), $config->getNested("perk.keep-inventory.msg"), $config->getNested("perk.dopple-xp.msg"), 
-            $config->getNested("perk.strength.msg"), $config->getNested("perk.no-firedamage.msg"), $config->getNested("perk.fly.msg"), $config->getNested("perk.water-breathing.msg"), $config->getNested("perk.invisibility.msg")]);
+        $form->setTitle($api->getLanguage($player, "title-friends"));
+        $form->addInput($api->getLanguage($player, "text-friends"), $api->getLanguage($player, "user-friends"));
+        $form->addDropdown($api->getLanguage($player, "perks-friends"), [$api->getLanguage($player, "speed-msg"), $api->getLanguage($player, "jump-msg"), $api->getLanguage($player, "haste-msg"), $api->getLanguage($player, "night-vision-msg"), 
+            $api->getLanguage($player, "no-hunger-msg"), $api->getLanguage($player, "no-falldamage-msg"), $api->getLanguage($player, "fast-regeneration-msg"), $api->getLanguage($player, "keep-inventory-msg"), $api->getLanguage($player, "dopple-xp-msg"), 
+            $api->getLanguage($player, "strength-msg"), $api->getLanguage($player, "no-firedamage-msg"), $api->getLanguage($player, "fly-msg"), $api->getLanguage($player, "water-breathing-msg"), $api->getLanguage($player, "invisibility-msg")]);
         $form->sendToPlayer($player);
         return $form;
     }
@@ -190,12 +211,14 @@ class PerkForm
 	 */
     public function getPerkFriendConfim(Player $player, string $target, string $perk) 
     {
+        $api = new API($this->plugin, $player);
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $api = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-        $form = $api->createSimpleForm(function (Player $player, $data = null) { 
+        $apif = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+        $form = $apif->createSimpleForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
+            $api = new API($this->plugin, $player);
             $data = explode(":", $data);
             if ($data[2] == true) {
                 $target = $this->plugin->getServer()->getPlayer($data[0]);
@@ -203,36 +226,36 @@ class PerkForm
                 $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
                 $targetd = new Config($this->plugin->getDataFolder() . "players/" . $data[0] . ".yml", Config::YAML);
                 if ($eco->myMoney($player) >= $config->getNested("perk." . $data[1] . ".price")) {
-                    $msg = $config->getNested("message.friends.success");
-                    $msg = str_replace("%target%", $data[0], $msg);
-                    $msg = str_replace("%perk%", $data[1], $msg);
-                    $player->sendMessage($config->getNested("message.prefix") . $msg);
+                    $msgp = $api->getLanguage($player, "success-friends");
+                    $msgp = str_replace("%target%", $data[0], $msgp);
+                    $msgp = str_replace("%perk%", $api->getLanguage($player, $data[1] . "-msg"), $msgp);
+                    $player->sendMessage($api->getLanguage($player, "prefix") . $msgp);
                     $eco->reduceMoney($player, $config->getNested("perk." . $data[1] . ".price"));
                     if ($target instanceof Player) {
-                        $msg = $config->getNested("message.friends.target-success");
-                        $msg = str_replace("%player%", $player->getName(), $msg);
-                        $msg = str_replace("%perk%", $data[1], $msg);
-                        $target->sendMessage($config->getNested("message.prefix") . $msg);   
+                        $msgt = $api->getLanguage($player, "target-success-friends");
+                        $msgt = str_replace("%player%", $player->getName(), $msgt);
+                        $msgt = str_replace("%perk%", $api->getLanguage($player, $data[1] . "-msg"), $msgt);
+                        $target->sendMessage($api->getLanguage($player, "prefix") . $msgt);   
                     }
                     $targetd->set($data[1] . "-buy", true);
-                    $targetd->save();
                 } else {
-                    $msg = $config->getNested("message.no-money");
+                    $msg = $api->getLanguage($player, "no-money-economyapi");
                     $msg = str_replace("%need-money%", $config->getNested("perk." . $data[1] . ".price") - $eco->myMoney($player), $msg);
-                    $player->sendMessage($config->getNested("message.prefix") . $msg);
+                    $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
                 }
+                $targetd->save();
             }
         });
-        $form->setTitle($config->getNested("message.friends.title"));
-        $content = $config->getNested("message.friends.confirm-text");
+        $form->setTitle($api->getLanguage($player, "title-friends"));
+        $content = $api->getLanguage($player, "confirm-text-friends");
         $content = str_replace("%target%", $target, $content);
-        $content = str_replace("%perk%", $config->getNested("perk.$perk.msg"), $content);
-        $content = str_replace("%money%", $config->getNested("perk.$perk.price"), $content);
+        $content = str_replace("%perk%", $api->getLanguage($player, "$perk-msg"), $content);
+        $content = str_replace("%moneyp%", $config->getNested("perk.$perk.price"), $content);
         $form->setContent($content);
-        if ($config->getNested("message.friends.confirm-yes-img") !== false and strpos($config->getNested("message.friends.confirm-yes-img"), "textures/") !== false) { $pictureyes = 0; } else { $pictureyes = 1; }
-        if ($config->getNested("message.friends.confirm-no-img") !== false and strpos($config->getNested("message.friends.confirm-no-img"), "textures/") !== false) { $pictureno = 0; } else { $pictureno = 1; }
-        $form->addButton($config->getNested("message.friends.confirm-yes"), $pictureyes, $config->getNested("message.friends.confirm-yes-img"), implode(":", [$target, $perk, true]));
-        $form->addButton($config->getNested("message.friends.confirm-no"), $pictureno, $config->getNested("message.friends.confirm-no-img"), implode(":", [$target, $perk, false]));
+        if ($config->getNested("command.friends.yes-img") !== false and strpos($config->getNested("command.friends.yes-img"), "textures/") !== false) { $pictureyes = 0; } else { $pictureyes = 1; }
+        if ($config->getNested("command.friends.no-img") !== false and strpos($config->getNested("command.friends.no-img"), "textures/") !== false) { $pictureno = 0; } else { $pictureno = 1; }
+        $form->addButton($api->getLanguage($player, "confirm-yes-friends"), $pictureyes, $config->getNested("command.friends.yes-img"), implode(":", [$target, $perk, true]));
+        $form->addButton($api->getLanguage($player, "confirm-no-friends"), $pictureno, $config->getNested("command.friends.no-img"), implode(":", [$target, $perk, false]));
         $form->sendToPlayer($player);
         return $form;
     }

@@ -1,0 +1,94 @@
+################
+# Language Russian
+# Язык русский
+################
+
+# Этот перевод был сделан с помощью Google Translate.
+
+# значения
+# %player% => ваше игровое имя
+# %money% => твои игровые деньги?
+# %moneyp% => это цена бонуса
+# %need-money% => отсутствие денег на покупку
+# %perk% => это название перка
+# %strength% => это новая сила
+# %target% => это имя пользователя, которое вы упомянули
+# %status% => показывает статус вашего перка: активен или неактивен
+
+# different
+prefix: "§dPerks §8» "
+no-ingame: "§cПожалуйста, зайдите в InGame."
+no-perms: "§cУ вас нет на это прав."
+
+# command
+reload-cmd: "reload"
+reload-success: "§aПлагин успешно сохранен."
+
+# economyapi
+no-money-economyapi: "§cУ вас недостаточно денег, вам все еще не хватает §a%need-money%₽§c."
+buy-economyapi: "§aВы купили бонус §c%perk% §aза §c%moneyp%₽§a."
+
+# buttons
+no-perms-button: "§4Заблокировано"
+enable-button: "§aАктивирован"
+disable-button: "§cдеактивирован"
+buy-button: "§5покупать §8[%moneyp%₽]"
+
+# message
+enable-perk: "§aВы активировали бонус §c%perk%§a!"
+disable-perk: "§cВы отключили бонус §a%perk%§c!"
+
+# ui
+title-ui: "§dPerks"
+text-ui: "§aВыберите перк:"
+text-money-ui: "§aТвои деньги: §c%money%₽\n§aВыберите перк:"
+
+# perks strength
+title-strength: "§dСила перка"
+text-strength: "§aЗдесь вы можете изменить силу перка.\n§cЕсли вы выберете 0, перк будет деактивирован.\n§aТвоя сила"
+new-strength: "§aСила вашего перка §e%perk% §aбыла изменена на силу §c%strength%§a."
+
+# friends
+button-friends: "§2Дайте кому-нибудь перк"
+title-friends: "§2Дать перк"
+text-friends: "§aВы можете подарить бонус другу или кому-то еще"
+user-friends: "§7Имя пользователя здесь..."
+perks-friends: "§aВыберите перк:"
+confirm-text-friends: "§cВы действительно хотите купить perk §e%perk% §cза %moneyp%₽ у пользователя §a%target%§c? Это невозможно сделать обратно!"
+confirm-yes-friends: "§2да"
+confirm-no-friends: "§4Нет"
+not-yourself-friends: "§cВы не можете дать себе льготы!"
+target-notfound-friends: "§cИгрок §a%target% §cне найден."
+perk-buyed-friends: "§cУ игрока §a%target% §cуже есть этот перк."
+success-friends: "§aВы купили бонус §e%perk% §aдля игрока §c%target%§a."
+target-success-friends: "§aИгрок §c%player% §aкупил вам перк §e%perk%§a."
+
+# perks
+speed: "§1Бежать быстрее\n§8» %status%"
+speed-msg: "Бежать быстрее"
+jump: "§2Прыгать выше\n§8» %status%"
+jump-msg: "Прыгать выше"
+haste: "§3Демонтировать быстрее\n§8» %status%"
+haste-msg: "Демонтировать быстрее"
+night-vision: "§4Ночное видение\n§8» %status%"
+night-vision-msg: "Ночное видение"
+no-hunger: "§5Не голодны\n§8» %status%"
+no-hunger-msg: "Не голодны"
+no-falldamage: "§6Отсутствие повреждений при падении\n§8» %status%"
+no-falldamage-msg: "Отсутствие повреждений при падении"
+fast-regeneration: "§cБыстрое заживление\n§8» %status%"
+fast-regeneration-msg: "Быстрое заживление"
+keep-inventory: "§8Держать инвентарь\n§8» %status%"
+keep-inventory-msg: "Держать инвентарь"
+dopple-xp: "§9Двойной опыт\n§8» %status%"
+dopple-xp-msg: "Двойной опыт"
+strength: "§bСила\n§8» %status%"
+strength-msg: "Сила"
+no-firedamage: "§eНет повреждений от огня\n§8» %status%"
+no-firedamage-msg: "Нет повреждений от огня"
+fly: "§aЛетать\n§8» %status%"
+fly-msg: "Летать"
+water-breathing: "§9Водное дыхание\n§8» %status%"
+water-breathing-msg: "Водное дыхание"
+invisibility: "§7Невидимый\n§8» %status%"
+invisibility-msg: "Невидимый"

@@ -5,6 +5,7 @@ namespace flxiboy\Perks;
 use pocketmine\plugin\PluginBase;
 use flxiboy\Perks\event\EventListener;
 use flxiboy\Perks\cmd\PerkCommand;
+use pocketmine\utils\Config;
 
 /**
  * Class Main
@@ -29,7 +30,16 @@ class Main extends PluginBase
     {
         @mkdir($this->getDataFolder() . "players/");
         $this->saveResource("config.yml");
-        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-        $this->getServer()->getCommandMap()->register("Perks", new PerkCommand($this));
+        $this->saveResource("lang/english.yml");
+        $this->saveResource("lang/german.yml");
+        $this->saveResource("lang/russian.yml");
+        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+        if (!file_exists($this->getDataFolder() . "lang/" . $config->get("language") . ".yml")) {
+            $this->getLogger()->warning("§cThis language was not found. This Plugin was disable.");
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+        } else {
+            $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+            $this->getServer()->getCommandMap()->register("Perks", new PerkCommand($this));
+        }
     }
 }

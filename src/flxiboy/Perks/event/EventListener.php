@@ -60,19 +60,16 @@ class EventListener implements Listener
             foreach ($config->getNested("perk.order") as $enable) {
                 if ($enable == $name) {
                     $effect = $api->getPerkEffect($player, $name, "normal");
-                    if ($players->get($name) == false and $effect !== null) {
-                        if ($player->hasEffect($effect)) {
-                            $player->removeEffect($effect);
-                        }
+                    if ($players->get($name) == false and $effect !== null and $player->hasEffect($effect)) {
+                        $player->removeEffect($effect);
                     }
-                    if ($players->get($name) == true and $effect == null) {
+                    if ($players->get($name) == true and $effect == null and !$player->hasEffect($effect)) {
                         $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, 0, false)); 
                     }
                 }
             }
         }
         if ($players->get("fly") == true and $player->isFlying(false)) {
-            $player->setFlying(true);
             $player->setAllowFlight(true);
         }
     }

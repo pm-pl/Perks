@@ -10,6 +10,7 @@ use pocketmine\Player;
 use pocketmine\utils\Config;
 use flxiboy\Perks\Main;
 use flxiboy\Perks\form\PerkForm;
+use flxiboy\Perks\api\API;
 
 /**
  * Class PerkCommand
@@ -45,20 +46,38 @@ class PerkCommand extends PluginCommand
 	 */
     public function execute(CommandSender $player, string $alias, array $args) 
     {
+        $api = new API($this->plugin, $player);
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
 
         if (!$player instanceof Player) {
-            $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-ingame"));
+            $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "no-ingame"));
             return;
         }
 
         if ($config->getNested("command.permission") !== false and !$player->hasPermission($config->getNested("command.permission"))) {
-            $player->sendMessage($config->getNested("message.prefix") . $config->getNested("message.no-perms"));
+            $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "no-perms"));
             return;
         }
 
-        $perk = new PerkForm($this->plugin, $player);
-        $perk->getPerks($player);
+        if (isset($args[0])) {
+            if ($player->hasPermission($config->getNested("command.reload.perms"))) {
+                if ($args[0] == $api->getLanguage($player, "reload-cmd")) {
+                    $this->plugin->saveResource("config.yml");
+                    $this->plugin->saveResource("lang/english.yml");
+                    $this->plugin->saveResource("lang/german.yml");
+                    $this->plugin->saveResource("lang/russian.yml");
+                    $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "reload-success"));
+                } else {
+                    $player->sendMessage($api->getLanguage($player, "prefix") . $config->getNested("command.reload.usage"));
+                }
+            } else {
+                $perk = new PerkForm($this->plugin, $player);
+                $perk->getPerks($player);
+            }
+        } else {
+            $perk = new PerkForm($this->plugin, $player);
+            $perk->getPerks($player);
+        }
         return true;
     }
 }
