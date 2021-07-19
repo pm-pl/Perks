@@ -11,6 +11,7 @@
 # %strength% => is the new strength of the perk
 # %target% => is the username you entered
 # %status% => is the status of the perk active or inactive
+# %message% => is the message left behind
 
 # different
 prefix: "§dPerks §8» "
@@ -50,6 +51,7 @@ title-friends: "§2Perk friends"
 text-friends: "§aYou can give your friend or a random user a perk here."
 user-friends: "§7Username here..."
 perks-friends: "§aSelcet a Perk:"
+message-friends: "§aLeave a message:"
 confirm-text-friends: "§cDo you really want to give the user §a%target% §cthe perk §a%perk% §cfor §a$%moneyp%§c? This cannot be reversed."
 confirm-yes-friends: "§2Yes"
 confirm-no-friends: "§4No"
@@ -57,7 +59,7 @@ not-yourself-friends: "§cYou can't give yourself perks!"
 target-notfound-friends: "§cThe Player §a%target% §cwas not found."
 perk-buyed-friends: "§cThe Player §e%target% §calready has this perk."
 success-friends: "§aYou bought the perk §c%perk% §afor the player §c%target%§a."
-target-success-friends: "§aThe player §c%player% §agave you the perk §c%perk%§a."
+target-success-friends: "§aThe player §c%player% §agave you the perk §e%perk% §aand left you this message:\n§8> §f%message%"
 
 # perks
 speed: "§1Speed\n§8» %status%"

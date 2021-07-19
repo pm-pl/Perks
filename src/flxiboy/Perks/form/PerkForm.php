@@ -45,8 +45,7 @@ class PerkForm
         $api = new API($this->plugin, $player);
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        $apif = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-        $form = $apif->createSimpleForm(function (Player $player, $data = null) { 
+        $form = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
@@ -101,9 +100,7 @@ class PerkForm
     public function getPerkSwitch(Player $player, string $check, string $effect)
     {
         $api = new API($this->plugin, $player);
-        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        $apif = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-        $form = $apif->createCustomForm(function (Player $player, $data = null) { 
+        $form = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI")->createCustomForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
@@ -143,8 +140,7 @@ class PerkForm
         if ($player->hasEffect($effect)) {
             $form->addStepSlider($api->getLanguage($player, "text-strength"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
         } else {
-            $players->set($check, false);
-            $players->save();
+            $form->addStepSlider($api->getLanguage($player, "text-strength"), ["0"], 0);
         }
         $form->sendToPlayer($player);
         return $form;
@@ -156,9 +152,7 @@ class PerkForm
     public function getPerkFriend(Player $player) 
     {
         $api = new API($this->plugin, $player);
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $apif = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-        $form = $apif->createCustomForm(function (Player $player, $data = null) { 
+        $form = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI")->createCustomForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
@@ -179,6 +173,7 @@ class PerkForm
             } elseif ($data[1] == 12) { $perk = "water-breathing";
             } elseif ($data[1] == 13) { $perk = "invisibility"; }
             
+            $targetd = new Config($this->plugin->getDataFolder() . "players/" . $data[0] . ".yml", Config::YAML);
             if ($data[0] == $player->getName()) {
                 $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "not-yourself-friends"));
                 return;
@@ -189,21 +184,21 @@ class PerkForm
                 $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
                 return;
             }
-            $targetd = new Config($this->plugin->getDataFolder() . "players/" . $data[0] . ".yml", Config::YAML);
             if ($targetd->get($perk) == true or $targetd->get($perk . "-buy") == true) {
                 $msg = $api->getLanguage($player, "perk-buyed-friends");
                 $msg = str_replace("%target%", $data[0], $msg);
                 $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
                 return;
             }
-            $this->getPerkFriendConfim($player, $data[0], $perk);
+            $this->getPerkFriendConfim($player, $data[0], $perk, $data[2]);
         });
         $form->setTitle($api->getLanguage($player, "title-friends"));
         $form->addInput($api->getLanguage($player, "text-friends"), $api->getLanguage($player, "user-friends"));
         $form->addDropdown($api->getLanguage($player, "perks-friends"), [$api->getLanguage($player, "speed-msg"), $api->getLanguage($player, "jump-msg"), $api->getLanguage($player, "haste-msg"), $api->getLanguage($player, "night-vision-msg"), 
             $api->getLanguage($player, "no-hunger-msg"), $api->getLanguage($player, "no-falldamage-msg"), $api->getLanguage($player, "fast-regeneration-msg"), $api->getLanguage($player, "keep-inventory-msg"), $api->getLanguage($player, "dopple-xp-msg"), 
             $api->getLanguage($player, "strength-msg"), $api->getLanguage($player, "no-firedamage-msg"), $api->getLanguage($player, "fly-msg"), $api->getLanguage($player, "water-breathing-msg"), $api->getLanguage($player, "invisibility-msg"),
-            $api->getLanguage($player, "keep-xp"), $api->getLanguage($player, "double-jump"), $api->getLanguage($player, "auto-smelting")]);
+            $api->getLanguage($player, "keep-xp-msg"), $api->getLanguage($player, "double-jump-msg"), $api->getLanguage($player, "auto-smelting-msg")]);
+        $form->addInput($api->getLanguage($player, "message-friends"));
         $form->sendToPlayer($player);
         return $form;
     }
@@ -212,19 +207,19 @@ class PerkForm
 	 * @param Player $player
      * @param string $target
      * @param string $perk
+     * @param string $message
 	 */
-    public function getPerkFriendConfim(Player $player, string $target, string $perk) 
+    public function getPerkFriendConfim(Player $player, string $target, string $perk, string $message) 
     {
         $api = new API($this->plugin, $player);
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $apif = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-        $form = $apif->createSimpleForm(function (Player $player, $data = null) { 
+        $form = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
             $api = new API($this->plugin, $player);
             $data = explode(":", $data);
-            if ($data[2] == true) {
+            if ($data[3] == true) {
                 $target = $this->plugin->getServer()->getPlayer($data[0]);
                 $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
                 $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
@@ -239,6 +234,7 @@ class PerkForm
                         $msgt = $api->getLanguage($player, "target-success-friends");
                         $msgt = str_replace("%player%", $player->getName(), $msgt);
                         $msgt = str_replace("%perk%", $api->getLanguage($player, $data[1] . "-msg"), $msgt);
+                        $msgt = str_replace("%message%", $data[2], $msgt);
                         $target->sendMessage($api->getLanguage($player, "prefix") . $msgt);   
                     }
                     $targetd->set($data[1] . "-buy", true);
@@ -258,8 +254,8 @@ class PerkForm
         $form->setContent($content);
         if ($config->getNested("settings.friends.yes-img") !== false and strpos($config->getNested("settings.friends.yes-img"), "textures/") !== false) { $pictureyes = 0; } else { $pictureyes = 1; }
         if ($config->getNested("settings.friends.no-img") !== false and strpos($config->getNested("settings.friends.no-img"), "textures/") !== false) { $pictureno = 0; } else { $pictureno = 1; }
-        $form->addButton($api->getLanguage($player, "confirm-yes-friends"), $pictureyes, $config->getNested("settings.friends.yes-img"), implode(":", [$target, $perk, true]));
-        $form->addButton($api->getLanguage($player, "confirm-no-friends"), $pictureno, $config->getNested("settings.friends.no-img"), implode(":", [$target, $perk, false]));
+        $form->addButton($api->getLanguage($player, "confirm-yes-friends"), $pictureyes, $config->getNested("settings.friends.yes-img"), implode(":", [$target, $perk, $message, true]));
+        $form->addButton($api->getLanguage($player, "confirm-no-friends"), $pictureno, $config->getNested("settings.friends.no-img"), implode(":", [$target, $perk, $message, false]));
         $form->sendToPlayer($player);
         return $form;
     }

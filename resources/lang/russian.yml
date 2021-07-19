@@ -14,6 +14,7 @@
 # %strength% => это новая сила
 # %target% => это имя пользователя, которое вы упомянули
 # %status% => показывает статус вашего перка: активен или неактивен
+# %message% => это сообщение осталось позади
 
 # different
 prefix: "§dPerks §8» "
@@ -53,6 +54,7 @@ title-friends: "§2Дать перк"
 text-friends: "§aВы можете подарить бонус другу или кому-то еще"
 user-friends: "§7Имя пользователя здесь..."
 perks-friends: "§aВыберите перк:"
+message-friends: "§aоставить сообщение:"
 confirm-text-friends: "§cВы действительно хотите купить perk §e%perk% §cза %moneyp%₽ у пользователя §a%target%§c? Это невозможно сделать обратно!"
 confirm-yes-friends: "§2да"
 confirm-no-friends: "§4Нет"
@@ -60,7 +62,7 @@ not-yourself-friends: "§cВы не можете дать себе льготы!
 target-notfound-friends: "§cИгрок §a%target% §cне найден."
 perk-buyed-friends: "§cУ игрока §a%target% §cуже есть этот перк."
 success-friends: "§aВы купили бонус §e%perk% §aдля игрока §c%target%§a."
-target-success-friends: "§aИгрок §c%player% §aкупил вам перк §e%perk%§a."
+target-success-friends: "§aИгрок §c%player% §aкупил вам перк §e%perk% §aи оставил вам это сообщение:\n§8> §f%message%"
 
 # perks
 speed: "§1Бежать быстрее\n§8» %status%"

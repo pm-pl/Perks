@@ -13,13 +13,16 @@ use pocketmine\entity\{
     EffectInstance,
     Effect
 };
+use flxiboy\Perks\event\{
+    addXP,
+    removeDoubleJump
+};
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\utils\Config;
 use flxiboy\Perks\Main;
 use pocketmine\event\block\BlockBreakEvent;
 use flxiboy\Perks\api\API;
-use flxiboy\Perks\event\addXP;
 use pocketmine\item\Item;
 
 /**
@@ -70,15 +73,14 @@ class EventListener implements Listener
                 $players->set($name, false);
                 $players->set($name . "-buy", false);
             }
-            $players->save();
         }
         if (!$players->exists("keep-xp")) {
             foreach (["keep-xp", "double-jump", "auto-smelting"] as $name) {
                 $players->set($name, false);
                 $players->set($name . "-buy", false);
             }
-            $players->save();
         }
+        $players->save();
         foreach (["speed", "jump", "haste", "night-vision", "fast-regeneration", "strength", "no-firedamage", "water-breathing", "invisibility"] as $name) {
             foreach ($config->getNested("perk.order") as $enable) {
                 if ($enable == $name) {
@@ -92,7 +94,8 @@ class EventListener implements Listener
                 }
             }
         }
-        if ($players->get("fly") == true and $player->isFlying(false)) {
+        if ($players->get("fly") == true) {
+            $player->isFlying(true);
             $player->setAllowFlight(true);
         }
     }
@@ -115,7 +118,6 @@ class EventListener implements Listener
     public function onBreak(BlockBreakEvent $event) 
     {
         $player = $event->getPlayer();
-        $block = $event->getBlock();
         $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
@@ -125,9 +127,9 @@ class EventListener implements Listener
         if ($config->getNested("settings.auto-smelting.enable") == true and $players->get("auto-smelting") == true) {
             if (in_array($block->getId(), [14, 15]) and $eco->myMoney($player) >= $config->getNested("settings.auto-smelting.price") and in_array($player->getGamemode(), [0, 2])) {
                 $drops = [];
-                if ($block->getId() == 14) {
+                if ($event->getBlock()->getId() == 14) {
                     $drops[] =  new Item(Item::GOLD_INGOT);
-                } elseif ($block->getId() == 15) {
+                } elseif ($event->getBlock()->getId() == 15) {
                     $drops[] =  new Item(Item::IRON_INGOT);
                 }
                 $event->setDrops($drops);
@@ -170,12 +172,14 @@ class EventListener implements Listener
     {
         $player = $event->getEntity();
         $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        if($event->getCause() == EntityDamageEvent::CAUSE_FALL and $players->get("no-falldamage") == true) {
-            $event->setCancelled();
-        }
-        if (in_array($player->getName(), $this->playerjumpdamage)) {
-            $event->setCancelled();
-            unset($this->playerjumpdamage[array_search($player->getName(), $this->playerjumpdamage)]);
+        if($event->getCause() == EntityDamageEvent::CAUSE_FALL) {
+            if ($players->get("no-falldamage") == true) {
+                $event->setCancelled();
+            }
+            if (in_array($player->getName(), $this->playerjumpdamage)) {
+                $event->setCancelled();
+                unset($this->playerjumpdamage[array_search($player->getName(), $this->playerjumpdamage)]);
+            }
         }
     }
 
@@ -199,6 +203,7 @@ class EventListener implements Listener
                 }
             } else {
                 $this->playerjump[$player->getName()] = 1;
+                $this->plugin->getScheduler()->scheduleDelayedTask(new removeDoubleJump($this, $player), 20);
             }
         }
     }

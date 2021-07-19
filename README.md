@@ -1,9 +1,9 @@
-# Perks System v3.5
+# Perks System v3.6
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
 ### Download
-Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/23) file.
+Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/25) file.
 
 ### Commands
 |**Command**|**Description**|

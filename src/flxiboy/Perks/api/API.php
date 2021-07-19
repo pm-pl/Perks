@@ -128,6 +128,14 @@ class API
                 $players->save();
             }
         }
+        if (($config->getNested("settings.economy-api") == true and $players->get($check . "-buy") == true) or ($config->getNested("perk.$check.perms") !== false and $player->hasPermission($config->getNested("perk.$check.perms"))) or ($players->get($check . "-buy") == false and $players->get($check) == true)) {
+            if ($players->get($check) == false and $effect !== null) {
+                if ($player->hasEffect($effect) and !in_array($check, $block)) {
+                    $players->set($check, true);
+                    $players->save();
+                }
+            }
+        }
         if ($config->getNested("settings.economy-api") == true) {
             if ($players->get("$check-buy") == true) {
                 if ($players->get($check) == true) {

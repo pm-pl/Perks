@@ -12,6 +12,7 @@
 # %strength% => ist die neue stärke die du auswählst
 # %target% => ist der benutzername, den du angibst
 # %status% => ist der status vom perk also aktiv oder nicht aktiv
+# %message% => ist die hinterlassene nachricht
 
 # different
 prefix: "§dPerks §8» "
@@ -51,6 +52,7 @@ title-friends: "§2Perk schenken"
 text-friends: "§aDu kannst einem Freund oder jemand anders ein Perk schenken"
 user-friends: "§7Benutzername hier..."
 perks-friends: "§aWähle ein Perk:"
+message-friends: "§aNachricht hinterlassen:"
 confirm-text-friends: "§cWillst du wirklich dem User §a%target% §cdas Perk §e%perk% §cfür §c%moneyp%€ §ckaufen? Dies kann nicht zurück gemacht werden!"
 confirm-yes-friends: "§2Ja"
 confirm-no-friends: "§4Nein"
@@ -58,7 +60,7 @@ not-yourself-friends: "§cDu kannst dir selber keine Perks schenken!"
 target-notfound-friends: "§cDer Spieler §a%target% §cwurde nicht gefunden."
 perk-buyed-friends: "§cDer Spieler §a%target% §chat bereits dieses Perk."
 success-friends: "§aDu hast das Perk §e%perk% §afür den Spieler §c%target% §agekauft."
-target-success-friends: "§aDer Spieler §c%player% §ahat dir das Perk §e%perk% §agekauft."
+target-success-friends: "§aDer Spieler §c%player% §ahat dir das Perk §e%perk% §agekauft und hat dir diese Nachricht hinterlassen:\n§8> §f%message%"
 
 # perks
 speed: "§1Schneller laufen\n§8» %status%"
