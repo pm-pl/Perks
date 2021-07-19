@@ -2,6 +2,9 @@
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
+### Download
+Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/23) file.
+
 ### Commands
 |**Command**|**Description**|
 |-----------|---------------|
@@ -40,7 +43,7 @@ You can all funktion edit in **config.yml**
 - [X] Speed
 - [X] Water breathing
 
-### Todo to next Update
+### Todo to next Update (Updates usually come every day in the evening.)
 - [ ] Perks categories
 - [ ] Active perks at the top
 - [ ] Hide perks when he has them (Giving perks to friends)
