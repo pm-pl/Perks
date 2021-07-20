@@ -125,7 +125,7 @@ class EventListener implements Listener
             $event->setXpDropAmount($event->getXpDropAmount() * 2);
         }
         if ($config->getNested("settings.auto-smelting.enable") == true and $players->get("auto-smelting") == true) {
-            if (in_array($block->getId(), [14, 15]) and $eco->myMoney($player) >= $config->getNested("settings.auto-smelting.price") and in_array($player->getGamemode(), [0, 2])) {
+            if (in_array($event->getBlock()->getId(), [14, 15]) and $eco->myMoney($player) >= $config->getNested("settings.auto-smelting.price") and in_array($player->getGamemode(), [0, 2])) {
                 $drops = [];
                 if ($event->getBlock()->getId() == 14) {
                     $drops[] =  new Item(Item::GOLD_INGOT);
