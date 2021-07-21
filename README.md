@@ -1,15 +1,15 @@
-# Perks System v3.6
+# Perks System v3.7
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
 ### Download
-Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/27) file.
+Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/28) file.
 
 ### Commands
 |**Command**|**Description**|
 |-----------|---------------|
-|/perk |Open the Perks |
-|/perk reload| Reload all Perks files|
+|/perks |Open the Perks |
+|/perks reload| Reload all Perks files|
 
 ### Feature
 - [X] Command
@@ -54,3 +54,6 @@ Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks
 
 ### Bugs or Idea?
 If you have a bug or an idea, please feel free to report this to: [Issues](https://github.com/FlxiBoy1313/Perks/issues/new)
+
+### License 
+This Plugin has the License [Apache License](https://github.com/FlxiBoy1313/Perks/blob/main/LICENSE) 2.0!

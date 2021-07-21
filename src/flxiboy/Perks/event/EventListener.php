@@ -24,6 +24,7 @@ use flxiboy\Perks\Main;
 use pocketmine\event\block\BlockBreakEvent;
 use flxiboy\Perks\api\API;
 use pocketmine\item\Item;
+use pocketmine\Player;
 
 /**
  * Class EventListener
@@ -32,10 +33,6 @@ use pocketmine\item\Item;
 class EventListener implements Listener 
 {
 
-    /**
-     * @var $plugin
-     */
-    public $plugin;
     /**
      * @var array $playerjump
      */
@@ -50,24 +47,14 @@ class EventListener implements Listener
     public $playerxp = [];
 
     /**
-	 * Listener constructor.
-	 *
-	 * @param Main $plugin
-	 */
-    public function __construct(Main $plugin) 
-    {
-        $this->plugin = $plugin;
-    }
-
-    /**
      * @param PlayerJoinEvent $event
      */
     public function onJoin(PlayerJoinEvent $event) 
     {
         $player = $event->getPlayer();
-        $api = new API($this->plugin, $player);
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $api = new API();
+        $config = Main::getInstance()->getConfig();
+        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         if (!$players->exists("speed")) {
             foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility"] as $name) {
                 $players->set($name, false);
@@ -95,7 +82,6 @@ class EventListener implements Listener
             }
         }
         if ($players->get("fly") == true) {
-            $player->isFlying(true);
             $player->setAllowFlight(true);
         }
     }
@@ -106,7 +92,7 @@ class EventListener implements Listener
     public function onExhaust(PlayerExhaustEvent $event) 
     {
         $player = $event->getPlayer();
-        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         if ($players->get("no-hunger") == true) {
             $player->setFood(20);
         }
@@ -118,9 +104,9 @@ class EventListener implements Listener
     public function onBreak(BlockBreakEvent $event) 
     {
         $player = $event->getPlayer();
-        $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
+        $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $config = Main::getInstance()->getConfig();
         if ($players->get("dopple-xp") == true) {
             $event->setXpDropAmount($event->getXpDropAmount() * 2);
         }
@@ -144,7 +130,7 @@ class EventListener implements Listener
     public function onDeath(PlayerDeathEvent $event) 
     {
         $player = $event->getPlayer();
-        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         if ($players->get("keep-inventory") == true) {
             $event->setKeepInventory(true);
         }
@@ -161,7 +147,7 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         if (isset($this->playerxp[$player->getName()])) {
-            $this->plugin->getScheduler()->scheduleDelayedTask(new addXP($this, $player), 20 / 2);
+            Main::getInstance()->getScheduler()->scheduleDelayedTask(new addXP($this, $player), 20 / 2);
         }
     }
     
@@ -171,14 +157,16 @@ class EventListener implements Listener
     public function onDamage(EntityDamageEvent $event) 
     {
         $player = $event->getEntity();
-        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        if($event->getCause() == EntityDamageEvent::CAUSE_FALL) {
-            if ($players->get("no-falldamage") == true) {
-                $event->setCancelled();
-            }
-            if (in_array($player->getName(), $this->playerjumpdamage)) {
-                $event->setCancelled();
-                unset($this->playerjumpdamage[array_search($player->getName(), $this->playerjumpdamage)]);
+        if ($player instanceof Player) {
+            $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+            if($event->getCause() == EntityDamageEvent::CAUSE_FALL) {
+                if ($players->get("no-falldamage") == true) {
+                    $event->setCancelled();
+                }
+                if (in_array($player->getName(), $this->playerjumpdamage)) {
+                    $event->setCancelled();
+                    unset($this->playerjumpdamage[array_search($player->getName(), $this->playerjumpdamage)]);
+                }
             }
         }
     }
@@ -189,8 +177,8 @@ class EventListener implements Listener
     public function onJump(PlayerJumpEvent $event) 
     {
         $player = $event->getPlayer();
-        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
+        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $config = Main::getInstance()->getConfig();
         if ($players->get("double-jump") == true) {
             if (isset($this->playerjump[$player->getName()])) {
                 $this->playerjump[$player->getName()]++;
@@ -203,7 +191,7 @@ class EventListener implements Listener
                 }
             } else {
                 $this->playerjump[$player->getName()] = 1;
-                $this->plugin->getScheduler()->scheduleDelayedTask(new removeDoubleJump($this, $player), 20);
+                Main::getInstance()->getScheduler()->scheduleDelayedTask(new removeDoubleJump($this, $player), 20);
             }
         }
     }

@@ -20,20 +20,12 @@ class PerkCommand extends PluginCommand
 {
 
     /**
-     * @var $plugin
-     */
-    public $plugin;
-
-    /**
 	 * Commands constructor.
-	 *
-	 * @param Main $plugin
 	 */
-	public function __construct(Main $plugin) 
+	public function __construct() 
     {
-        $this->plugin = $plugin;
-        $config = new Config($plugin->getDataFolder() . "config.yml", Config::YAML);
-        parent::__construct($config->getNested("command.cmd"), $plugin);
+        $config = Main::getInstance()->getConfig();
+        parent::__construct($config->getNested("command.cmd"), Main::getInstance());
 		$this->setAliases([$config->getNested("command.aliases")]);
 		$this->setDescription($config->getNested("command.desc"));
 		$this->setUsage($config->getNested("command.usage"));
@@ -46,8 +38,8 @@ class PerkCommand extends PluginCommand
 	 */
     public function execute(CommandSender $player, string $alias, array $args) 
     {
-        $api = new API($this->plugin, $player);
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
+        $api = new API();
+        $config = Main::getInstance()->getConfig();
 
         if (!$player instanceof Player) {
             $player->sendMessage("§cPlease go InGame for this command.");
@@ -62,17 +54,17 @@ class PerkCommand extends PluginCommand
         if (isset($args[0])) {
             if ($player->hasPermission($config->getNested("command.reload.perms"))) {
                 if ($args[0] == $api->getLanguage($player, "reload-cmd")) {
-                    $this->plugin->loadFiles();
+                    Main::getInstance()->loadFiles();
                     $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "reload-success"));
                 } else {
                     $player->sendMessage($api->getLanguage($player, "prefix") . $config->getNested("command.reload.usage"));
                 }
             } else {
-                $perk = new PerkForm($this->plugin, $player);
+                $perk = new PerkForm();
                 $perk->getPerks($player);
             }
         } else {
-            $perk = new PerkForm($this->plugin, $player);
+            $perk = new PerkForm();
             $perk->getPerks($player);
         }
         return true;

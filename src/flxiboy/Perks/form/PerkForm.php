@@ -22,37 +22,22 @@ class PerkForm
 {
 
     /**
-     * @var $plugin
-     */
-    public $plugin;
-
-    /**
-	 * Listener constructor.
-	 *
-	 * @param Main $plugin
-	 */
-    public function __construct(Main $plugin) 
-    {
-        $this->plugin = $plugin;
-    }
-
-    /**
 	 * @param Player $player
 	 */
     public function getPerks(Player $player) 
     {
-        $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-        $api = new API($this->plugin, $player);
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        $form = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) { 
+        $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+        $api = new API();
+        $config = Main::getInstance()->getConfig();
+        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
             if ($data == "friend") {
                 $this->getPerkFriend($player);
             } else {
-                $checkPerk = new API($this->plugin, $player);
+                $checkPerk = new API();
                 $checkPerk->getCheckPerk($player, $data);
             }
             return true;
@@ -99,19 +84,19 @@ class PerkForm
 	 */
     public function getPerkSwitch(Player $player, string $check, string $effect)
     {
-        $api = new API($this->plugin, $player);
-        $form = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI")->createCustomForm(function (Player $player, $data = null) { 
+        $api = new API();
+        $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createCustomForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
-            $api = new API($this->plugin, $player);
+            $api = new API();
             $check = null;
             $effect = null;
-            if (isset($this->plugin->playernewperkname[$player->getName()])) {
-                $check = $this->plugin->playernewperkname[$player->getName()];
-                $effect = $api->getPerkEffect($player, $this->plugin->playernewperkname[$player->getName()], "main");
+            if (isset(Main::getInstance()->playernewperkname[$player->getName()])) {
+                $check = Main::getInstance()->playernewperkname[$player->getName()];
+                $effect = $api->getPerkEffect($player, Main::getInstance()->playernewperkname[$player->getName()], "main");
             }
-            $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+            $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
             if ($data[0] !== $player->getEffect($effect)->getEffectLevel()) {
                 if ($data[0] == 0) {
                     $players->set($check, false);
@@ -133,7 +118,7 @@ class PerkForm
                 }
                 $players->save();
             }
-            $this->plugin->playernewperkname[$player->getName()] = null;
+            Main::getInstance()->playernewperkname[$player->getName()] = null;
             return true;
         });
         $form->setTitle($api->getLanguage($player, "title-strength"));
@@ -151,12 +136,12 @@ class PerkForm
 	 */
     public function getPerkFriend(Player $player) 
     {
-        $api = new API($this->plugin, $player);
-        $form = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI")->createCustomForm(function (Player $player, $data = null) { 
+        $api = new API();
+        $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createCustomForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
-            $api = new API($this->plugin, $player);
+            $api = new API();
             $perk = null;
             if ($data[1] == 0) { $perk = "speed";
             } elseif ($data[1] == 1) { $perk = "jump";
@@ -173,12 +158,12 @@ class PerkForm
             } elseif ($data[1] == 12) { $perk = "water-breathing";
             } elseif ($data[1] == 13) { $perk = "invisibility"; }
             
-            $targetd = new Config($this->plugin->getDataFolder() . "players/" . $data[0] . ".yml", Config::YAML);
+            $targetd = new Config(Main::getInstance()->getDataFolder() . "players/" . $data[0] . ".yml", Config::YAML);
             if ($data[0] == $player->getName()) {
                 $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "not-yourself-friends"));
                 return;
             }
-            if (!file_exists($this->plugin->getDataFolder() . "players/" . $data[0] . ".yml") or $data[0] == null) {
+            if (!file_exists(Main::getInstance()->getDataFolder() . "players/" . $data[0] . ".yml") or $data[0] == null) {
                 $msg = $api->getLanguage($player, "target-notfound-friends");
                 $msg = str_replace("%target%", $data[0], $msg);
                 $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
@@ -211,19 +196,19 @@ class PerkForm
 	 */
     public function getPerkFriendConfim(Player $player, string $target, string $perk, string $message) 
     {
-        $api = new API($this->plugin, $player);
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $form = $this->plugin->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) { 
+        $api = new API();
+        $config = Main::getInstance()->getConfig();
+        $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
-            $api = new API($this->plugin, $player);
+            $api = new API();
             $data = explode(":", $data);
             if ($data[3] == true) {
-                $target = $this->plugin->getServer()->getPlayer($data[0]);
-                $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-                $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-                $targetd = new Config($this->plugin->getDataFolder() . "players/" . $data[0] . ".yml", Config::YAML);
+                $target = Main::getInstance()->getServer()->getPlayer($data[0]);
+                $config = Main::getInstance()->getConfig();
+                $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+                $targetd = new Config(Main::getInstance()->getDataFolder() . "players/" . $data[0] . ".yml", Config::YAML);
                 if ($eco->myMoney($player) >= $config->getNested("perk." . $data[1] . ".price")) {
                     $msgp = $api->getLanguage($player, "success-friends");
                     $msgp = str_replace("%target%", $data[0], $msgp);

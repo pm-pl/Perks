@@ -14,6 +14,15 @@ class addXP extends Task
 {
 
     /**
+     * @var EventListener
+     */
+    public $plugin;
+    /**
+     * @var Player
+     */
+   public $player;
+
+    /**
      * Listener constructor.
      * 
      * @param EventListener $plugin

@@ -19,33 +19,18 @@ class API
 {
 
     /**
-     * @var $plugin
-     */
-    public $plugin;
-
-    /**
-	 * Listener constructor.
-	 *
-	 * @param Main $plugin
-	 */
-    public function __construct(Main $plugin) 
-    {
-        $this->plugin = $plugin;
-    }
-
-    /**
 	 * @param Player $player
      * @param string $check
 	 */
     public function getCheckPerk(Player $player, string $check) 
     {
         $playernewperk = [];
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $config = Main::getInstance()->getConfig();
+        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $effect = $this->getPerkEffect($player, $check, "normal");
         $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly", "keep-xp", "double-jump", "auto-smelting"];
         if ($config->getNested("settings.economy-api") == true) {
-            $eco = $this->plugin->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+            $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
             if ($players->get("$check-buy") == true) {
                 $playernewperk[] = $player->getName();
             } else {
@@ -91,8 +76,8 @@ class API
                     $msg = str_replace("%perk%", $this->getLanguage($player, "$check-msg"), $msg);
                     $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
                 } else {
-                    $this->plugin->playernewperkname[$player->getName()] = $check;
-                    $perk = new PerkForm($this->plugin, $player);
+                    Main::getInstance()->playernewperkname[$player->getName()] = $check;
+                    $perk = new PerkForm();
                     $perk->getPerkSwitch($player, $check, $effect);
                 }
             } else {
@@ -118,8 +103,8 @@ class API
 	 */
     public function getStatus(Player $player, string $check) 
     {
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        $players = new Config($this->plugin->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $config = Main::getInstance()->getConfig();
+        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $effect = $this->getPerkEffect($player, $check, "normal");
         $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly", "keep-xp", "double-jump", "auto-smelting"];
         if ($players->get($check) == true and $effect !== null) {
@@ -203,23 +188,23 @@ class API
                 $effect = Effect::INVISIBILITY;
             }
         } elseif ($type == "main") {
-            if ($this->plugin->playernewperkname[$player->getName()] == "speed") { 
+            if (Main::getInstance()->playernewperkname[$player->getName()] == "speed") { 
                 $effect = Effect::SPEED;
-            } elseif ($this->plugin->playernewperkname[$player->getName()] == "jump") { 
+            } elseif (Main::getInstance()->playernewperkname[$player->getName()] == "jump") { 
                 $effect = Effect::JUMP_BOOST;
-            } elseif ($this->plugin->playernewperkname[$player->getName()] == "haste") { 
+            } elseif (Main::getInstance()->playernewperkname[$player->getName()] == "haste") { 
                 $effect = Effect::HASTE;
-            } elseif ($this->plugin->playernewperkname[$player->getName()] == "night-vision") { 
+            } elseif (Main::getInstance()->playernewperkname[$player->getName()] == "night-vision") { 
                 $effect = Effect::NIGHT_VISION;
-            } elseif ($this->plugin->playernewperkname[$player->getName()] == "fast-regeneration") { 
+            } elseif (Main::getInstance()->playernewperkname[$player->getName()] == "fast-regeneration") { 
                 $effect = Effect::REGENERATION;
-            } elseif ($this->plugin->playernewperkname[$player->getName()] == "strength") { 
+            } elseif (Main::getInstance()->playernewperkname[$player->getName()] == "strength") { 
                 $effect = Effect::STRENGTH;
-            } elseif ($this->plugin->playernewperkname[$player->getName()] == "no-firedamage") { 
+            } elseif (Main::getInstance()->playernewperkname[$player->getName()] == "no-firedamage") { 
                 $effect = Effect::FIRE_RESISTANCE;
-            } elseif ($this->plugin->playernewperkname[$player->getName()]  == "water-breathing") {
+            } elseif (Main::getInstance()->playernewperkname[$player->getName()]  == "water-breathing") {
                 $effect = Effect::WATER_BREATHING;
-            } elseif ($this->plugin->playernewperkname[$player->getName()] == "invisibility") {
+            } elseif (Main::getInstance()->playernewperkname[$player->getName()] == "invisibility") {
                 $effect = Effect::INVISIBILITY;
             }
         }
@@ -232,9 +217,9 @@ class API
  */
     public function getLanguage(Player $player, string $message) 
     {
-        $config = new Config($this->plugin->getDataFolder() . "config.yml", Config::YAML);
-        if (file_exists($this->plugin->getDataFolder() . "lang/" . $config->get("language") . ".yml")) {
-            $messages = new Config($this->plugin->getDataFolder() . "lang/" . $config->get("language") . ".yml", Config::YAML);
+        $config = Main::getInstance()->getConfig();
+        if (file_exists(Main::getInstance()->getDataFolder() . "lang/" . $config->get("language") . ".yml")) {
+            $messages = new Config(Main::getInstance()->getDataFolder() . "lang/" . $config->get("language") . ".yml", Config::YAML);
             $msg = $messages->get($message);
         } else {
             $msg = "§cThis language was not found. please change the language!";
