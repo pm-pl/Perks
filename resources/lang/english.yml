@@ -12,6 +12,7 @@
 # %target% => is the username you entered
 # %status% => is the status of the perk active or inactive
 # %message% => is the message left behind
+# %time% => is the time that you can use
 
 # different
 prefix: "§dPerks §8» "
@@ -59,7 +60,11 @@ not-yourself-friends: "§cYou can't give yourself perks!"
 target-notfound-friends: "§cThe Player §a%target% §cwas not found."
 perk-buyed-friends: "§cThe Player §e%target% §calready has this perk."
 success-friends: "§aYou bought the perk §c%perk% §afor the player §c%target%§a."
-target-success-friends: "§aThe player §c%player% §agave you the perk §e%perk% §aand left you this message:\n§8> §f%message%"
+target-success-friends: "§aThe player §c%player% §agave you the perk §e%perk% §aand left you this message:\n§8» §7%message%"
+
+# time
+buy-time: "§aYou bought the perk §e%perk% §afor §c$%moneyp% §aand this is now valid to §b%time%§a!"
+close-time: "§cThis perk has been deactivated because the purchase period has expired!"
 
 # perks
 speed: "§1Speed\n§8» %status%"

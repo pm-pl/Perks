@@ -13,9 +13,9 @@ language: english
 # command, edit the perks command
 command:
   cmd: "perks"
-  desc: "Open the Perk UI"
+  desc: "Open the Perks UI"
   usage: "§cUsage: /perks"
-  aliases: "perk"
+  aliases: "perks"
   reload:
     usage: "§cUsage: /perks <reload>"
     perms: perks.reload
@@ -41,14 +41,26 @@ settings:
     enable: true
     # this is what makes the price of smelting
     price: 150
+  perk-time:
+    # if this true, then perks will only be there for a certain time.
+    enable: true
+    # %year% => is the year
+    # %month% => is the month
+    # %day% => is the day
+    # %hour% => is the hour
+    # %minute% => is the minute
+    # %second% => is the second
+    format: "§e%year% §ayear, §e%month% §amonth, §e%day% §aday, §e%hour% §ahour, §e%minute% §aminute. §e%second% §asecond"
 
 # perks
 perk:
   # perms => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
-  # price => will only go if you have 'economy-api' to true. This sets the price of the perk.
+  # price => will only go if you have 'economy-api' to true. This sets the price of the perks.
   # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
   # order => so you can decide the order of the perks. If you don't have the perk inside, it won't show up either. 
   # order list: "speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"
+  # time => if 'economy-api' true, this tells how long you can use a perk after buying it and then buy it again. 1 = 1 Minute, 60 = 1 hour, 1440 = 1 day, 10080 = 1 week, false = disable for this perk
+  #               please currently only use up to 1 month, the more you do the more bugged this is, in the next update this will also be fixed / changed.
   perms:
     # if this true, then only the perks are shown, as you also have hats or the permission, the perks should go with permission.
     enable: false
@@ -74,67 +86,84 @@ perk:
     perms: perks.speed
     price: 10000
     img: "textures/ui/speed_effect"
+    time: 10080
   jump:
     perms: perks.jump
     price: 10000
     img: "textures/ui/jump_boost_effect"
+    time: 10080
   haste:
     perms: perks.haste
     price: 10000
     img: "textures/ui/haste_effect"
+    time: 10080
   night-vision:
     perms: perks.night-vision
     price: 10000
     img: "textures/items/potion_bottle_nightVision"
+    time: 10080
   no-hunger:
     perms: perks.no-hunger
     price: 10000
     img: "textures/ui/hunger_full"
+    time: 10080
   no-falldamage:
     perms: perks.no-falldamage
     price: 10000
     img: "textures/items/totem"
+    time: 10080
   fast-regeneration:
     perms: perks.fast-regeneration
     price: 10000
     img: "textures/ui/regeneration_effect"
+    time: 10080
   keep-inventory:
     perms: perks.keep-inventory
     price: 10000
     img: "textures/blocks/chest_front"
+    time: 10080
   dopple-xp:
     perms: perks.dopple-xp
     price: 10000
     img: "textures/ui/dust_selectable_2"
+    time: 10080
   strength:
     perms: perks.stren
     price: 10000
     img: "textures/ui/strength_effect"
+    time: 10080
   no-firedamage:
     perms: perks.no-firedamage
     price: 10000
     img: "textures/ui/fire_resistance_effect"
+    time: 10080
   fly:
     perms: perks.fly
     price: 10000
     img: "textures/items/feather"
+    time: 10080
   water-breathing:
     perms: perks.water-breathing
     price: 10000
     img: "textures/ui/water_breathing_effect"
+    time: 10080
   invisibility:
     perms: perks.invisibility
     price: 10000
     img: "textures/ui/invisibility_effect"
+    time: 10080
   keep-xp:
     perms: perks.keep-xp
     price: 10000
     img: "textures/ui/dust_selectable_1"
+    time: 10080
   double-jump:
     perms: perks.double-xp
     price: 10000
     img: "textures/items/iron_boots"
+    time: 10080
   auto-smelting:
     perms: perks.auto-smelting
     price: 10000
     img: "textures/blocks/furnace_front_on"
+    time: 10080

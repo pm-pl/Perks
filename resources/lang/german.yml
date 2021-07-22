@@ -13,6 +13,7 @@
 # %target% => ist der benutzername, den du angibst
 # %status% => ist der status vom perk also aktiv oder nicht aktiv
 # %message% => ist die hinterlassene nachricht
+# %time% => ist die zeit, die du nutzen kannst
 
 # different
 prefix: "§dPerks §8» "
@@ -60,7 +61,11 @@ not-yourself-friends: "§cDu kannst dir selber keine Perks schenken!"
 target-notfound-friends: "§cDer Spieler §a%target% §cwurde nicht gefunden."
 perk-buyed-friends: "§cDer Spieler §a%target% §chat bereits dieses Perk."
 success-friends: "§aDu hast das Perk §e%perk% §afür den Spieler §c%target% §agekauft."
-target-success-friends: "§aDer Spieler §c%player% §ahat dir das Perk §e%perk% §agekauft und hat dir diese Nachricht hinterlassen:\n§8> §f%message%"
+target-success-friends: "§aDer Spieler §c%player% §ahat dir das Perk §e%perk% §agekauft und hat dir diese Nachricht hinterlassen:\n§8» §7%message%"
+
+# time
+buy-time: "§aDu hast das Perk §e%perk% §afür §c%moneyp%€ §agekauft und dies ist jetzt bis §b%time% §agültig!"
+close-time: "§cDieses Perk wurde deaktiviert, da die Kauf frist abgelaufen ist!"
 
 # perks
 speed: "§1Schneller laufen\n§8» %status%"
