@@ -33,11 +33,12 @@ class API
             $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
             if ($config->getNested("settings.perk-time.enable") == true) {
                 if ($players->get($check) == false) {
+                    $date = new \DateTime('now');
+                    $datas = explode(":", $date->format("Y:m:d:H:i:s"));
+                    $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
                     if ($eco->myMoney($player) >= $config->getNested("perk.$check.price")) {
-                        $date = new \DateTime('now');
                         if ($players->exists("$check-buy-count")) {
-                            $datas = $date->format("Y:m:d:H:i:s");
-                            if ($datas >= $players->get("$check-buy-count")) {
+                            if ($data >= $players->get("$check-buy-count")) {
                                 $players->set("$check", false);
                                 $players->set("$check-buy", false);
                                 $players->remove("$check-buy-count");
@@ -46,30 +47,34 @@ class API
                                 $playernewperk[] = $player->getName();
                             }
                         } else {
-                            if (in_array($date->format("m"), [1, 3, 5, 7, 9, 11])) { $months = 175; } elseif (in_array($date->format("m"), [4, 6, 8, 10, 12])) { $months = 174; } else { $months = 172; }
-                            if (in_array($date->format("m"), [1, 3, 5, 7, 9, 11])) { $years = 1830; } elseif (in_array($date->format("m"), [4, 6, 8, 10, 12])) { $years = 1839; } else { $years = 1837; }
-                            $seconds = $config->getNested("perk.$check.time") % 60;
-                            $minute = ($config->getNested("perk.$check.time") / 60) % 60;
-                            $hour = ($config->getNested("perk.$check.time") / 120) & 60;
-                            $day = ($config->getNested("perk.$check.time") / 144) % 60;
-                            $month = ($config->getNested("perk.$check.time") / $months) % 60;
-                            $year = ($config->getNested("perk.$check.time") / $years) % 60;
-                            $time = $year . ":" . $month . ":" . $day . ":" . $hour . ":" . $minute . ":" . $seconds;
+                            if (in_array($date->format("m"), [1, 3, 5, 7, 9, 11])) { $months = 31; } elseif (in_array($date->format("m"), [4, 6, 8, 10, 12])) { $months = 30; } else { $months = 28; }
+                            $format = explode(":", $config->getNested("perk.$check.time"));
+                            $formats = explode(":", $data);
+                            $year = $formats[0] + $format[0];
+                            $month = $formats[1] + $format[1];
+                            $day = $formats[2] + $format[2];
+                            $hour = $formats[3] + $format[3];
+                            $minute = $formats[4] + $format[4];
+                            $second = $formats[5] + $format[5];
+                            if ($second >= 60) { $second = $second - 60; $minute++; }
+                            if ($minute >= 60) { $minute = $minute - 60; $hour++; }
+                            if ($hour >= 24) { $hour = $hour - 24; $minute++; }
+                            if ($day >= $months) { $day = $day - $months; $month++; }
+                            if ($month >= 12) { $month = $month - 12; $year++; }
                             $players->set("$check", false);
                             $players->set("$check-buy", true);
-                            $players->set("$check-buy-count", $time);
+                            $players->set("$check-buy-count", $year . ":" . $month . ":" . $day . ":" . $hour . ":" . $minute . ":" . $second);
                             $players->save();
                             $msg = $this->getLanguage($player, "buy-time");
                             $msg = str_replace("%perk%", $this->getLanguage($player, "$check-msg"), $msg);
                             $msg = str_replace("%moneyp%", $config->getNested("perk.$check.price"), $msg);
-                            $format = explode(":", $players->get("$check-buy-count"));
                             $msg2 = $config->getNested("settings.perk-time.format");
-                            $msg2 = str_replace("%year%", $format[0], $msg2);
-                            $msg2 = str_replace("%month%", $format[1], $msg2);
-                            $msg2 = str_replace("%day%", $format[2], $msg2);
-                            $msg2 = str_replace("%hour%", $format[3], $msg2);
-                            $msg2 = str_replace("%minute%", $format[4], $msg2);
-                            $msg2 = str_replace("%second%", $format[5], $msg2);
+                            $msg2 = str_replace("%year%", $year, $msg2);
+                            $msg2 = str_replace("%month%", $month, $msg2);
+                            $msg2 = str_replace("%day%", $day, $msg2);
+                            $msg2 = str_replace("%hour%", $hour, $msg2);
+                            $msg2 = str_replace("%minute%", $minute, $msg2);
+                            $msg2 = str_replace("%second%", $second, $msg2);
                             $msg = str_replace("%time%", $msg2, $msg);
                             $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
                             $eco->reduceMoney($player, $config->getNested("perk.$check.price"));
@@ -161,13 +166,13 @@ class API
         $effect = $this->getPerkEffect($player, $check, "normal");
         $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly", "keep-xp", "double-jump", "auto-smelting"];
         $date = new \DateTime('now');
-        $datas = $date->format("Y:m:d:H:i:s");
+        $speedcheck = null;
         if ($players->get($check) == true and $effect !== null) {
             if (!$player->hasEffect($effect) and !in_array($check, $block)) {
                 $players->set($check, false);
             }
         }
-        if ($config->getNested("settings.perk-time.enable") == true and $players->exists("$check-buy-count") and $datas >= $players->get("$check-buy-count")) {
+        if ($config->getNested("settings.perk-time.enable") == true and $players->exists("$check-buy-count") and $date->format("Y:m:d:H:i:s") >= $players->get("$check-buy-count")) {
             $players->set($check, false);
             $players->set($check . "-buy", false);
             $players->remove($check . "-buy-count");

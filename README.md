@@ -1,9 +1,9 @@
-# Perks System v4.0-BETA
+# Perks System v4.0
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
 ### Download
-Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/29) file.
+Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/30) file.
 
 ### Commands
 |**Command**|**Description**|
@@ -23,7 +23,7 @@ Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks
 - [X] Giving perks to friends
 - [X] Perks order
 - [X] Language support
-- [X] Perk enable time, certain time until deactivate !!BETA!!
+- [X] Perk enable time, certain time until deactivate
 
 ### Perks list [17]
 - [X] Auto smelting
@@ -45,6 +45,8 @@ Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks
 - [X] Water breathing
 
 ### Todo to next Update
+- [ ] Yaml or Json
+- [ ] Perks Folder and files change location
 - [ ] Perks categories
 - [ ] Active perks at the top
 - [ ] code cleanup

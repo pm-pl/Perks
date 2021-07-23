@@ -25,7 +25,7 @@ command:
 settings:
   # If this is true, you can only buy with the price. If this is false, it goes to Permissions.
   economy-api: false
-  # if this is true and 'economy-api' is also true, then you can give friends perks.
+  # if this and 'economy-api' true, then you can give friends perks.
   friends:
     enable: false
     menu-img: "textures/ui/Friend2"
@@ -42,15 +42,15 @@ settings:
     # this is what makes the price of smelting
     price: 150
   perk-time:
-    # if this true, then perks will only be there for a certain time.
-    enable: true
+    # if this and 'economy-api' true, then perks will only be there for a certain time.
+    enable: false
     # %year% => is the year
     # %month% => is the month
     # %day% => is the day
     # %hour% => is the hour
     # %minute% => is the minute
     # %second% => is the second
-    format: "§e%year% §ayear, §e%month% §amonth, §e%day% §aday, §e%hour% §ahour, §e%minute% §aminute. §e%second% §asecond"
+    format: "§e%year% §ayear, §e%month% §amonth, §e%day% §aday, §e%hour% §ahour, §e%minute% §aminute, §e%second% §asecond"
 
 # perks
 perk:
@@ -59,8 +59,8 @@ perk:
   # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
   # order => so you can decide the order of the perks. If you don't have the perk inside, it won't show up either. 
   # order list: "speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"
-  # time => if 'economy-api' true, this tells how long you can use a perk after buying it and then buy it again. 1 = 1 Minute, 60 = 1 hour, 1440 = 1 day, 10080 = 1 week, false = disable for this perk
-  #               please currently only use up to 1 month, the more you do the more bugged this is, in the next update this will also be fixed / changed.
+  # time => if 'economy-api' true, this tells how long you can use a perk after buying it and then buy it again.
+  #               0:0:0:0:0:0 => Year:Month:Day:Hour:Minute:Second => 0:0:6:24:59:59
   perms:
     # if this true, then only the perks are shown, as you also have hats or the permission, the perks should go with permission.
     enable: false
@@ -86,84 +86,84 @@ perk:
     perms: perks.speed
     price: 10000
     img: "textures/ui/speed_effect"
-    time: 10080
+    time: "0:0:7:0:0:0"
   jump:
     perms: perks.jump
     price: 10000
     img: "textures/ui/jump_boost_effect"
-    time: 10080
+    time: "0:0:7:0:0:0"
   haste:
     perms: perks.haste
     price: 10000
     img: "textures/ui/haste_effect"
-    time: 10080
+    time: "0:0:7:0:0:0"
   night-vision:
     perms: perks.night-vision
     price: 10000
     img: "textures/items/potion_bottle_nightVision"
-    time: 10080
+    time: "0:0:7:0:0:0"
   no-hunger:
     perms: perks.no-hunger
     price: 10000
     img: "textures/ui/hunger_full"
-    time: 10080
+    time: "0:0:7:0:0:0"
   no-falldamage:
     perms: perks.no-falldamage
     price: 10000
     img: "textures/items/totem"
-    time: 10080
+    time: "0:0:7:0:0:0"
   fast-regeneration:
     perms: perks.fast-regeneration
     price: 10000
     img: "textures/ui/regeneration_effect"
-    time: 10080
+    time: "0:0:7:0:0:0"
   keep-inventory:
     perms: perks.keep-inventory
     price: 10000
     img: "textures/blocks/chest_front"
-    time: 10080
+    time: "0:0:7:0:0:0"
   dopple-xp:
     perms: perks.dopple-xp
     price: 10000
     img: "textures/ui/dust_selectable_2"
-    time: 10080
+    time: "0:0:7:0:0:0"
   strength:
     perms: perks.stren
     price: 10000
     img: "textures/ui/strength_effect"
-    time: 10080
+    time: "0:0:7:0:0:0"
   no-firedamage:
     perms: perks.no-firedamage
     price: 10000
     img: "textures/ui/fire_resistance_effect"
-    time: 10080
+    time: "0:0:7:0:0:0"
   fly:
     perms: perks.fly
     price: 10000
     img: "textures/items/feather"
-    time: 10080
+    time: "0:0:7:0:0:0"
   water-breathing:
     perms: perks.water-breathing
     price: 10000
     img: "textures/ui/water_breathing_effect"
-    time: 10080
+    time: "0:0:7:0:0:0"
   invisibility:
     perms: perks.invisibility
     price: 10000
     img: "textures/ui/invisibility_effect"
-    time: 10080
+    time: "0:0:7:0:0:0"
   keep-xp:
     perms: perks.keep-xp
     price: 10000
     img: "textures/ui/dust_selectable_1"
-    time: 10080
+    time: "0:0:7:0:0:0"
   double-jump:
     perms: perks.double-xp
     price: 10000
     img: "textures/items/iron_boots"
-    time: 10080
+    time: "0:0:7:0:0:0"
   auto-smelting:
     perms: perks.auto-smelting
     price: 10000
     img: "textures/blocks/furnace_front_on"
-    time: 10080
+    time: "0:0:7:0:0:0"
