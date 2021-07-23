@@ -39,7 +39,7 @@ class Main extends PluginBase
             $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
             $this->getServer()->getCommandMap()->register("Perks", new PerkCommand());
         }
-        if (!Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")) {
+        if (!$this->getServer()->getPluginManager()->getPlugin("FormAPI")) {
             $this->getLogger()->warning("§cPlease install FormAPI!");
             $this->getServer()->getPluginManager()->disablePlugin($this);
         }
