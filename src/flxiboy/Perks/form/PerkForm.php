@@ -25,7 +25,6 @@ class PerkForm
     {
         $api = new API();
         $config = Main::getInstance()->getConfig();
-        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) use ($config) { 
             if ($data === null) {
                 return; 
@@ -71,6 +70,7 @@ class PerkForm
         $api = new API();
         $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
         $config = Main::getInstance()->getConfig();
+        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
@@ -132,7 +132,7 @@ class PerkForm
                 if ($type == "time") {
                     $date = new \DateTime('now');
                     $datas = explode(":", $date->format("Y:m:d:H:i:s"));
-                    $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
+                    $data = ($datas[0] - "0") . ":" . ($datas[1] - "0") . ":" . ($datas[2] - "0") . ":" . ($datas[3] - "0") . ":" . ($datas[4] - "0") . ":" . ($datas[5] - "0");
                     if ($eco->myMoney($player) >= $config->getNested("perk.$perk.price")) {
                         if (in_array($date->format("m"), [1, 3, 5, 7, 9, 11])) { $months = 32; } elseif (in_array($date->format("m"), [4, 6, 8, 10, 12])) { $months = 31; } else { $months = 29; }
                         $format = explode(":", $config->getNested("perk.$perk.time"));
@@ -143,11 +143,11 @@ class PerkForm
                         $hour = ($formats[3] + $format[3]);
                         $minute = ($formats[4] + $format[4]);
                         $second = ($formats[5] + $format[5]);
-                        if ($second >= 60) { $second = ($second - 61); $minute++; }
-                        if ($minute >= 60) { $minute = ($minute - 61); $hour++; }
-                        if ($hour >= 24) { $hour = ($hour - 25); $minute++; }
+                        if ($second >= 60) { $second = ($second - "61"); $minute++; }
+                        if ($minute >= 60) { $minute = ($minute - "61"); $hour++; }
+                        if ($hour >= 24) { $hour = ($hour - "25"); $minute++; }
                         if ($day >= $months) { $day = ($day - $months); $month++; }
-                        if ($month >= 12) { $month = ($month - 13); $year++; }
+                        if ($month >= 12) { $month = ($month - "13"); $year++; }
                         $players->set("$perk", false);
                         $players->set("$perk-buy", true);
                         $players->set("$perk-buy-count", $year . ":" . $month . ":" . $day . ":" . $hour . ":" . $minute . ":0");
