@@ -25,8 +25,8 @@ command:
 settings:
   # If this is true, you can only buy with the price. If this is false, it goes to Permissions.
   economy-api: false
-  # if this and 'economy-api' true, then you can give friends perks.
   friends:
+    # if this and 'economy-api' true, then you can give friends perks.
     enable: false
     menu-img: "textures/ui/Friend2"
     yes-img: "textures/ui/confirm"
@@ -49,39 +49,55 @@ settings:
     # %day% => is the day
     # %hour% => is the hour
     # %minute% => is the minute
-    # %second% => is the second
-    format: "§e%year% §ayear, §e%month% §amonth, §e%day% §aday, §e%hour% §ahour, §e%minute% §aminute, §e%second% §asecond"
+    format: "§e%year% §ayear, §e%month% §amonth, §e%day% §aday, §e%hour% §ahour, §e%minute% §aminute"
+  buy-confirm:
+    # if this true, then a query is made before buying
+    enable: true
+    yes-img: "textures/ui/confirm"
+    no-img: "textures/ui/redX1"
+
+# category
+#   tutorial
+#      category:
+#        <number +>:
+#           name: "<category-name>:<picture false is disable>"
+#           perks: 
+#             - "<perk-names>"
+#  perk-list: "speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"
+category:
+  0:
+    name: "§5Effects:textures/ui/absorption_effect"
+    perks:
+      - "speed"
+      - "jump"
+      - "haste"
+      - "night-vision"
+      - "fast-regeneration"
+      - "strength"
+      - "no-firedamage"
+      - "water-breathing"
+  1:
+    name: "§2Others:false"
+    perks:
+      - "no-hunger"
+      - "no-falldamage"
+      - "keep-inventory"
+      - "dopple-xp"
+      - "fly"
+      - "keep-xp"
+      - "double-jump"
+      - "auto-smelting"
 
 # perks
 perk:
   # perms => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
   # price => will only go if you have 'economy-api' to true. This sets the price of the perks.
   # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
-  # order => so you can decide the order of the perks. If you don't have the perk inside, it won't show up either. 
-  # order list: "speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"
   # time => if 'economy-api' true, this tells how long you can use a perk after buying it and then buy it again.
   #               0:0:0:0:0:0 => Year:Month:Day:Hour:Minute:Second => 0:0:6:24:59:59
   perms:
     # if this true, then only the perks are shown, as you also have hats or the permission, the perks should go with permission.
     enable: false
-  order:
-    - "speed"
-    - "jump"
-    - "haste"
-    - "night-vision"
-    - "no-hunger"
-    - "no-falldamage"
-    - "fast-regeneration"
-    - "keep-inventory"
-    - "dopple-xp"
-    - "strength"
-    - "no-firedamage"
-    - "fly"
-    - "water-breathing"
-    - "invisibility"
-    - "keep-xp"
-    - "double-jump"
-    - "auto-smelting"
   speed:
     perms: perks.speed
     price: 10000

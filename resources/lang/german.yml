@@ -14,6 +14,7 @@
 # %status% => ist der status vom perk also aktiv oder nicht aktiv
 # %message% => ist die hinterlassene nachricht
 # %time% => ist die zeit, die du nutzen kannst
+# %category% => ist der name der Kategorie
 
 # different
 prefix: "§dPerks §8» "
@@ -24,14 +25,18 @@ reload-cmd: "reload"
 reload-success: "§aDas Plugin wurde erfolgreich gespeichert."
 
 # economyapi
-no-money-economyapi: "§cDu hast nicht genügend geld, dir fehlen noch §e%need-money%€§c."
-buy-economyapi: "§aDu hast dir das Perk §e%perk% §afür §c%moneyp%€ §agekauft."
+no-money-economyapi: "§cDu hast nicht genügend geld, dir fehlen noch §e%need-money% €§c."
+buy-economyapi: "§aDu hast dir das Perk §e%perk% §afür §c%moneyp% € §agekauft."
+title-confirm: "§dPerks kauf bestätigung"
+text-confirm: "§cWillst du wirklich das Perk §e%perk% ​​§cfür §a%moneyp% € §ckaufen?"
+yes-button-confirm: "§2Ja"
+no-button-confirm: "§4Nein"
 
 # buttons
 no-perms-button: "§4Gesperrt"
 enable-button: "§aAktiviert"
 disable-button: "§cDeaktiviert"
-buy-button: "§5Kaufen §8[%moneyp%€]"
+buy-button: "§5Kaufen §8[%moneyp% €]"
 
 # message
 enable-perk: "§aDu hast das Perk §e%perk% §aaktiviert!"
@@ -40,7 +45,11 @@ disable-perk: "§cDu hast das Perk §e%perk% §cdeaktiviert!"
 # ui
 title-ui: "§dPerks"
 text-ui: "§aWähle ein Perk:"
-text-money-ui: "§aDein Geld: §c%money%€\n§aWähle ein Perk:"
+text-money-ui: "§aDein Geld: §c%money% €\n§aWähle ein Perk:"
+
+# category
+title-category: "§dPerks §8| §f%category%"
+text-category: "§aWähle eine Kategorie:"
 
 # perks strength
 title-strength: "§dPerk Stärke"
@@ -54,7 +63,7 @@ text-friends: "§aDu kannst einem Freund oder jemand anders ein Perk schenken"
 user-friends: "§7Benutzername hier..."
 perks-friends: "§aWähle ein Perk:"
 message-friends: "§aNachricht hinterlassen:"
-confirm-text-friends: "§cWillst du wirklich dem User §a%target% §cdas Perk §e%perk% §cfür §c%moneyp%€ §ckaufen? Dies kann nicht zurück gemacht werden!"
+confirm-text-friends: "§cWillst du wirklich dem User §a%target% §cdas Perk §e%perk% §cfür §c%moneyp% € §ckaufen? Dies kann nicht zurück gemacht werden!"
 confirm-yes-friends: "§2Ja"
 confirm-no-friends: "§4Nein"
 not-yourself-friends: "§cDu kannst dir selber keine Perks schenken!"
@@ -64,8 +73,8 @@ success-friends: "§aDu hast das Perk §e%perk% §afür den Spieler §c%target% 
 target-success-friends: "§aDer Spieler §c%player% §ahat dir das Perk §e%perk% §agekauft und hat dir diese Nachricht hinterlassen:\n§8» §7%message%"
 
 # time
-buy-time: "§aDu hast das Perk §e%perk% §afür §c%moneyp%€ §agekauft und dies ist jetzt bis §b%time% §agültig!"
-close-time: "§cDieses Perk wurde deaktiviert, da die Kauf frist abgelaufen ist!"
+buy-time: "§aDu hast das Perk §e%perk% §afür §c%moneyp% € §agekauft und dies ist jetzt bis §b%time% §agültig!"
+close-time: "§cDas Perk §e%perk% §cwurde deaktiviert, da die Kauf frist abgelaufen ist!"
 
 # perks
 speed: "§1Schneller laufen\n§8» %status%"

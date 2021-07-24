@@ -13,6 +13,7 @@
 # %status% => is the status of the perk active or inactive
 # %message% => is the message left behind
 # %time% => is the time that you can use
+# %category% => is the name of the category
 
 # different
 prefix: "§dPerks §8» "
@@ -25,6 +26,10 @@ reload-success: "§aThe Plugin was succesfully saved."
 # economyapi
 no-money-economyapi: "§cYou don't have enough money, you are still missing §a$%need-money%§c."
 buy-economyapi: "§aYou bought the §e%perk% §a​​Perk for §c$%moneyp%§a."
+title-confirm: "§dPerks buy confirm"
+text-confirm: "§cAre you sure you want to buy the Perk §e%perk% ​​§cfor §a$%moneyp%§c?"
+yes-button-confirm: "§2Yes"
+no-button-confirm: "§4No"
 
 # buttons
 no-perms-button: "§4Blocked"
@@ -40,6 +45,10 @@ disable-perk: "§cYou have disabled the §e%perk% ​​§cPerk."
 title-ui: "§dPerks"
 text-ui: "§aSelect a Perk:"
 text-money-ui: "§aYour Money: §c$%money%\n§aSelect a Perk:"
+
+# category
+title-category: "§dPerks §8| §f%category%"
+text-category: "§aSelect a category:"
 
 # perks strength
 title-strength: "§dPerk strength"
@@ -64,7 +73,7 @@ target-success-friends: "§aThe player §c%player% §agave you the perk §e%perk
 
 # time
 buy-time: "§aYou bought the perk §e%perk% §afor §c$%moneyp% §aand this is now valid to §b%time%§a!"
-close-time: "§cThis perk has been deactivated because the purchase period has expired!"
+close-time: "§cThe perk §e%perk% §chas been deactivated because the purchase period has expired!"
 
 # perks
 speed: "§1Speed\n§8» %status%"

@@ -16,6 +16,7 @@
 # %status% => показывает статус вашего перка: активен или неактивен
 # %message% => это сообщение осталось позади
 # %time% => это время, которое вы можете использовать
+# %category% => это название категории
 
 # different
 prefix: "§dPerks §8» "
@@ -28,6 +29,10 @@ reload-success: "§aПлагин успешно сохранен."
 # economyapi
 no-money-economyapi: "§cУ вас недостаточно денег, вам все еще не хватает §a%need-money% ₽§c."
 buy-economyapi: "§aВы купили бонус §c%perk% §aза §c%moneyp% ₽§a."
+title-confirm: "§dПодтверждение покупки бонусов"
+text-confirm: "§cВы действительно хотите купить perk §e%perk% за §a%moneyp% ₽§c?"
+yes-button-confirm: "§2да"
+no-button-confirm: "§4Нет"
 
 # buttons
 no-perms-button: "§4Заблокировано"
@@ -43,6 +48,10 @@ disable-perk: "§cВы отключили бонус §a%perk%§c!"
 title-ui: "§dPerks"
 text-ui: "§aВыберите перк:"
 text-money-ui: "§aТвои деньги: §c%money% ₽\n§aВыберите перк:"
+
+# category
+title-category: "§dPerks §8| §f%category%"
+text-category: "§aВыберите категорию:"
 
 # perks strength
 title-strength: "§dСила перка"

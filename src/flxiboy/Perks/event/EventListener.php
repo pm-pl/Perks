@@ -68,22 +68,7 @@ class EventListener implements Listener
             }
         }
         $players->save();
-        foreach (["speed", "jump", "haste", "night-vision", "fast-regeneration", "strength", "no-firedamage", "water-breathing", "invisibility"] as $name) {
-            foreach ($config->getNested("perk.order") as $enable) {
-                if ($enable == $name) {
-                    $effect = $api->getPerkEffect($player, $name, "normal");
-                    if ($players->get($name) == false and $effect !== null and $player->hasEffect($effect)) {
-                        $player->removeEffect($effect);
-                    }
-                    if ($players->get($name) == true and $effect == null and !$player->hasEffect($effect)) {
-                        $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, 0, false)); 
-                    }
-                }
-            }
-        }
-        if ($players->get("fly") == true) {
-            $player->setAllowFlight(true);
-        }
+        //todo: new join effect giver
     }
 
     /**
