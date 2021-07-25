@@ -36,7 +36,7 @@ class API
                 if ($players->get($check) == false) {
                     $date = new \DateTime('now');
                     $datas = explode(":", $date->format("Y:m:d:H:i:s"));
-                    $data = ($datas[0] - "0") . ":" . ($datas[1] - "0") . ":" . ($datas[2] - "0") . ":" . ($datas[3] - "0") . ":" . ($datas[4] - "0") . ":" . ($datas[5] - "0");
+                    $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
                     if ($eco->myMoney($player) >= $config->getNested("perk.$check.price")) {
                         if ($players->exists("$check-buy-count")) {
                             if ($data >= $players->get("$check-buy-count")) {
@@ -53,7 +53,7 @@ class API
                             if ($config->getNested("settings.buy-confirm.enable") == true) {
                                 $perk->getPerkBuyConfirm($player, $check, "time");
                             } else {
-                                if (in_array($date->format("m"), [1, 3, 5, 7, 9, 11])) { $months = "32"; } elseif (in_array($date->format("m"), [4, 6, 8, 10, 12])) { $months = "31"; } else { $months = "29"; }
+                                if (in_array($date->format("m"), [1, 3, 5, 7, 9, 11])) { $months = 32; } elseif (in_array($date->format("m"), [4, 6, 8, 10, 12])) { $months = 31; } else { $months = 29; }
                                 $format = explode(":", $config->getNested("perk.$check.time"));
                                 $formats = explode(":", $data);
                                 $year = ($formats[0] + $format[0]);
@@ -62,11 +62,11 @@ class API
                                 $hour = ($formats[3] + $format[3]);
                                 $minute = ($formats[4] + $format[4]);
                                 $second = ($formats[5] + $format[5]);
-                                if ($second >= 60) { $second = ($second - "61"); $minute++; }
-                                if ($minute >= 60) { $minute = ($minute - "61"); $hour++; }
-                                if ($hour >= 24) { $hour = ($hour - "25"); $minute++; }
+                                if ($second >= 60) { $second = ($second - 61); $minute++; }
+                                if ($minute >= 60) { $minute = ($minute - 61); $hour++; }
+                                if ($hour >= 24) { $hour = ($hour - 25); $minute++; }
                                 if ($day >= $months) { $day = ($day - $months); $month++; }
-                                if ($month >= 12) { $month = ($month - "13"); $year++; }
+                                if ($month >= 12) { $month = ($month - 13); $year++; }
                                 $players->set("$check", false);
                                 $players->set("$check-buy", true);
                                 $players->set("$check-buy-count", $year . ":" . $month . ":" . $day . ":" . $hour . ":" . $minute . ":0");

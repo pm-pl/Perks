@@ -1,9 +1,9 @@
-# Perks System v4.1
+# Perks System v4.2
 This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
 ### Download
-Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/33) file.
+Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/35) file.
 
 ### Commands
 |**Command**|**Description**|
@@ -46,8 +46,7 @@ Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks
 - [X] Water breathing
 
 ### Todo to next Update
-- [ ] Active perks at the top
-- [ ] Hide perks when he has them (Giving perks to friends)
+- Let yourself be surprised...
 
 ### cooming soon...
 - [ ] code cleanup

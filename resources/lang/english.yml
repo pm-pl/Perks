@@ -25,9 +25,9 @@ reload-success: "§aThe Plugin was succesfully saved."
 
 # economyapi
 no-money-economyapi: "§cYou don't have enough money, you are still missing §a$%need-money%§c."
-buy-economyapi: "§aYou bought the §e%perk% §a​​Perk for §c$%moneyp%§a."
+buy-economyapi: "§aYou bought the §e%perk% §aPerk for §c$%moneyp%§a."
 title-confirm: "§dPerks buy confirm"
-text-confirm: "§cAre you sure you want to buy the Perk §e%perk% ​​§cfor §a$%moneyp%§c?"
+text-confirm: "§cAre you sure you want to buy the Perk §e%perk% §cfor §a$%moneyp%§c?"
 yes-button-confirm: "§2Yes"
 no-button-confirm: "§4No"
 
@@ -38,8 +38,8 @@ disable-button: "§cDisable"
 buy-button: "§5Buy §8[$%moneyp%]"
 
 # message
-enable-perk: "§aYou have activated the §e%perk% ​​§aPerk."
-disable-perk: "§cYou have disabled the §e%perk% ​​§cPerk."
+enable-perk: "§aYou have activated the §e%perk% §aPerk."
+disable-perk: "§cYou have disabled the §e%perk% §cPerk."
 
 # ui
 title-ui: "§dPerks"
@@ -59,6 +59,7 @@ new-strength: "§aThe strength of your perk §c%perk% §ahas been updated to §c
 button-friends: "§2Give someone perks."
 title-friends: "§2Perk friends"
 text-friends: "§aYou can give your friend or a random user a perk here."
+text2-friends: "§aPlayer: §c%target%"
 user-friends: "§7Username here..."
 perks-friends: "§aSelcet a Perk:"
 message-friends: "§aLeave a message:"

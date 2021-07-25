@@ -1,8 +1,8 @@
 name: Perks
 main: flxiboy\Perks\Main
 author: FlxiBoy
-version: 4.1
-api: ["3.21.0", "3.22.0"]
+version: 4.2
+api: ["3.22.0", "3.22.1"]
 mcpe-protocols:
   - 440
   - 448

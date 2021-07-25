@@ -76,6 +76,7 @@ category:
       - "strength"
       - "no-firedamage"
       - "water-breathing"
+      - "invisibility"
   1:
     name: "§2Others:false"
     perks:

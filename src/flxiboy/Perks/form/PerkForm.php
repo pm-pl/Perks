@@ -2,6 +2,10 @@
 
 namespace flxiboy\Perks\form;
 
+use jojoe77777\FormAPI\{
+    CustomForm,
+    SimpleForm
+};
 use pocketmine\entity\{
     EffectInstance,
     Effect
@@ -25,15 +29,15 @@ class PerkForm
     {
         $api = new API();
         $config = Main::getInstance()->getConfig();
-        $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) use ($config) { 
+        $form = new SimpleForm(function (Player $player, $data = null) use ($config) { 
             if ($data === null) {
                 return; 
             }
             if ($config->getNested("settings.friends.enable") == true and $config->getNested("settings.economy-api") == true) {
-                if ($data == 0) {
+                if ($data == "friend") {
                     $this->getPerkFriend($player);
                 } else {
-                    $this->getPerkFriend2($player, (integer)($data - "1"), $data);
+                    $this->getPerkFriend2($player, (integer)$data, $data);
                 }
             } else {
                 $this->getPerkFriend2($player, (integer)$data, $data);
@@ -71,7 +75,7 @@ class PerkForm
         $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
         $config = Main::getInstance()->getConfig();
         $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) { 
+        $form = new SimpleForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
@@ -124,7 +128,7 @@ class PerkForm
         $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
         $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $config = Main::getInstance()->getConfig();
-        $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) use ($perk, $eco, $players, $config, $api, $type) { 
+        $form = new SimpleForm(function (Player $player, $data = null) use ($perk, $eco, $players, $config, $api, $type) { 
             if ($data === null) {
                 return; 
             }
@@ -132,7 +136,7 @@ class PerkForm
                 if ($type == "time") {
                     $date = new \DateTime('now');
                     $datas = explode(":", $date->format("Y:m:d:H:i:s"));
-                    $data = ($datas[0] - "0") . ":" . ($datas[1] - "0") . ":" . ($datas[2] - "0") . ":" . ($datas[3] - "0") . ":" . ($datas[4] - "0") . ":" . ($datas[5] - "0");
+                    $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
                     if ($eco->myMoney($player) >= $config->getNested("perk.$perk.price")) {
                         if (in_array($date->format("m"), [1, 3, 5, 7, 9, 11])) { $months = 32; } elseif (in_array($date->format("m"), [4, 6, 8, 10, 12])) { $months = 31; } else { $months = 29; }
                         $format = explode(":", $config->getNested("perk.$perk.time"));
@@ -143,11 +147,11 @@ class PerkForm
                         $hour = ($formats[3] + $format[3]);
                         $minute = ($formats[4] + $format[4]);
                         $second = ($formats[5] + $format[5]);
-                        if ($second >= 60) { $second = ($second - "61"); $minute++; }
-                        if ($minute >= 60) { $minute = ($minute - "61"); $hour++; }
-                        if ($hour >= 24) { $hour = ($hour - "25"); $minute++; }
+                        if ($second >= 60) { $second = ($second - 61); $minute++; }
+                        if ($minute >= 60) { $minute = ($minute - 61); $hour++; }
+                        if ($hour >= 24) { $hour = ($hour - 25); $minute++; }
                         if ($day >= $months) { $day = ($day - $months); $month++; }
-                        if ($month >= 12) { $month = ($month - "13"); $year++; }
+                        if ($month >= 12) { $month = ($month - 13); $year++; }
                         $players->set("$perk", false);
                         $players->set("$perk-buy", true);
                         $players->set("$perk-buy-count", $year . ":" . $month . ":" . $day . ":" . $hour . ":" . $minute . ":0");
@@ -208,7 +212,7 @@ class PerkForm
     public function getPerkSwitch(Player $player, string $check, string $effect)
     {
         $api = new API();
-        $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createCustomForm(function (Player $player, $data = null) use ($check) { 
+        $form = new CustomForm(function (Player $player, $data = null) use ($check) { 
             if ($data === null) {
                 return; 
             }
@@ -255,26 +259,11 @@ class PerkForm
     public function getPerkFriend(Player $player) 
     {
         $api = new API();
-        $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createCustomForm(function (Player $player, $data = null) { 
+        $form = new CustomForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
             $api = new API();
-            $perk = null;
-            if ($data[1] == 0) { $perk = "speed";
-            } elseif ($data[1] == 1) { $perk = "jump";
-            } elseif ($data[1] == 2) { $perk = "haste";
-            } elseif ($data[1] == 3) { $perk = "night-vision";
-            } elseif ($data[1] == 4) { $perk = "no-hunger";
-            } elseif ($data[1] == 5) { $perk = "no-falldamage";
-            } elseif ($data[1] == 6) { $perk = "fast-regeneration";
-            } elseif ($data[1] == 7) { $perk = "keep-inventory";
-            } elseif ($data[1] == 8) { $perk = "dopple-xp";
-            } elseif ($data[1] == 9) { $perk = "strength";
-            } elseif ($data[1] == 10) { $perk = "no-firedamage";
-            } elseif ($data[1] == 11) { $perk = "fly";
-            } elseif ($data[1] == 12) { $perk = "water-breathing";
-            } elseif ($data[1] == 13) { $perk = "invisibility"; }
             
             $targetd = new Config(Main::getInstance()->getDataFolder() . "players/" . $data[0] . ".yml", Config::YAML);
             if ($data[0] == $player->getName()) {
@@ -287,20 +276,52 @@ class PerkForm
                 $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
                 return;
             }
+            $this->getPerkFriendTarget($player, $data[0]);
+        });
+        $form->setTitle($api->getLanguage($player, "title-friends"));
+        $form->addInput($api->getLanguage($player, "text-friends"), $api->getLanguage($player, "user-friends"));
+        $form->sendToPlayer($player);
+        return $form;
+    }
+
+    /**
+	 * @param Player $player
+     * @param string $target
+	 */
+    public function getPerkFriendTarget(Player $player, string $target)
+    {
+        $api = new API();
+        $targetd = new Config(Main::getInstance()->getDataFolder() . "players/" . $target . ".yml", Config::YAML);
+        $list = [];
+        $list2 = [];
+        $perklist = 17;
+        foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $perks) {
+            $perklist--;
+            if ($targetd->get("$perks-buy") == false) {
+                $list[] = $perks;
+                $list2[] = $api->getLanguage($player, "$perks-msg");
+            }
+        }
+        $form = new CustomForm(function (Player $player, $data = null) use ($target, $targetd, $api, $list){ 
+            if ($data === null) {
+                return; 
+            }
+            $perk = $list[$data[1]];
             if ($targetd->get($perk) == true or $targetd->get($perk . "-buy") == true) {
                 $msg = $api->getLanguage($player, "perk-buyed-friends");
                 $msg = str_replace("%target%", $data[0], $msg);
                 $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
                 return;
             }
-            $this->getPerkFriendConfim($player, $data[0], $perk, $data[2]);
+            $this->getPerkFriendConfim($player, $target, $perk, $data[2]);
         });
         $form->setTitle($api->getLanguage($player, "title-friends"));
-        $form->addInput($api->getLanguage($player, "text-friends"), $api->getLanguage($player, "user-friends"));
-        $form->addDropdown($api->getLanguage($player, "perks-friends"), [$api->getLanguage($player, "speed-msg"), $api->getLanguage($player, "jump-msg"), $api->getLanguage($player, "haste-msg"), $api->getLanguage($player, "night-vision-msg"), 
-            $api->getLanguage($player, "no-hunger-msg"), $api->getLanguage($player, "no-falldamage-msg"), $api->getLanguage($player, "fast-regeneration-msg"), $api->getLanguage($player, "keep-inventory-msg"), $api->getLanguage($player, "dopple-xp-msg"), 
-            $api->getLanguage($player, "strength-msg"), $api->getLanguage($player, "no-firedamage-msg"), $api->getLanguage($player, "fly-msg"), $api->getLanguage($player, "water-breathing-msg"), $api->getLanguage($player, "invisibility-msg"),
-            $api->getLanguage($player, "keep-xp-msg"), $api->getLanguage($player, "double-jump-msg"), $api->getLanguage($player, "auto-smelting-msg")]);
+        $content = $api->getLanguage($player, "text2-friends");
+        $content = str_replace("%target%", $target, $content);
+        $form->addLabel($content);
+        if ($perklist == 0) {
+            $form->addDropdown($api->getLanguage($player, "perks-friends"), $list2);
+        }
         $form->addInput($api->getLanguage($player, "message-friends"));
         $form->sendToPlayer($player);
         return $form;
@@ -316,7 +337,7 @@ class PerkForm
     {
         $api = new API();
         $config = Main::getInstance()->getConfig();
-        $form = Main::getInstance()->getServer()->getPluginManager()->getPlugin("FormAPI")->createSimpleForm(function (Player $player, $data = null) { 
+        $form = new SimpleForm(function (Player $player, $data = null) { 
             if ($data === null) {
                 return; 
             }
