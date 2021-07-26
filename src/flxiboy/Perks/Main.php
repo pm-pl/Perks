@@ -27,7 +27,7 @@ class Main extends PluginBase
         self::$instance = $this;
         @mkdir($this->getDataFolder() . "players/");
         $this->loadFiles();
-        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+        $config = $this->getConfig();
         if (!file_exists($this->getDataFolder() . "lang/" . $config->get("language") . ".yml")) {
             $this->getLogger()->warning("§cThis language was not found. This Plugin was disable.");
             $this->getServer()->getPluginManager()->disablePlugin($this);
@@ -49,9 +49,9 @@ class Main extends PluginBase
     }
 
     /**
-     * @return static
+     * @return self
      */
-    public static function getInstance(): Main
+    public static function getInstance(): self
     {
         return self::$instance;
     }

@@ -31,16 +31,8 @@ settings:
     menu-img: "textures/ui/Friend2"
     yes-img: "textures/ui/confirm"
     no-img: "textures/ui/redX1"
-  double-jump:
-    # This sets the strength of the double jump.
-    strength: 2
-    # if this is true, then the player does not take any fall damage
-    falldamage: true
-  auto-smelting:
-    # if this is true then the items will be melted.
-    enable: true
-    # this is what makes the price of smelting
-    price: 150
+    # if this true, then a UI will be opened to the person who has bought a perk
+    open-ui: true
   perk-time:
     # if this and 'economy-api' true, then perks will only be there for a certain time.
     enable: false
@@ -55,6 +47,16 @@ settings:
     enable: true
     yes-img: "textures/ui/confirm"
     no-img: "textures/ui/redX1"
+  double-jump:
+    # This sets the strength of the double jump.
+    strength: 2
+    # if this is true, then the player does not take any fall damage
+    falldamage: true
+  auto-smelting:
+    # if this is true then the items will be melted.
+    enable: true
+    # this is what makes the price of smelting
+    price: 150
 
 # category
 #   tutorial
@@ -78,7 +80,7 @@ category:
       - "water-breathing"
       - "invisibility"
   1:
-    name: "§2Others:false"
+    name: "§2Others:textures/ui/more-dots"
     perks:
       - "no-hunger"
       - "no-falldamage"
@@ -95,7 +97,7 @@ perk:
   # price => will only go if you have 'economy-api' to true. This sets the price of the perks.
   # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
   # time => if 'economy-api' true, this tells how long you can use a perk after buying it and then buy it again.
-  #               0:0:0:0:0:0 => Year:Month:Day:Hour:Minute:Second => 0:0:6:24:59:59
+  #               0:0:0:0:0:0 => Year:Month:Day:Hour:Minute:Second => 0:0:6:24:59:59 (time zone => your server location)
   perms:
     # if this true, then only the perks are shown, as you also have hats or the permission, the perks should go with permission.
     enable: false
