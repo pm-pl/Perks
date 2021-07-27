@@ -299,7 +299,9 @@ class PerkForm
         $targetd = new Config(Main::getInstance()->getDataFolder() . "players/" . $target . ".yml", Config::YAML);
         $list = [];
         $list2 = [];
+        $perklist = 17;
         foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $perks) {
+            $perklist--;
             if ($targetd->get("$perks-buy") == false) {
                 $list[] = $perks;
                 $list2[] = $api->getLanguage($player, "$perks-msg");
