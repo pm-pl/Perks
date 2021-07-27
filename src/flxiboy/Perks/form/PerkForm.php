@@ -86,6 +86,7 @@ class PerkForm
             return true;
         });
         $titles = explode(":", $config->get("category")[$type]["name"]);
+        $title = $api->getLanguage($player, "title-category");
         $title = str_replace("%category%", $titles[0], $title);
         $form->setTitle($title);
         if ($config->getNested("settings.economy-api") == true) {
