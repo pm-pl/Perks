@@ -5,7 +5,6 @@ namespace flxiboy\Perks;
 use pocketmine\plugin\PluginBase;
 use flxiboy\Perks\event\EventListener;
 use flxiboy\Perks\cmd\PerkCommand;
-use pocketmine\utils\Config;
 
 /**
  * Class Main
