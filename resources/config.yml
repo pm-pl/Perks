@@ -139,7 +139,7 @@ perk:
   keep-inventory:
     perms: perks.keep-inventory
     price: 10000
-    img: "textures/blocks/chest_front"
+    img: "textures/ui/inventory_icon"
     time: "0:0:7:0:0:0"
   dopple-xp:
     perms: perks.dopple-xp
