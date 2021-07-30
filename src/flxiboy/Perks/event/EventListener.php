@@ -9,10 +9,6 @@ use pocketmine\event\player\{
     PlayerJumpEvent,
     PlayerRespawnEvent
 };
-use pocketmine\entity\{
-    EffectInstance,
-    Effect
-};
 use flxiboy\Perks\event\{
     addXP,
     removeDoubleJump
@@ -89,6 +85,7 @@ class EventListener implements Listener
     public function onBreak(BlockBreakEvent $event) 
     {
         $player = $event->getPlayer();
+        $block = $event->getBlock();
         $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
         $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $config = Main::getInstance()->getConfig();
@@ -96,11 +93,11 @@ class EventListener implements Listener
             $event->setXpDropAmount($event->getXpDropAmount() * 2);
         }
         if ($config->getNested("settings.auto-smelting.enable") == true and $players->get("auto-smelting") == true) {
-            if (in_array($event->getBlock()->getId(), [14, 15]) and $eco->myMoney($player) >= $config->getNested("settings.auto-smelting.price") and in_array($player->getGamemode(), [0, 2])) {
+            if (in_array($block->getId(), [14, 15]) and $eco->myMoney($player) >= $config->getNested("settings.auto-smelting.price") and in_array($player->getGamemode(), [0, 2])) {
                 $drops = [];
-                if ($event->getBlock()->getId() == 14) {
+                if ($block->getId() == 14) {
                     $drops[] =  new Item(Item::GOLD_INGOT);
-                } elseif ($event->getBlock()->getId() == 15) {
+                } elseif ($block->getId() == 15) {
                     $drops[] =  new Item(Item::IRON_INGOT);
                 }
                 $event->setDrops($drops);
@@ -157,7 +154,7 @@ class EventListener implements Listener
     }
 
     /**
-     * @param EntityDamageEvent $event
+     * @param PlayerJumpEvent $event
      */
     public function onJump(PlayerJumpEvent $event) 
     {

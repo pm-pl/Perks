@@ -176,7 +176,7 @@ class API
         $date = new \DateTime('now');
         $datas = explode(":", $date->format("Y:m:d:H:i:s"));
         $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
-        $speedcheck = null;
+        $speedcheck = $this->getLanguage($player, "disable-button");
         if ($players->get($check) == true and $effect !== null) {
             if (!$player->hasEffect($effect) and !in_array($check, $block)) {
                 $players->set($check, false);
@@ -282,12 +282,15 @@ class API
             $messages = new Config(Main::getInstance()->getDataFolder() . "lang/" . $config->get("language") . ".yml", Config::YAML);
             $msg = $messages->get($message);
         } else {
-            if (file_exists(Main::getInstance()->getDataFolder() . "lang/english.yml")) {
-                $messages = new Config(Main::getInstance()->getDataFolder() . "lang/english.yml", Config::YAML);
-                $msg = $messages->get($message);
-            } else {
-                $msg = "§cThis language was not found. please change the language!";
+            Main::getInstance()->loadFiles();
+            if (file_exists(Main::getInstance()->getDataFolder() . "config.yml")) {
+                $config->reload();
             }
+            if (file_exists(Main::getInstance()->getDataFolder() . "lang/" . $config->get("language") . ".yml")) {
+                $language = new Config(Main::getInstance()->getDataFolder() . "lang/" . $config->get("language") . ".yml", Config::YAML);
+                $language->reload();
+            }
+            $this->getLanguage($player, $message);
         }
         return $msg;
     }
