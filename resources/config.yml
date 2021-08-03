@@ -57,6 +57,9 @@ settings:
     enable: true
     # this is what makes the price of smelting
     price: 150
+  perks-strength:
+    # this is the max strength of perk strength
+    strength: 5
 
 # category
 #   tutorial

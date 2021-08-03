@@ -217,6 +217,7 @@ class PerkForm
     public function getPerkSwitch(Player $player, string $check, string $effect)
     {
         $api = new API();
+        $config = Main::getInstance()->getConfig();
         $form = new CustomForm(function (Player $player, $data = null) use ($api, $check) { 
             if ($data === null) {
                 return; 
@@ -250,7 +251,11 @@ class PerkForm
         });
         $form->setTitle($api->getLanguage($player, "title-strength"));
         if ($player->hasEffect($effect)) {
-            $form->addStepSlider($api->getLanguage($player, "text-strength"), ["0", "1", "2", "3", "4", "5"], $player->getEffect($effect)->getEffectLevel());
+            $strengths = [];
+            for ($strength = 0; $strength <= $config->getNested("settings.perks-strength.strength"); $strength++) {
+                $strengths[] = "$strength";
+            }
+            $form->addStepSlider($api->getLanguage($player, "text-strength"), $strengths, $player->getEffect($effect)->getEffectLevel());
         } else {
             $form->addStepSlider($api->getLanguage($player, "text-strength"), ["0"], 0);
         }
@@ -269,7 +274,6 @@ class PerkForm
                 return; 
             }
             
-            $targetd = new Config(Main::getInstance()->getDataFolder() . "players/" . $data[0] . ".yml", Config::YAML);
             if ($data[0] == $player->getName()) {
                 $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "not-yourself-friends"));
                 return;
