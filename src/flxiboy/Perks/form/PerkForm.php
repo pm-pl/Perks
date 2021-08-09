@@ -167,7 +167,7 @@ class PerkForm
                         $msg2 = str_replace("%year%", $year, $msg2);
                         $msg2 = str_replace("%month%", $month, $msg2);
                         $msg2 = str_replace("%day%", $day, $msg2);
-                        $msg2 = str_replace("%hour%", $hour, $msg2);
+                        $msg2 = str_replace("%hour%", $hour - 1, $msg2);
                         $msg2 = str_replace("%minute%", $minute, $msg2);
                         $msg = str_replace("%time%", $msg2, $msg);
                         $player->sendMessage($api->getLanguage($player, "prefix") . $msg);

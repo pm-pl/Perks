@@ -34,17 +34,17 @@ class API
             $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
             if ($config->getNested("settings.perk-time.enable") == true) {
                 if ($players->get($check) == false) {
-                    $date = new \DateTime('now');
+                    $date = new \DateTime("now");
                     $datas = explode(":", $date->format("Y:m:d:H:i:s"));
                     $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
-                    if ($eco->myMoney($player) >= $config->getNested("perk.$check.price")) {
-                        if ($players->exists("$check-buy-count")) {
-                            if ($data >= $players->get("$check-buy-count")) {
-                                $players->set("$check", false);
-                                $players->set("$check-buy", false);
-                                $players->remove("$check-buy-count");
+                    if ($eco->myMoney($player) >= $config->getNested("perk." . $check . ".price") or $players->exists($check . "-buy-count")) {
+                        if ($players->exists($check . "-buy-count")) {
+                            if ($data >= $players->get($check . "-buy-count")) {
+                                $players->set($check, false);
+                                $players->set($check . "-buy", false);
+                                $players->remove($check . "-buy-count");
                                 $msg = $this->getLanguage($player, "close-time");
-                                $msg = str_replace("%perk%", $check, $msg);
+                                $msg = str_replace("%perk%", $this->getLanguage($player, $check . "-msg"), $msg);
                                 $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
                             } else {
                                 $playernewperk[] = $player->getName();
@@ -54,7 +54,7 @@ class API
                                 $perk->getPerkBuyConfirm($player, $check, "time");
                             } else {
                                 if (in_array($date->format("m"), [1, 3, 5, 7, 9, 11])) { $months = 32; } elseif (in_array($date->format("m"), [4, 6, 8, 10, 12])) { $months = 31; } else { $months = 29; }
-                                $format = explode(":", $config->getNested("perk.$check.time"));
+                                $format = explode(":", $config->getNested("perk." . $check . ".time"));
                                 $formats = explode(":", $data);
                                 $year = ($formats[0] + $format[0]);
                                 $month = ($formats[1] + $format[1]);
@@ -67,50 +67,50 @@ class API
                                 if ($hour >= 24) { $hour = ($hour - 25); $minute++; }
                                 if ($day >= $months) { $day = ($day - $months); $month++; }
                                 if ($month >= 12) { $month = ($month - 13); $year++; }
-                                $players->set("$check", false);
-                                $players->set("$check-buy", true);
-                                $players->set("$check-buy-count", $year . ":" . $month . ":" . $day . ":" . $hour . ":" . $minute . ":0");
+                                $players->set($check, false);
+                                $players->set($check . "-buy", true);
+                                $players->set($check . "-buy-count", $year . ":" . $month . ":" . $day . ":" . $hour . ":" . $minute . ":0");
                                 $players->save();
                                 $msg = $this->getLanguage($player, "buy-time");
-                                $msg = str_replace("%perk%", $this->getLanguage($player, "$check-msg"), $msg);
-                                $msg = str_replace("%moneyp%", $config->getNested("perk.$check.price"), $msg);
+                                $msg = str_replace("%perk%", $this->getLanguage($player, $check . "-msg"), $msg);
+                                $msg = str_replace("%moneyp%", $config->getNested("perk." . $check . ".price"), $msg);
                                 $msg2 = $config->getNested("settings.perk-time.format");
                                 $msg2 = str_replace("%year%", $year, $msg2);
                                 $msg2 = str_replace("%month%", $month, $msg2);
                                 $msg2 = str_replace("%day%", $day, $msg2);
-                                $msg2 = str_replace("%hour%", $hour, $msg2);
+                                $msg2 = str_replace("%hour%", $hour - 1, $msg2);
                                 $msg2 = str_replace("%minute%", $minute, $msg2);
                                 $msg = str_replace("%time%", $msg2, $msg);
                                 $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
-                                $eco->reduceMoney($player, $config->getNested("perk.$check.price"));
+                                $eco->reduceMoney($player, $config->getNested("perk." . $check . ".price"));
                             }
                         }
                     } else {
                         $msg = $this->getLanguage($player, "no-money-economyapi");
-                        $msg = str_replace("%need-money%", $config->getNested("perk.$check.price") - $eco->myMoney($player), $msg);
+                        $msg = str_replace("%need-money%", $config->getNested("perk." . $check . ".price") - $eco->myMoney($player), $msg);
                         $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
                     }
                 } else {
                     $playernewperk[] = $player->getName();    
                 }
             } else {
-                if ($players->get("$check-buy") == true) {
+                if ($players->get($check . "-buy") == true) {
                     $playernewperk[] = $player->getName();
                 } else {
                     if ($config->getNested("settings.buy-confirm.enable") == true) {
                         $perk->getPerkBuyConfirm($player, $check, "notime");
                     } else {
-                        if ($eco->myMoney($player) >= $config->getNested("perk.$perk.price")) {
-                            $players->set("$perk", false);
-                            $players->set("$perk-buy", true);
+                        if ($eco->myMoney($player) >= $config->getNested("perk." . $perk . ".price")) {
+                            $players->set($perk, false);
+                            $players->set($perk . "-buy", true);
                             $msg = $this->getLanguage($player, "buy-economyapi");
-                            $msg = str_replace("%perk%", $this->getLanguage($player, "$perk-msg"), $msg);
-                            $msg = str_replace("%moneyp%", $config->getNested("perk.$perk.price"), $msg);
+                            $msg = str_replace("%perk%", $this->getLanguage($player, $perk . "-msg"), $msg);
+                            $msg = str_replace("%moneyp%", $config->getNested("perk." . $perk . ".price"), $msg);
                             $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
-                            $eco->reduceMoney($player, $config->getNested("perk.$perk.price"));
+                            $eco->reduceMoney($player, $config->getNested("perk." . $perk . ".price"));
                         } else {
                             $msg = $this->getLanguage($player, "no-money-economyapi");
-                            $msg = str_replace("%need-money%", $config->getNested("perk.$perk.price") - $eco->myMoney($player), $msg);
+                            $msg = str_replace("%need-money%", $config->getNested("perk." . $perk . ".price") - $eco->myMoney($player), $msg);
                             $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
                         } 
                     }
@@ -121,7 +121,7 @@ class API
                 if ($players->get("$check-buy") == true) {
                         $playernewperk[] = $player->getName();
                 } else {
-                    if ($player->hasPermission($config->getNested("perk.$check.perms"))) {
+                    if ($player->hasPermission($config->getNested("perk." . $check . ".perms"))) {
                         $playernewperk[] = $player->getName();
                     } else {
                         $player->sendMessage($this->getLanguage($player, "prefix") . $this->getLanguage($player, "no-perms"));
@@ -141,7 +141,7 @@ class API
                         $player->setAllowFlight(false);
                     }
                     $msg = $this->getLanguage($player, "disable-perk");
-                    $msg = str_replace("%perk%", $this->getLanguage($player, "$check-msg"), $msg);
+                    $msg = str_replace("%perk%", $this->getLanguage($player, $check . "-msg"), $msg);
                     $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
                 } else {
                     $perk->getPerkSwitch($player, $check, $effect);
@@ -155,7 +155,7 @@ class API
                     $player->setAllowFlight(true);
                 }
                 $msg = $this->getLanguage($player, "enable-perk");
-                $msg = str_replace("%perk%", $this->getLanguage($player, "$check-msg"), $msg);
+                $msg = str_replace("%perk%", $this->getLanguage($player, $check . "-msg"), $msg);
                 $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
             }
         }
@@ -173,7 +173,7 @@ class API
         $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
         $effect = $this->getPerkEffect($player, $check);
         $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly", "keep-xp", "double-jump", "auto-smelting"];
-        $date = new \DateTime('now');
+        $date = new \DateTime("now");
         $datas = explode(":", $date->format("Y:m:d:H:i:s"));
         $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
         $speedcheck = $this->getLanguage($player, "disable-button");
@@ -182,12 +182,12 @@ class API
                 $players->set($check, false);
             }
         }
-        if ($config->getNested("settings.perk-time.enable") == true and $players->exists("$check-buy-count") and $data >= $players->get("$check-buy-count")) {
+        if ($config->getNested("settings.perk-time.enable") == true and $config->getNested("settings.economy-api") == true and $players->exists("$check-buy-count") and $data >= $players->get("$check-buy-count")) {
             $players->set($check, false);
             $players->set($check . "-buy", false);
             $players->remove($check . "-buy-count");
             $msg = $this->getLanguage($player, "close-time");
-            $msg = str_replace("%perk%", $check, $msg);
+            $msg = str_replace("%perk%", $this->getLanguage($player, $check . "-msg"), $msg);
             $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
         }
         if (($config->getNested("settings.economy-api") == true and $players->get($check . "-buy") == true) or ($config->getNested("perk.$check.perms") !== false and $player->hasPermission($config->getNested("perk.$check.perms"))) or ($players->get($check . "-buy") == false and $players->get($check) == true)) {
@@ -212,7 +212,7 @@ class API
                     }
                 } else {
                     $msg = $this->getLanguage($player, "buy-button");
-                    $msg = str_replace("%moneyp%", $config->getNested("perk.$check.price"), $msg);
+                    $msg = str_replace("%moneyp%", $config->getNested("perk." . $check . ".price"), $msg);
                     $speedcheck = $msg;
                 }
             }
@@ -271,10 +271,10 @@ class API
         return $effect;
     }
 
-/**
- * @param Player $player
- * @param string $message
- */
+    /**
+    * @param Player $player
+    * @param string $message
+    */
     public function getLanguage(Player $player, string $message) 
     {
         $config = Main::getInstance()->getConfig();
