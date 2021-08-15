@@ -284,6 +284,7 @@ class API
     public function getLanguage(Player $player, string $message) 
     {
         $config = Main::getInstance()->getConfig();
+	$msg = null;
         if (file_exists(Main::getInstance()->getDataFolder() . "lang/" . $config->get("language") . ".yml")) {
             $messages = new Config(Main::getInstance()->getDataFolder() . "lang/" . $config->get("language") . ".yml", Config::YAML);
             $msg = $messages->get($message);
