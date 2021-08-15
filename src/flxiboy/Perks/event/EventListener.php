@@ -63,6 +63,28 @@ class EventListener implements Listener
                 $players->set($name . "-buy", false);
             }
         }
+        if ($config->getNested("settings.economy-api") == true and $config->getNested("settings.perk-time.enable") == true) {
+            $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+            $date = new \DateTime("now");
+            $datas = explode(":", $date->format("Y:m:d:H:i:s"));
+            $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
+            foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $check) {
+                $effect = $api->getPerkEffect($player, $check);
+                if ($eco->myMoney($player) >= $config->getNested("perk." . $check . ".price") or $players->exists($check . "-buy-count")) {
+                    if ($players->exists($check . "-buy-count") and $data >= $players->get($check . "-buy-count")) {
+                        $players->set($check, false);
+                        $players->set($check . "-buy", false);
+                        $players->remove($check . "-buy-count");
+                        $msg = $api->getLanguage($player, "close-time");
+                        $msg = str_replace("%perk%", $api->getLanguage($player, $check . "-msg"), $msg);
+                        $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                        if ($effect !== null) {
+                            $player->removeEffect($effect);
+                        }
+                    }
+                }
+            }
+        }
         $players->save();
         //todo: new join effect giver
     }

@@ -46,6 +46,9 @@ class API
                                 $msg = $this->getLanguage($player, "close-time");
                                 $msg = str_replace("%perk%", $this->getLanguage($player, $check . "-msg"), $msg);
                                 $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
+                                if ($effect !== null) {
+                                    $player->removeEffect($effect);
+                                }
                             } else {
                                 $playernewperk[] = $player->getName();
                             }
@@ -189,6 +192,9 @@ class API
             $msg = $this->getLanguage($player, "close-time");
             $msg = str_replace("%perk%", $this->getLanguage($player, $check . "-msg"), $msg);
             $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
+            if ($effect !== null) {
+                $player->removeEffect($effect);
+            }
         }
         if (($config->getNested("settings.economy-api") == true and $players->get($check . "-buy") == true) or ($config->getNested("perk.$check.perms") !== false and $player->hasPermission($config->getNested("perk.$check.perms"))) or ($players->get($check . "-buy") == false and $players->get($check) == true)) {
             if ($players->get($check) == false and $effect !== null) {
