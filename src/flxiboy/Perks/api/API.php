@@ -35,8 +35,8 @@ class API
             if ($config->getNested("settings.perk-time.enable") == true) {
                 if ($players->get($check) == false) {
                     $date = new \DateTime("now");
-                    $datas = explode(":", $date->format("Y:m:d:H:i:s"));
-                    $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
+                    $datas = explode(":", $date->format("Y:m:d:H:i"));
+                    $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0);
                     if ($eco->myMoney($player) >= $config->getNested("perk." . $check . ".price") or $players->exists($check . "-buy-count")) {
                         if ($players->exists($check . "-buy-count")) {
                             if ($data >= $players->get($check . "-buy-count")) {
@@ -64,8 +64,6 @@ class API
                                 $day = ($formats[2] + $format[2]);
                                 $hour = ($formats[3] + $format[3]);
                                 $minute = ($formats[4] + $format[4]);
-                                $second = ($formats[5] + $format[5]);
-                                if ($second >= 60) { $second = ($second - 61); $minute++; }
                                 if ($minute >= 60) { $minute = ($minute - 61); $hour++; }
                                 if ($hour >= 24) { $hour = ($hour - 25); $minute++; }
                                 if ($day >= $months) { $day = ($day - $months); $month++; }

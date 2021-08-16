@@ -1,0 +1,51 @@
+<?php
+
+namespace flxiboy\Perks\task;
+
+use flxiboy\Perks\api\API;
+use flxiboy\Perks\Main;
+use pocketmine\scheduler\Task;
+use pocketmine\Server;
+use pocketmine\utils\Config;
+
+/**
+ * Class PerkCheckTask
+ * @package flxiboy\Perks\task
+ */
+class PerkCheckTask extends Task
+{
+
+    /**
+     * @param int $currentTick
+     */
+    public function onRun(int $currentTick)
+    {
+        $config = Main::getInstance()->getConfig();
+        if ($config->getNested("settings.economy-api") == true and $config->getNested("settings.perk-time.enable") == true) {
+            $api = new API();
+            $date = new \DateTime("now");
+            $datas = explode(":", $date->format("Y:m:d:H:i:s"));
+            $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
+            foreach (Server::getInstance()->getOnlinePlayers() as $player) {
+                $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+                foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $check) {
+                    $effect = $api->getPerkEffect($player, $check);
+                    if ($players->exists($check . "-buy-count") and $data >= $players->get($check . "-buy-count")) {
+                        $players->set($check, false);
+                        $players->set($check . "-buy", false);
+                        $players->remove($check . "-buy-count");
+                        $players->save();
+                        $msg = $api->getLanguage($player, "close-time");
+                        $msg = str_replace("%perk%", $api->getLanguage($player, $check . "-msg"), $msg);
+                        $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                        if ($effect !== null) {
+                            $player->removeEffect($effect);
+                        }
+                    }
+                }
+            }
+        } else {
+            Main::getInstance()->getScheduler()->cancelTask($this->getTaskId());
+        }
+    }
+}

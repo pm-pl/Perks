@@ -2,6 +2,7 @@
 
 namespace flxiboy\Perks;
 
+use flxiboy\Perks\task\PerkCheckTask;
 use pocketmine\plugin\PluginBase;
 use flxiboy\Perks\event\EventListener;
 use flxiboy\Perks\cmd\PerkCommand;
@@ -33,6 +34,10 @@ class Main extends PluginBase
         } else {
             $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
             $this->getServer()->getCommandMap()->register("Perks", new PerkCommand());
+        }
+        if ($config->getNested("settings.economy-api") == true and $config->getNested("settings.perk-time.enable") == true) {
+            $time = $config->getNested("settings.perk-time.time-task") ? $config->getNested("settings.perk-time.time-task") : 60;
+            $this->getScheduler()->scheduleRepeatingTask(new PerkCheckTask(), $time * 20);
         }
     }
 

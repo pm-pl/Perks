@@ -42,6 +42,8 @@ settings:
     # %hour% => is the hour
     # %minute% => is the minute
     format: "§e%year% §ayear, §e%month% §amonth, §e%day% §aday, §e%hour% §ahour, §e%minute% §aminute"
+    # enter the number of seconds to set the duration of the Perks Times Check, 1 = 1 second, 60 = 1 minute
+    time-task: 60
   buy-confirm:
     # if this true, then a query is made before buying
     enable: true
@@ -100,7 +102,7 @@ perk:
   # price => will only go if you have 'economy-api' to true. This sets the price of the perks.
   # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
   # time => if 'economy-api' true, this tells how long you can use a perk after buying it and then buy it again.
-  #               0:0:0:0:0:0 => Year:Month:Day:Hour:Minute:Second => 0:0:6:24:59:59 (time zone => your server location)
+  #               0:0:0:0:0 => Year:Month:Day:Hour:Minute => 0:0:6:24:59 (time zone => your server location)
   perms:
     # if this true, then only the perks are shown, as you also have hats or the permission, the perks should go with permission.
     enable: false
@@ -108,84 +110,84 @@ perk:
     perms: perks.speed
     price: 10000
     img: "textures/ui/speed_effect"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   jump:
     perms: perks.jump
     price: 10000
     img: "textures/ui/jump_boost_effect"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   haste:
     perms: perks.haste
     price: 10000
     img: "textures/ui/haste_effect"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   night-vision:
     perms: perks.night-vision
     price: 10000
     img: "textures/items/potion_bottle_nightVision"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   no-hunger:
     perms: perks.no-hunger
     price: 10000
     img: "textures/ui/hunger_full"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   no-falldamage:
     perms: perks.no-falldamage
     price: 10000
     img: "textures/items/totem"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   fast-regeneration:
     perms: perks.fast-regeneration
     price: 10000
     img: "textures/ui/regeneration_effect"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   keep-inventory:
     perms: perks.keep-inventory
     price: 10000
     img: "textures/ui/inventory_icon"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   dopple-xp:
     perms: perks.dopple-xp
     price: 10000
     img: "textures/ui/dust_selectable_2"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   strength:
     perms: perks.stren
     price: 10000
     img: "textures/ui/strength_effect"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   no-firedamage:
     perms: perks.no-firedamage
     price: 10000
     img: "textures/ui/fire_resistance_effect"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   fly:
     perms: perks.fly
     price: 10000
     img: "textures/items/feather"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   water-breathing:
     perms: perks.water-breathing
     price: 10000
     img: "textures/ui/water_breathing_effect"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   invisibility:
     perms: perks.invisibility
     price: 10000
     img: "textures/ui/invisibility_effect"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   keep-xp:
     perms: perks.keep-xp
     price: 10000
     img: "textures/ui/dust_selectable_1"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   double-jump:
     perms: perks.double-xp
     price: 10000
     img: "textures/items/iron_boots"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
   auto-smelting:
     perms: perks.auto-smelting
     price: 10000
     img: "textures/blocks/furnace_front_on"
-    time: "0:0:7:0:0:0"
+    time: "0:0:7:0:0"
