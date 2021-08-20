@@ -24,8 +24,8 @@ class PerkCheckTask extends Task
         if ($config->getNested("settings.economy-api") == true and $config->getNested("settings.perk-time.enable") == true) {
             $api = new API();
             $date = new \DateTime("now");
-            $datas = explode(":", $date->format("Y:m:d:H:i:s"));
-            $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
+            $datas = explode(":", $date->format("Y:m:d:H:i"));
+            $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0);
             foreach (Server::getInstance()->getOnlinePlayers() as $player) {
                 $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
                 foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $check) {
