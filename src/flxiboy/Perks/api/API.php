@@ -59,15 +59,15 @@ class API
                                 if (in_array($date->format("m"), [1, 3, 5, 7, 9, 11])) { $months = 32; } elseif (in_array($date->format("m"), [4, 6, 8, 10, 12])) { $months = 31; } else { $months = 29; }
                                 $format = explode(":", $config->getNested("perk." . $check . ".time"));
                                 $formats = explode(":", $data);
-                                $year = ($formats[0] + $format[0]);
-                                $month = ($formats[1] + $format[1]);
-                                $day = ($formats[2] + $format[2]);
-                                $hour = ($formats[3] + $format[3]);
-                                $minute = ($formats[4] + $format[4]);
-                                if ($minute >= 60) { $minute = ($minute - 61); $hour++; }
-                                if ($hour >= 24) { $hour = ($hour - 25); $minute++; }
-                                if ($day >= $months) { $day = ($day - $months); $month++; }
-                                if ($month >= 12) { $month = ($month - 13); $year++; }
+                                $year = ((int)$formats[0] + (int)$format[0]);
+                                $month = ((int)$formats[1] + (int)$format[1]);
+                                $day = ((int)$formats[2] + (int)$format[2]);
+                                $hour = ((int)$formats[3] + (int)$format[3]);
+                                $minute = ((int)$formats[4] + (int)$format[4]);
+                                if ($minute >= 60) { $minute = ((int)$minute - 61); $hour++; }
+                                if ($hour >= 24) { $hour = ((int)$hour - 25); $minute++; }
+                                if ($day >= $months) { $day = ((int)$day - (int)$months); $month++; }
+                                if ($month >= 12) { $month = ((int)$month - 13); $year++; }
                                 $players->set($check, false);
                                 $players->set($check . "-buy", true);
                                 $players->set($check . "-buy-count", $year . ":" . $month . ":" . $day . ":" . $hour . ":" . $minute . ":0");
@@ -79,7 +79,7 @@ class API
                                 $msg2 = str_replace("%year%", $year, $msg2);
                                 $msg2 = str_replace("%month%", $month, $msg2);
                                 $msg2 = str_replace("%day%", $day, $msg2);
-                                $msg2 = str_replace("%hour%", $hour - 1, $msg2);
+                                $msg2 = str_replace("%hour%", (int)$hour - 1, $msg2);
                                 $msg2 = str_replace("%minute%", $minute, $msg2);
                                 $msg = str_replace("%time%", $msg2, $msg);
                                 $player->sendMessage($this->getLanguage($player, "prefix") . $msg);
@@ -176,7 +176,7 @@ class API
         $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly", "keep-xp", "double-jump", "auto-smelting"];
         $date = new \DateTime("now");
         $datas = explode(":", $date->format("Y:m:d:H:i:s"));
-        $data = ($datas[0] - 0) . ":" . ($datas[1] - 0) . ":" . ($datas[2] - 0) . ":" . ($datas[3] - 0) . ":" . ($datas[4] - 0) . ":" . ($datas[5] - 0);
+        $data = ((int)$datas[0] - 0) . ":" . ((int)$datas[1] - 0) . ":" . ((int)$datas[2] - 0) . ":" . ((int)$datas[3] - 0) . ":" . ((int)$datas[4] - 0) . ":" . ((int)$datas[5] - 0);
         $speedcheck = $this->getLanguage($player, "disable-button");
         if ($players->get($check) == true and $effect !== null) {
             if (!$player->hasEffect($effect) and !in_array($check, $block)) {
