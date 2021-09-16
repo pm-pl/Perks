@@ -21,7 +21,7 @@ class PerkCheckTask extends Task
     public function onRun(int $currentTick)
     {
         $config = Main::getInstance()->getConfig();
-        if ($config->getNested("settings.economy-api") == true and $config->getNested("settings.perk-time.enable") == true) {
+        if ($config->getNested("settings.perk-time.enable") == true) {
             $api = new API();
             $date = new \DateTime("now");
             $datas = explode(":", $date->format("Y:m:d:H:i"));
@@ -30,7 +30,7 @@ class PerkCheckTask extends Task
                 $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
                 foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $check) {
                     $effect = $api->getPerkEffect($player, $check);
-                    if ($players->exists($check . "-buy-count") and $data >= $players->get($check . "-buy-count")) {
+                    if ($players->exists($check . "-buy-count") && $data >= $players->get($check . "-buy-count")) {
                         $players->set($check, false);
                         $players->set($check . "-buy", false);
                         $players->remove($check . "-buy-count");

@@ -3,7 +3,7 @@ This is a Perk System for Pocketmine-MP.
 You can all funktion edit in **config.yml**
 
 ### Download
-Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/55) file.
+Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/56) file.
 
 ### Commands
 |**Command**|**Description**|
@@ -12,16 +12,13 @@ Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks
 |/perks reload| Reload all Perks files|
 
 ### Feature
-- [X] Command
 - [X] Message and Command edit in config
 - [X] Ui support
 - [X] Price for a Perk
 - [X] Enable/Disable perks
 - [X] General permission
 - [X] Switch Perks Strength
-- [X] Pictures on button
 - [X] Giving perks to friends
-- [X] Perks order
 - [X] Language support
 - [X] Perk enable time, certain time until deactivate
 - [X] Perks categories

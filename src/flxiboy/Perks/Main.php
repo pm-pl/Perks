@@ -35,7 +35,7 @@ class Main extends PluginBase
             $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
             $this->getServer()->getCommandMap()->register("Perks", new PerkCommand());
         }
-        if ($config->getNested("settings.economy-api") == true and $config->getNested("settings.perk-time.enable") == true) {
+        if ($config->getNested("settings.economy-api") == true && $config->getNested("settings.perk-time.enable") == true) {
             $time = $config->getNested("settings.perk-time.time-task") ? $config->getNested("settings.perk-time.time-task") : 60;
             $this->getScheduler()->scheduleRepeatingTask(new PerkCheckTask(), $time * 20);
         }

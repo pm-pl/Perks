@@ -46,7 +46,7 @@ class PerkCommand extends PluginCommand
             return;
         }
 
-        if ($config->getNested("command.permission") !== false and !$player->hasPermission($config->getNested("command.permission"))) {
+        if ($config->getNested("command.permission") !== false && !$player->hasPermission($config->getNested("command.permission"))) {
             $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "no-perms"));
             return;
         }

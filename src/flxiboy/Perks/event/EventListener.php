@@ -63,23 +63,25 @@ class EventListener implements Listener
                 $players->set($name . "-buy", false);
             }
         }
-        if ($config->getNested("settings.economy-api") == true and $config->getNested("settings.perk-time.enable") == true) {
+        if ($config->getNested("settings.economy-api") == true && $config->getNested("settings.perk-time.enable") == true) {
             $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
             $date = new \DateTime("now");
             $datas = explode(":", $date->format("Y:m:d:H:i"));
             $data = ((int)$datas[0] - 0) . ":" . ((int)$datas[1] - 0) . ":" . ((int)$datas[2] - 0) . ":" . ((int)$datas[3] - 0) . ":" . ((int)$datas[4] - 0);
-            foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $check) {
-                $effect = $api->getPerkEffect($player, $check);
-                if ($eco->myMoney($player) >= $config->getNested("perk." . $check . ".price") or $players->exists($check . "-buy-count")) {
-                    if ($players->exists($check . "-buy-count") and $data >= $players->get($check . "-buy-count")) {
-                        $players->set($check, false);
-                        $players->set($check . "-buy", false);
-                        $players->remove($check . "-buy-count");
-                        $msg = $api->getLanguage($player, "close-time");
-                        $msg = str_replace("%perk%", $api->getLanguage($player, $check . "-msg"), $msg);
-                        $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
-                        if ($effect !== null) {
-                            $player->removeEffect($effect);
+            if ($eco->isEnabled()) {
+                foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $check) {
+                    $effect = $api->getPerkEffect($player, $check);
+                    if ($eco->myMoney($player) >= $config->getNested("perk." . $check . ".price") || $players->exists($check . "-buy-count")) {
+                        if ($players->exists($check . "-buy-count") && $data >= $players->get($check . "-buy-count")) {
+                            $players->set($check, false);
+                            $players->set($check . "-buy", false);
+                            $players->remove($check . "-buy-count");
+                            $msg = $api->getLanguage($player, "close-time");
+                            $msg = str_replace("%perk%", $api->getLanguage($player, $check . "-msg"), $msg);
+                            $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                            if ($effect !== null) {
+                                $player->removeEffect($effect);
+                            }
                         }
                     }
                 }
@@ -114,8 +116,8 @@ class EventListener implements Listener
         if ($players->get("dopple-xp") == true) {
             $event->setXpDropAmount($event->getXpDropAmount() * 2);
         }
-        if ($config->getNested("settings.auto-smelting.enable") == true and $players->get("auto-smelting") == true) {
-            if (in_array($block->getId(), [14, 15]) and $eco->myMoney($player) >= $config->getNested("settings.auto-smelting.price") and in_array($player->getGamemode(), [0, 2])) {
+        if ($eco->isEnabled() && $config->getNested("settings.auto-smelting.enable") == true && $players->get("auto-smelting") == true) {
+            if (in_array($block->getId(), [14, 15]) && $eco->myMoney($player) >= $config->getNested("settings.auto-smelting.price") && in_array($player->getGamemode(), [0, 2])) {
                 $drops = [];
                 if ($block->getId() == 14) {
                     $drops[] =  new Item(Item::GOLD_INGOT);
