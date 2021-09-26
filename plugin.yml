@@ -2,9 +2,8 @@ name: Perks
 main: flxiboy\Perks\Main
 author: FlxiBoy
 version: 4.4
-api: ["3.22.0", "3.22.1"]
+api: 3.23.1
 mcpe-protocols:
-  - 440
-  - 448
+  - 465
 depend:
   - EconomyAPI
