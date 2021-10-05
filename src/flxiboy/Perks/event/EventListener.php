@@ -21,6 +21,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use flxiboy\Perks\api\API;
 use pocketmine\item\Item;
 use pocketmine\Player;
+use pocketmine\event\entity\EntityLevelChangeEvent;
 
 /**
  * Class EventListener
@@ -88,7 +89,6 @@ class EventListener implements Listener
             }
         }
         $players->save();
-        //todo: new join effect giver
     }
 
     /**
@@ -98,7 +98,7 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-        if ($players->get("no-hunger") == true) {
+        if ($players->get("no-hunger") == true && $player->getFood() != 20) {
             $player->setFood(20);
         }
     }
@@ -200,5 +200,32 @@ class EventListener implements Listener
                 Main::getInstance()->getScheduler()->scheduleDelayedTask(new removeDoubleJump($this, $player), 20);
             }
         }
+    }
+
+    /**
+     * @param EntityLevelChangeEvent $event
+     */
+    public function onWorldChange(EntityLevelChangeEvent $event) 
+    {
+    	$player = $event->getEntity();
+        $api = new API();
+        $config = Main::getInstance()->getConfig();
+    	if($player instanceof Player && $config->getNested("settings.per-world.enable") == true) {
+            $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+            $block = false;
+            foreach ($config->getNested("settings.per-world.worlds") as $level) {
+                if ($event->getTarget() !== $level) {
+                    $block = true;
+                }
+            }
+            if ($block == true) {
+                $player->removeAllEffects();
+                foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $check) {
+                    $players->set($check, false);
+                }
+                $players->save();
+                $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "perks-disable"));
+            }
+    	}
     }
 }

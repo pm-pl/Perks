@@ -51,6 +51,20 @@ class PerkCommand extends PluginCommand
             return;
         }
 
+        $block = false;
+        if ($config->getNested("settings.per-world.enable") == true) {
+            foreach ($config->getNested("settings.per-world.worlds") as $level) {
+                if ($player->getLevel()->getFolderName() !== $level) {
+                    $block = true;
+                }
+            }
+        }
+
+        if ($block == true) {
+            $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "not-enable"));
+            return true;
+        }
+
         if (isset($args[0])) {
             if ($player->hasPermission($config->getNested("command.reload.perms"))) {
                 if ($args[0] == $api->getLanguage($player, "reload-cmd")) {

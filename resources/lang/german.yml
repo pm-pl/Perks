@@ -42,6 +42,10 @@ buy-button: "§5Kaufen §8[%moneyp% €]"
 enable-perk: "§aDu hast das Perk §e%perk% §aaktiviert!"
 disable-perk: "§cDu hast das Perk §e%perk% §cdeaktiviert!"
 
+# world
+not-enable: "§cDu darfst in dieser Welt keine Perks benutzen!"
+perks-disable: "§cAlle deine Perks wurden deaktiviert, da du dies nicht in dieser Welt nutzen darfst!"
+
 # ui
 title-ui: "§dPerks"
 text-ui: "§aWähle ein Perk:"

@@ -62,6 +62,12 @@ settings:
   perks-strength:
     # this is the max strength of perk strength
     strength: 5
+  per-world:
+  #  if this true, then you can only use perks in certain worlds
+    enable: false
+    # list of the worlds
+    worlds:
+    - world
 
 # category
 #   tutorial
