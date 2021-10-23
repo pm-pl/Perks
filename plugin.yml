@@ -3,7 +3,5 @@ main: flxiboy\Perks\Main
 author: FlxiBoy
 version: 4.5-BETA
 api: 3.23.1
-mcpe-protocols:
-  - 465
 depend:
   - EconomyAPI
