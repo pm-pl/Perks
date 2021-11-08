@@ -2,6 +2,6 @@ name: Perks
 main: flxiboy\Perks\Main
 author: FlxiBoy
 version: 4.5-BETA
-api: 3.23.1
+api: 3.25.2
 depend:
   - EconomyAPI
