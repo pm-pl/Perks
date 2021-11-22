@@ -6,11 +6,8 @@ use jojoe77777\FormAPI\{
     CustomForm,
     SimpleForm
 };
-use pocketmine\entity\{
-    EffectInstance,
-    Effect
-};
-use pocketmine\Player;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\player\Player;
 use pocketmine\utils\Config;
 use flxiboy\Perks\Main;
 use flxiboy\Perks\api\API;
@@ -23,9 +20,10 @@ class PerkForm
 {
 
     /**
-	 * @param Player $player
-	 */
-    public function getPerks(Player $player) 
+     * @param Player $player
+     * @return SimpleForm
+     */
+    public function getPerks(Player $player): SimpleForm
     {
         $api = new API();
         $config = Main::getInstance()->getConfig();
@@ -65,11 +63,12 @@ class PerkForm
     }
 
     /**
-	 * @param Player $player
+     * @param Player $player
      * @param string $type
      * @param string $cate
-	 */
-    public function getPerkFriend2(Player $player, string $type, string $cate) 
+     * @return SimpleForm
+     */
+    public function getPerkFriend2(Player $player, string $type, string $cate): SimpleForm
     {
         $api = new API();
         $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
@@ -120,8 +119,9 @@ class PerkForm
      * @param Player $player
      * @param string $perk
      * @param string $type
+     * @return SimpleForm
      */
-    public function getPerkBuyConfirm(Player $player, string $perk, string $type) 
+    public function getPerkBuyConfirm(Player $player, string $perk, string $type): SimpleForm
     {
         $api = new API();
         $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
@@ -204,33 +204,33 @@ class PerkForm
     }
 
     /**
-	 * @param Player $player
+     * @param Player $player
      * @param string $check
-     * @param string $effect
-	 */
-    public function getPerkSwitch(Player $player, string $check, string $effect)
+     * @param $effect
+     * @return CustomForm
+     */
+    public function getPerkSwitch(Player $player, string $check, $effect): CustomForm
     {
         $api = new API();
         $config = Main::getInstance()->getConfig();
         $form = new CustomForm(function (Player $player, $data = null) use ($api, $check) { 
             if ($data === null) return; 
 
-            $check = $check;
             $effect = $api->getPerkEffect($player, $check);
             $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-            if ($data[0] !== $player->getEffect($effect)->getEffectLevel()) {
+            if ($data[0] !== $player->getEffects()->get($effect)->getEffectLevel()) {
                 if ($data[0] == 0) {
                     $players->set($check, false);
                     if ($effect !== null) {
-                        $player->removeEffect($effect);
+                        $player->getEffects()->clear();
                     }
                     $msg = $api->getLanguage($player, "disable-perk");
                     $msg = str_replace("%perk%", $api->getLanguage($player, "$check-msg"), $msg);
                     $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
                 } else {
                     if ($effect !== null) {
-                        $player->removeEffect($effect);
-                        $player->addEffect(new EffectInstance(Effect::getEffect($effect), 107374182, $data[0] - 1, false));
+                        $player->getEffects()->remove($effect);
+                        $player->getEffects()->add(new EffectInstance($effect, 107374182, $data[0] - 1, false));
                     }
                     $msg = $api->getLanguage($player, "new-strength");
                     $msg = str_replace("%perk%", $api->getLanguage($player, "$check-msg"), $msg);
@@ -242,12 +242,12 @@ class PerkForm
             return true;
         });
         $form->setTitle($api->getLanguage($player, "title-strength"));
-        if ($player->hasEffect($effect)) {
+        if ($player->getEffects()->has($effect)) {
             $strengths = [];
             for ($strength = 0; $strength <= $config->getNested("settings.perks-strength.strength"); $strength++) {
                 $strengths[] = "$strength";
             }
-            $form->addStepSlider($api->getLanguage($player, "text-strength"), $strengths, $player->getEffect($effect)->getEffectLevel());
+            $form->addStepSlider($api->getLanguage($player, "text-strength"), $strengths, $player->getEffects()->get($effect)->getEffectLevel());
         } else {
             $form->addStepSlider($api->getLanguage($player, "text-strength"), ["0"], 0);
         }
@@ -256,9 +256,10 @@ class PerkForm
     }
 
     /**
-	 * @param Player $player
-	 */
-    public function getPerkFriend(Player $player) 
+     * @param Player $player
+     * @return CustomForm
+     */
+    public function getPerkFriend(Player $player): CustomForm
     {
         $api = new API();
         $form = new CustomForm(function (Player $player, $data = null) use ($api){ 
@@ -284,10 +285,11 @@ class PerkForm
     }
 
     /**
-	 * @param Player $player
+     * @param Player $player
      * @param string $target
-	 */
-    public function getPerkFriendTarget(Player $player, string $target)
+     * @return CustomForm
+     */
+    public function getPerkFriendTarget(Player $player, string $target): CustomForm
     {
         $api = new API();
         $targetd = new Config(Main::getInstance()->getDataFolder() . "players/" . $target . ".yml", Config::YAML);
@@ -311,7 +313,7 @@ class PerkForm
                 $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
                 return;
             }
-            $this->getPerkFriendConfim($player, $target, $perk, $data[2]);
+            $this->getPerkFriendConfirm($player, $target, $perk, $data[2]);
             return true;
         });
         $form->setTitle($api->getLanguage($player, "title-friends"));
@@ -327,12 +329,13 @@ class PerkForm
     }
 
     /**
-	 * @param Player $player
+     * @param Player $player
      * @param string $target
      * @param string $perk
      * @param string $message
-	 */
-    public function getPerkFriendConfim(Player $player, string $target, string $perk, string $message) 
+     * @return SimpleForm
+     */
+    public function getPerkFriendConfirm(Player $player, string $target, string $perk, string $message): SimpleForm
     {
         $api = new API();
         $config = Main::getInstance()->getConfig();
@@ -348,7 +351,7 @@ class PerkForm
                     $msgp = str_replace("%perk%", $api->getLanguage($player, $perk . "-msg"), $msgp);
                     $player->sendMessage($api->getLanguage($player, "prefix") . $msgp);
                     $eco->reduceMoney($player, $config->getNested("perk." . $perk . ".price"));
-                    $target = Main::getInstance()->getServer()->getPlayer($target);
+                    $target = Main::getInstance()->getServer()->getPlayerByPrefix($target);
                     if ($target instanceof Player) {
                         if ($config->getNested("settings.friends.open-ui") == true) {
                             $this->getPerkFriendThanks($player, $target, $perk, $message);
@@ -385,12 +388,13 @@ class PerkForm
     }
 
     /**
-	 * @param Player $player
+     * @param Player $player
      * @param Player $target
      * @param string $perk
      * @param string $message
-	 */
-    public function getPerkFriendThanks(Player $player, Player $target, string $perk, string $message) 
+     * @return CustomForm
+     */
+    public function getPerkFriendThanks(Player $player, Player $target, string $perk, string $message): CustomForm
     {
         $api = new API();
         $form = new CustomForm(function (Player $target, $data = null) use ($player, $api) {

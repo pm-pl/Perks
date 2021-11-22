@@ -13,16 +13,15 @@ use flxiboy\Perks\cmd\PerkCommand;
  */
 class Main extends PluginBase 
 {
-
     /**
-     * @var self
+     * @var Main
      */
-    protected static $instance;
+    public static Main $instance;
     
     /**
      * Enable function: registering Command and Event
      */
-    public function onEnable()
+    public function onEnable(): void
     {
         self::$instance = $this;
         @mkdir($this->getDataFolder() . "players/");
@@ -55,7 +54,7 @@ class Main extends PluginBase
     /**
      * @return self
      */
-    public static function getInstance(): self
+    public static function getInstance(): Main
     {
         return self::$instance;
     }

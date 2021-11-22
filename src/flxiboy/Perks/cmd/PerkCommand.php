@@ -3,11 +3,10 @@
 namespace flxiboy\Perks\cmd;
 
 use pocketmine\command\{
-    PluginCommand,
+    Command,
     CommandSender
 };
-use pocketmine\Player;
-use pocketmine\utils\Config;
+use pocketmine\player\Player;
 use flxiboy\Perks\Main;
 use flxiboy\Perks\form\PerkForm;
 use flxiboy\Perks\api\API;
@@ -16,7 +15,7 @@ use flxiboy\Perks\api\API;
  * Class PerkCommand
  * @package flxiboy\Perks\cmd
  */
-class PerkCommand extends PluginCommand 
+class PerkCommand extends Command
 {
 
     /**
@@ -25,69 +24,42 @@ class PerkCommand extends PluginCommand
 	public function __construct() 
     {
         $config = Main::getInstance()->getConfig();
-        parent::__construct($config->getNested("command.cmd"), Main::getInstance());
-		$this->setAliases([$config->getNested("command.aliases")]);
-		$this->setDescription($config->getNested("command.desc"));
-		$this->setUsage($config->getNested("command.usage"));
+        parent::__construct($config->getNested("command.cmd"), $config->getNested("command.desc"), $config->getNested("command.usage"), [$config->getNested("command.aliases")]);
     }
 
     /**
-	 * @param CommandSender $player
-	 * @param string $alias
-	 * @param string[] $args
-	 */
-    public function execute(CommandSender $player, string $alias, array $args) 
+     * @param CommandSender $player
+     * @param string $alias
+     * @param array $args
+     * @return bool|void
+     */
+    public function execute(CommandSender $player, string $alias, array $args)
     {
         $api = new API();
         $config = Main::getInstance()->getConfig();
-
-        if (!$player instanceof Player) {
-            $player->sendMessage("§cPlease go InGame for this command.");
-            return;
-        }
+        $config->reload();
 
         if ($config->getNested("command.permission") !== false && !$player->hasPermission($config->getNested("command.permission"))) {
             $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "no-perms"));
             return;
         }
 
-        $block = false;
+        if (!$player instanceof Player) {
+            $player->sendMessage("§cPlease go InGame for this command.");
+            return;
+        }
+
         if ($config->getNested("settings.per-world.enable") == true) {
             foreach ($config->getNested("settings.per-world.worlds") as $level) {
-                if ($player->getLevel()->getFolderName() !== $level) {
-                    $block = true;
+                if ($player->getWorld()->getFolderName() !== $level) {
+                    $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "not-enable"));
+                    return true;
                 }
             }
         }
 
-        if ($block == true) {
-            $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "not-enable"));
-            return true;
-        }
-
-        if (isset($args[0])) {
-            if ($player->hasPermission($config->getNested("command.reload.perms"))) {
-                if ($args[0] == $api->getLanguage($player, "reload-cmd")) {
-                    Main::getInstance()->loadFiles();
-                    if (file_exists(Main::getInstance()->getDataFolder() . "config.yml")) {
-                        $config->reload();
-                    }
-                    if (file_exists(Main::getInstance()->getDataFolder() . "lang/" . $config->get("language") . ".yml")) {
-                        $language = new Config(Main::getInstance()->getDataFolder() . "lang/" . $config->get("language") . ".yml", Config::YAML);
-                        $language->reload();
-                    }
-                    $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "reload-success"));
-                } else {
-                    $player->sendMessage($api->getLanguage($player, "prefix") . $config->getNested("command.reload.usage"));
-                }
-            } else {
-                $perk = new PerkForm();
-                $perk->getPerks($player);
-            }
-        } else {
-            $perk = new PerkForm();
-            $perk->getPerks($player);
-        }
+        $perk = new PerkForm();
+        $perk->getPerks($player);
         return true;
     }
 }

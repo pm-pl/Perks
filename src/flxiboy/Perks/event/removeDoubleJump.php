@@ -3,8 +3,7 @@
 namespace flxiboy\Perks\event;
 
 use pocketmine\scheduler\Task;
-use flxiboy\Perks\event\EventListener;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class removeDoubleJump
@@ -16,11 +15,11 @@ class removeDoubleJump extends Task
     /**
      * @var EventListener
      */
-   public $plugin;
+   public EventListener $plugin;
     /**
      * @var Player
      */
-   public $player;
+   public Player $player;
 
     /**
      * Listener constructor.
@@ -34,10 +33,7 @@ class removeDoubleJump extends Task
         $this->player = $player;
     }
 
-    /**
-     * @param int $currentTick
-     */
-    public function onRun(int $currentTick) 
+    public function onRun(): void
     {
         if (isset($this->plugin->playerjump[$this->player->getName()])) {
             if ($this->plugin->playerjump[$this->player->getName()] == 1) {

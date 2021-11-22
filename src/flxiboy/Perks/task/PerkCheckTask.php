@@ -15,10 +15,7 @@ use pocketmine\utils\Config;
 class PerkCheckTask extends Task
 {
 
-    /**
-     * @param int $currentTick
-     */
-    public function onRun(int $currentTick)
+    public function onRun(): void
     {
         $config = Main::getInstance()->getConfig();
         if ($config->getNested("settings.perk-time.enable") == true) {
@@ -39,13 +36,13 @@ class PerkCheckTask extends Task
                         $msg = str_replace("%perk%", $api->getLanguage($player, $check . "-msg"), $msg);
                         $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
                         if ($effect !== null) {
-                            $player->removeEffect($effect);
+                            $player->getEffects()->remove($effect);
                         }
                     }
                 }
             }
         } else {
-            Main::getInstance()->getScheduler()->cancelTask($this->getTaskId());
+            $this->getHandler()->cancel();
         }
     }
 }

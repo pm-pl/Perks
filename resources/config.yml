@@ -16,18 +16,15 @@ command:
   desc: "Open the Perks UI"
   usage: "§cUsage: /perks"
   aliases: "perks"
-  reload:
-    usage: "§cUsage: /perks <reload>"
-    perms: perks.reload
   # if false, then this does not apply. if you write something, then the command goes.
   permission: false
 
 settings:
   # If this is true, you can only buy with the price. If this is false, it goes to Permissions.
-  economy-api: false
+  economy-api: true
   friends:
     # if this and 'economy-api' true, then you can give friends perks.
-    enable: false
+    enable: true
     menu-img: "textures/ui/Friend2"
     yes-img: "textures/ui/confirm"
     no-img: "textures/ui/redX1"
@@ -35,7 +32,7 @@ settings:
     open-ui: true
   perk-time:
     # if this and 'economy-api' true, then perks will only be there for a certain time.
-    enable: false
+    enable: true
     # %year% => is the year
     # %month% => is the month
     # %day% => is the day
@@ -64,7 +61,7 @@ settings:
     strength: 5
   per-world:
   #  if this true, then you can only use perks in certain worlds
-    enable: false
+    enable: true
     # list of the worlds
     worlds:
     - world
@@ -113,87 +110,87 @@ perk:
     # if this true, then only the perks are shown, as you also have hats or the permission, the perks should go with permission.
     enable: false
   speed:
-    perms: perks.speed
+    perms: Perks.speed
     price: 10000
     img: "textures/ui/speed_effect"
     time: "0:0:7:0:0"
   jump:
-    perms: perks.jump
+    perms: Perks.jump
     price: 10000
     img: "textures/ui/jump_boost_effect"
     time: "0:0:7:0:0"
   haste:
-    perms: perks.haste
+    perms: Perks.haste
     price: 10000
     img: "textures/ui/haste_effect"
     time: "0:0:7:0:0"
   night-vision:
-    perms: perks.night-vision
+    perms: Perks.night-vision
     price: 10000
     img: "textures/items/potion_bottle_nightVision"
     time: "0:0:7:0:0"
   no-hunger:
-    perms: perks.no-hunger
+    perms: Perks.no-hunger
     price: 10000
     img: "textures/ui/hunger_full"
     time: "0:0:7:0:0"
   no-falldamage:
-    perms: perks.no-falldamage
+    perms: Perks.no-falldamage
     price: 10000
     img: "textures/items/totem"
     time: "0:0:7:0:0"
   fast-regeneration:
-    perms: perks.fast-regeneration
+    perms: Perks.fast-regeneration
     price: 10000
     img: "textures/ui/regeneration_effect"
     time: "0:0:7:0:0"
   keep-inventory:
-    perms: perks.keep-inventory
+    perms: Perks.keep-inventory
     price: 10000
     img: "textures/ui/inventory_icon"
     time: "0:0:7:0:0"
   dopple-xp:
-    perms: perks.dopple-xp
+    perms: Perks.dopple-xp
     price: 10000
     img: "textures/ui/dust_selectable_2"
     time: "0:0:7:0:0"
   strength:
-    perms: perks.stren
+    perms: Perks.stren
     price: 10000
     img: "textures/ui/strength_effect"
     time: "0:0:7:0:0"
   no-firedamage:
-    perms: perks.no-firedamage
+    perms: Perks.no-firedamage
     price: 10000
     img: "textures/ui/fire_resistance_effect"
     time: "0:0:7:0:0"
   fly:
-    perms: perks.fly
+    perms: Perks.fly
     price: 10000
     img: "textures/items/feather"
     time: "0:0:7:0:0"
   water-breathing:
-    perms: perks.water-breathing
+    perms: Perks.water-breathing
     price: 10000
     img: "textures/ui/water_breathing_effect"
     time: "0:0:7:0:0"
   invisibility:
-    perms: perks.invisibility
+    perms: Perks.invisibility
     price: 10000
     img: "textures/ui/invisibility_effect"
     time: "0:0:7:0:0"
   keep-xp:
-    perms: perks.keep-xp
+    perms: Perks.keep-xp
     price: 10000
     img: "textures/ui/dust_selectable_1"
     time: "0:0:7:0:0"
   double-jump:
-    perms: perks.double-xp
+    perms: Perks.double-xp
     price: 10000
     img: "textures/items/iron_boots"
     time: "0:0:7:0:0"
   auto-smelting:
-    perms: perks.auto-smelting
+    perms: Perks.auto-smelting
     price: 10000
     img: "textures/blocks/furnace_front_on"
     time: "0:0:7:0:0"

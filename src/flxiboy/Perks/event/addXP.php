@@ -3,8 +3,7 @@
 namespace flxiboy\Perks\event;
 
 use pocketmine\scheduler\Task;
-use flxiboy\Perks\event\EventListener;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class addXP
@@ -16,11 +15,11 @@ class addXP extends Task
     /**
      * @var EventListener
      */
-    public $plugin;
+    public EventListener $plugin;
     /**
      * @var Player
      */
-   public $player;
+    public Player $player;
 
     /**
      * Listener constructor.
@@ -34,12 +33,9 @@ class addXP extends Task
         $this->player = $player;
     }
 
-    /**
-     * @param int $currentTick
-     */
-    public function onRun(int $currentTick) 
+    public function onRun(): void
     {
-        $this->player->addXp($this->plugin->playerxp[$this->player->getName()]);
+        $this->player->getXpManager()->addXp($this->plugin->playerxp[$this->player->getName()]);
         unset($this->plugin->playerxp[$this->player->getName()]);
     }
 }
