@@ -259,9 +259,8 @@ class API
     /**
      * @param Player $player
      * @param string $check
-     * @return Effect|InvisibilityEffect|RegenerationEffect|SpeedEffect|null
      */
-    public function getPerkEffect(Player $player, string $check): Effect|InvisibilityEffect|RegenerationEffect|SpeedEffect|null
+    public function getPerkEffect(Player $player, string $check)
     {
         $effect = null;
         if ($check == "speed") { 
