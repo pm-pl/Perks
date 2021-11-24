@@ -110,7 +110,7 @@ perk:
   # time => if 'economy-api' true, this tells how long you can use a perk after buying it and then buy it again.
   #               0:0:0:0:0 => Year:Month:Day:Hour:Minute => 0:0:6:24:59 (time zone => your server location)
   perms:
-    # if this true, then only the perks are shown, as you also have hats or the permission, the perks should go with permission.
+    # If this is true, only perks that you have bought will be shown
     enable: false
   speed:
     perms: perks.speed
