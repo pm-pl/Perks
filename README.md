@@ -1,5 +1,5 @@
-# Perks System v4.5-BETA
-This is a Perk System for Pocketmine-MP.
+# Perks System v3.0.0
+This is a Perk System for PocketMine-MP.
 You can all funktion edit in **config.yml**
 
 ### Download
@@ -12,6 +12,7 @@ Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks
 |/perks reload| Reload all Perks files|
 
 ### Feature
+- [X] PM4 Support
 - [X] Message and Command edit in config
 - [X] Ui support
 - [X] Price for a Perk
@@ -31,19 +32,19 @@ Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks
 - [X] Fly
 - [X] Haste
 - [X] Invisibility
-- [X] Jump boost
+- [X] Jump Boost
 - [X] Keep Inventory
 - [X] Keep XP
 - [X] Night vision
-- [X] No Falldamage
-- [X] No Firedamage
+- [X] No FallDamage
+- [X] No FireDamage
 - [X] No Hunger
 - [X] Strength
 - [X] Speed
 - [X] Water breathing
 
-### Todo to next Update
-- [ ] PM4 Support
+### INFO!!!
+There is currently no EconomyAPI for API 4, so please use the version from supercrafter333. Link: [Link](https://github.com/supercrafter333/EconomyS/tree/master/EconomyAPI)
 
 ### cooming soon...
 - [ ] Fix Bugs

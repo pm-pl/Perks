@@ -22,10 +22,6 @@
 prefix: "§dPerks §8» "
 no-perms: "§cУ вас нет на это прав."
 
-# command
-reload-cmd: "reload"
-reload-success: "§aПлагин успешно сохранен."
-
 # economyapi
 no-money-economyapi: "§cУ вас недостаточно денег, вам все еще не хватает §a%need-money% ₽§c."
 buy-economyapi: "§aВы купили бонус §c%perk% §aза §c%moneyp% ₽§a."

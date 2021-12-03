@@ -20,10 +20,6 @@
 prefix: "§dPerks §8» "
 no-perms: "§cDu hast dafür keine Rechte."
 
-# command
-reload-cmd: "reload"
-reload-success: "§aDas Plugin wurde erfolgreich gespeichert."
-
 # economyapi
 no-money-economyapi: "§cDu hast nicht genügend geld, dir fehlen noch §e%need-money% €§c."
 buy-economyapi: "§aDu hast dir das Perk §e%perk% §afür §c%moneyp% € §agekauft."
