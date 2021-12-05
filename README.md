@@ -3,7 +3,7 @@ This is a Perk System for PocketMine-MP.
 You can all function edit in **config.yml**
 
 ### Download
-Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/70) file.
+Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/72) file.
 
 ### Commands
 |**Command**|**Description**|**Aliases**|**Permission**|
