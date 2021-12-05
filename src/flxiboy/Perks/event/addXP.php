@@ -11,7 +11,6 @@ use pocketmine\player\Player;
  */
 class addXP extends Task
 {
-
     /**
      * @var EventListener
      */
@@ -33,6 +32,9 @@ class addXP extends Task
         $this->player = $player;
     }
 
+    /**
+     * @return void
+     */
     public function onRun(): void
     {
         $this->player->getXpManager()->addXp($this->plugin->playerxp[$this->player->getName()]);

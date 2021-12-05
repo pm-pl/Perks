@@ -9,8 +9,8 @@ use jojoe77777\FormAPI\{
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
-use flxiboy\Perks\Main;
 use flxiboy\Perks\api\API;
+use flxiboy\Perks\Main;
 
 /**
  * Class PerkForm
@@ -42,11 +42,11 @@ class PerkForm
             }
             return true;
         });
-        $form->setTitle($api->getLanguage($player, "title-ui"));
-        $form->setContent($api->getLanguage($player, "text-category"));
+        $form->setTitle($api->getLanguage("title-ui"));
+        $form->setContent($api->getLanguage("text-category"));
         if ($config->getNested("settings.friends.enable") == true && $config->getNested("settings.economy-api") == true) {
             if ($config->getNested("settings.friends.menu-img") !== false && strpos($config->getNested("settings.friends.menu-img"), "textures/") !== false) { $picturef = 0; } else { $picturef = 1; }
-            $form->addButton($api->getLanguage($player, "button-friends"), $picturef, $config->getNested("settings.friends.menu-img"), "friend");
+            $form->addButton($api->getLanguage("button-friends"), $picturef, $config->getNested("settings.friends.menu-img"), "friend");
         }
         foreach ($config->get("category") as $cate => $category) {
             $list = explode(":", $category["name"]);
@@ -58,7 +58,7 @@ class PerkForm
                 $form->addButton($list[0], -1, "");
             }
         }
-        $form->sendToPlayer($player);
+        $player->sendForm($form);
         return $form;
     }
 
@@ -73,7 +73,7 @@ class PerkForm
         $api = new API();
         $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
         $config = Main::getInstance()->getConfig();
-        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $players = Main::getInstance()->getPlayers($player->getName());
         $form = new SimpleForm(function (Player $player, $data = null) use ($api) { 
             if ($data === null) return; 
 
@@ -81,37 +81,31 @@ class PerkForm
             return true;
         });
         $titles = explode(":", $config->get("category")[$type]["name"]);
-        $title = $api->getLanguage($player, "title-category");
-        $title = str_replace("%category%", $titles[0], $title);
-        $form->setTitle($title);
+        $form->setTitle($api->getLanguage("title-category", ["%category%" => $titles[0]]));
         if ($config->getNested("settings.economy-api") == true) {
-            $content = $api->getLanguage($player, "text-money-ui");
-            $content = str_replace("%money%", $eco->myMoney($player), $content);
-            $form->setContent($content);
+            $form->setContent($api->getLanguage("text-money-ui", ["%money%" => $eco->myMoney($player)]));
         } else {
-            $form->setContent($api->getLanguage($player, "text-ui"));
+            $form->setContent($api->getLanguage("text-ui"));
         }
         foreach ($config->get("category")[$type]["perks"] as $cate => $perks) {
             $list = explode(":", $perks);
-            $msg = $api->getLanguage($player, $list[0]);
-            $msg = str_replace("%status%", $api->getStatus($player, $list[0]), $msg);
             if ($config->getNested("perk.perms.enable") == true) {
                 if ($players->get($list[0] . "-buy") == true) {
                     if ($config->getNested("perk." . $list[0] . ".img") !== false && strpos($config->getNested("perk." . $list[0] . ".img"), "textures/") !== false) {
-                        $form->addButton($msg, 0, $config->getNested("perk." . $list[0] . ".img"), $list[0]);
+                        $form->addButton($api->getLanguage($list[0], ["%status%" => $api->getStatus($player, $list[0])]), 0, $config->getNested("perk." . $list[0] . ".img"), $list[0]);
                     } else { 
-                        $form->addButton($msg, 1, $config->getNested("perk." . $list[0] . ".img"), $list[0]);
+                        $form->addButton($api->getLanguage($list[0], ["%status%" => $api->getStatus($player, $list[0])]), 1, $config->getNested("perk." . $list[0] . ".img"), $list[0]);
                     }
                 }
             } else {
                 if ($config->getNested("perk." . $list[0] . ".img") !== false && strpos($config->getNested("perk." . $list[0] . ".img"), "textures/") !== false) {
-                    $form->addButton($msg, 0, $config->getNested("perk." . $list[0] . ".img"), $list[0]);
+                    $form->addButton($api->getLanguage($list[0], ["%status%" => $api->getStatus($player, $list[0])]), 0, $config->getNested("perk." . $list[0] . ".img"), $list[0]);
                 } else { 
-                    $form->addButton($msg, 1, $config->getNested("perk." . $list[0] . ".img"), $list[0]);
+                    $form->addButton($api->getLanguage($list[0], ["%status%" => $api->getStatus($player, $list[0])]), 1, $config->getNested("perk." . $list[0] . ".img"), $list[0]);
                 }
             }
         }
-        $form->sendToPlayer($player);
+        $player->sendForm($form);
         return $form;
     }
 
@@ -125,7 +119,7 @@ class PerkForm
     {
         $api = new API();
         $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $players = Main::getInstance()->getPlayers($player->getName());
         $config = Main::getInstance()->getConfig();
         $form = new SimpleForm(function (Player $player, $data = null) use ($perk, $eco, $players, $config, $api, $type) { 
             if ($data === null) return; 
@@ -153,36 +147,24 @@ class PerkForm
                             $players->set("$perk-buy", true);
                             $players->set("$perk-buy-count", $year . ":" . $month . ":" . $day . ":" . $hour . ":" . $minute . ":0");
                             $players->save();
-                            $msg = $api->getLanguage($player, "buy-time");
-                            $msg = str_replace("%perk%", $api->getLanguage($player, "$perk-msg"), $msg);
-                            $msg = str_replace("%moneyp%", $config->getNested("perk.$perk.price"), $msg);
                             $msg2 = $config->getNested("settings.perk-time.format");
                             $msg2 = str_replace("%year%", $year, $msg2);
                             $msg2 = str_replace("%month%", $month, $msg2);
                             $msg2 = str_replace("%day%", $day, $msg2);
                             $msg2 = str_replace("%hour%", (int)$hour - 1, $msg2);
-                            $msg2 = str_replace("%minute%", $minute, $msg2);
-                            $msg = str_replace("%time%", $msg2, $msg);
-                            $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                            $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("buy-time", ["%perk%" => $api->getLanguage("$perk-msg"), "%moneyp%" => $config->getNested("perk.$perk.price"), "%time%" => $msg2]));
                             $eco->reduceMoney($player, $config->getNested("perk.$perk.price"));
                         } else {
-                            $msg = $api->getLanguage($player, "no-money-economyapi");
-                            $msg = str_replace("%need-money%", $config->getNested("perk.$perk.price") - $eco->myMoney($player), $msg);
-                            $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                            $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("no-money-economyapi", ["%need-money%" => ($config->getNested("perk.$perk.price") - $eco->myMoney($player))]));
                         }
                     } else {
                         if ($eco->myMoney($player) >= $config->getNested("perk.$perk.price")) {
                             $players->set("$perk", false);
                             $players->set("$perk-buy", true);
-                            $msg = $api->getLanguage($player, "buy-economyapi");
-                            $msg = str_replace("%perk%", $api->getLanguage($player, "$perk-msg"), $msg);
-                            $msg = str_replace("%moneyp%", $config->getNested("perk.$perk.price"), $msg);
-                            $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                            $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("buy-economyapi", ["%perk%" => $api->getLanguage("$perk-msg"), "%moneyp%" => $config->getNested("perk.$perk.price")]));
                             $eco->reduceMoney($player, $config->getNested("perk.$perk.price"));
                         } else {
-                            $msg = $api->getLanguage($player, "no-money-economyapi");
-                            $msg = str_replace("%need-money%", $config->getNested("perk.$perk.price") - $eco->myMoney($player), $msg);
-                            $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                            $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("no-money-economyapi", ["%need-money%" => ($config->getNested("perk.$perk.price") - $eco->myMoney($player))]));
                         } 
                     }
                     $players->save();
@@ -190,16 +172,13 @@ class PerkForm
             }
             return true;
         });
-        $form->setTitle($api->getLanguage($player, "title-confirm"));
-        $content = $api->getLanguage($player, "text-confirm");
-        $content = str_replace("%perk%", $api->getLanguage($player, "$perk-msg"), $content);
-        $content = str_replace("%moneyp%", $config->getNested("perk.$perk.price"), $content);
-        $form->setContent($content);
+        $form->setTitle($api->getLanguage("title-confirm"));
+        $form->setContent($api->getLanguage("text-confirm", ["%perk%" => $api->getLanguage("$perk-msg"), "%moneyp%" => $config->getNested("perk.$perk.price")]));
         if ($config->getNested("settings.buy-confirm.yes-img") !== false && strpos($config->getNested("settings.buy-confirm.yes-img"), "textures/") !== false) { $pictureyes = 0; } else { $pictureyes = 1; }
         if ($config->getNested("settings.buy-confirm.no-img") !== false && strpos($config->getNested("settings.buy-confirm.no-img"), "textures/") !== false) { $pictureno = 0; } else { $pictureno = 1; }
-        $form->addButton($api->getLanguage($player, "yes-button-confirm"), $pictureyes, $config->getNested("settings.buy-confirm.yes-img"));
-        $form->addButton($api->getLanguage($player, "no-button-confirm"), $pictureno, $config->getNested("settings.buy-confirm.no-img"));
-        $form->sendToPlayer($player);
+        $form->addButton($api->getLanguage("yes-button-confirm"), $pictureyes, $config->getNested("settings.buy-confirm.yes-img"));
+        $form->addButton($api->getLanguage("no-button-confirm"), $pictureno, $config->getNested("settings.buy-confirm.no-img"));
+        $player->sendForm($form);
         return $form;
     }
 
@@ -216,7 +195,7 @@ class PerkForm
         $form = new CustomForm(function (Player $player, $data = null) use ($api, $check) { 
             if ($data === null) return; 
 
-            $effect = $api->getPerkEffect($player, $check);
+            $effect = $api->getPerkEffect($check);
             $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
             if ($data[0] !== $player->getEffects()->get($effect)->getEffectLevel()) {
                 if ($data[0] == 0) {
@@ -224,34 +203,29 @@ class PerkForm
                     if ($effect !== null) {
                         $player->getEffects()->clear();
                     }
-                    $msg = $api->getLanguage($player, "disable-perk");
-                    $msg = str_replace("%perk%", $api->getLanguage($player, "$check-msg"), $msg);
-                    $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                    $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("disable-perk", ["%perk%" => $api->getLanguage("$check-msg")]));
                 } else {
                     if ($effect !== null) {
                         $player->getEffects()->remove($effect);
                         $player->getEffects()->add(new EffectInstance($effect, 107374182, $data[0] - 1, false));
                     }
-                    $msg = $api->getLanguage($player, "new-strength");
-                    $msg = str_replace("%perk%", $api->getLanguage($player, "$check-msg"), $msg);
-                    $msg = str_replace("%strength%", $data[0], $msg);
-                    $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                    $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("new-strength", ["%perk%" => $api->getLanguage("$check-msg"), "%strength%" => $data[0]]));
                 }
                 $players->save();
             }
             return true;
         });
-        $form->setTitle($api->getLanguage($player, "title-strength"));
+        $form->setTitle($api->getLanguage("title-strength"));
         if ($player->getEffects()->has($effect)) {
             $strengths = [];
             for ($strength = 0; $strength <= $config->getNested("settings.perks-strength.strength"); $strength++) {
                 $strengths[] = "$strength";
             }
-            $form->addStepSlider($api->getLanguage($player, "text-strength"), $strengths, $player->getEffects()->get($effect)->getEffectLevel());
+            $form->addStepSlider($api->getLanguage("text-strength"), $strengths, $player->getEffects()->get($effect)->getEffectLevel());
         } else {
-            $form->addStepSlider($api->getLanguage($player, "text-strength"), ["0"], 0);
+            $form->addStepSlider($api->getLanguage("text-strength"), ["0"], 0);
         }
-        $form->sendToPlayer($player);
+        $player->sendForm($form);
         return $form;
     }
 
@@ -266,21 +240,19 @@ class PerkForm
             if ($data === null) return; 
             
             if ($data[0] == $player->getName()) {
-                $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "not-yourself-friends"));
-                return;
+                $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("not-yourself-friends"));
+                return true;
             }
             if (!file_exists(Main::getInstance()->getDataFolder() . "players/" . $data[0] . ".yml") || $data[0] == null) {
-                $msg = $api->getLanguage($player, "target-notfound-friends");
-                $msg = str_replace("%target%", $data[0], $msg);
-                $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
-                return;
+                $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("target-notfound-friends", ["%target%" => $data[0]]));
+                return true;
             }
             $this->getPerkFriendTarget($player, $data[0]);
             return true;
         });
-        $form->setTitle($api->getLanguage($player, "title-friends"));
-        $form->addInput($api->getLanguage($player, "text-friends"), $api->getLanguage($player, "user-friends"));
-        $form->sendToPlayer($player);
+        $form->setTitle($api->getLanguage("title-friends"));
+        $form->addInput($api->getLanguage("text-friends"), $api->getLanguage("user-friends"));
+        $player->sendForm($form);
         return $form;
     }
 
@@ -292,15 +264,13 @@ class PerkForm
     public function getPerkFriendTarget(Player $player, string $target): CustomForm
     {
         $api = new API();
-        $targetd = new Config(Main::getInstance()->getDataFolder() . "players/" . $target . ".yml", Config::YAML);
+        $targetd = Main::getInstance()->getPlayers($target);
         $list = [];
         $list2 = [];
-        $perklist = 17;
-        foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $perks) {
-            $perklist--;
+        foreach (Main::getInstance()->perklist as $perks) {
             if ($targetd->get("$perks-buy") == false) {
                 $list[] = $perks;
-                $list2[] = $api->getLanguage($player, "$perks-msg");
+                $list2[] = $api->getLanguage("$perks-msg");
             }
         }
         $form = new CustomForm(function (Player $player, $data = null) use ($target, $targetd, $api, $list){ 
@@ -308,23 +278,17 @@ class PerkForm
 
             $perk = $list[$data[1]];
             if ($targetd->get($perk) == true || $targetd->get($perk . "-buy") == true) {
-                $msg = $api->getLanguage($player, "perk-buyed-friends");
-                $msg = str_replace("%target%", $data[0], $msg);
-                $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
-                return;
+                $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("perk-buyed-friends", ["%target%" => $target]));
+                return true;
             }
             $this->getPerkFriendConfirm($player, $target, $perk, $data[2]);
             return true;
         });
-        $form->setTitle($api->getLanguage($player, "title-friends"));
-        $content = $api->getLanguage($player, "text2-friends");
-        $content = str_replace("%target%", $target, $content);
-        $form->addLabel($content);
-        if ($perklist == 0) {
-            $form->addDropdown($api->getLanguage($player, "perks-friends"), $list2);
-        }
-        $form->addInput($api->getLanguage($player, "message-friends"));
-        $form->sendToPlayer($player);
+        $form->setTitle($api->getLanguage("title-friends"));
+        $form->addLabel($api->getLanguage("text2-friends", ["%target%" => $target]));
+        $form->addDropdown($api->getLanguage("perks-friends"), $list2);
+        $form->addInput($api->getLanguage("message-friends"));
+        $player->sendForm($form);
         return $form;
     }
 
@@ -344,46 +308,33 @@ class PerkForm
 
             if ($data == "yes") {
                 $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-                $targetd = new Config(Main::getInstance()->getDataFolder() . "players/" . $target . ".yml", Config::YAML);
+                $targetd = Main::getInstance()->getPlayers($target);
                 if ($eco->myMoney($player) >= $config->getNested("perk." . $perk . ".price")) {
-                    $msgp = $api->getLanguage($player, "success-friends");
-                    $msgp = str_replace("%target%", $target, $msgp);
-                    $msgp = str_replace("%perk%", $api->getLanguage($player, $perk . "-msg"), $msgp);
-                    $player->sendMessage($api->getLanguage($player, "prefix") . $msgp);
+                    $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("success-friends", ["%target%" => $target, "%perk%" => $api->getLanguage($perk . "-msg")]));
                     $eco->reduceMoney($player, $config->getNested("perk." . $perk . ".price"));
                     $target = Main::getInstance()->getServer()->getPlayerByPrefix($target);
                     if ($target instanceof Player) {
                         if ($config->getNested("settings.friends.open-ui") == true) {
                             $this->getPerkFriendThanks($player, $target, $perk, $message);
                         } else {
-                            $msgt = $api->getLanguage($player, "target-success-friends");
-                            $msgt = str_replace("%player%", $player->getName(), $msgt);
-                            $msgt = str_replace("%perk%", $api->getLanguage($player, $perk . "-msg"), $msgt);
-                            $msgt = str_replace("%message%", $message, $msgt);
-                            $target->sendMessage($api->getLanguage($player, "prefix") . $msgt);   
+                            $target->sendMessage($api->getLanguage("prefix") . $api->getLanguage("target-success-friends", ["%player%" => $player->getName(), "%perk%" => $api->getLanguage($perk . "-msg"), "%message%" => $message]));
                         }
                     }
                     $targetd->set($perk . "-buy", true);
                 } else {
-                    $msg = $api->getLanguage($player, "no-money-economyapi");
-                    $msg = str_replace("%need-money%", $config->getNested("perk." . $perk . ".price") - $eco->myMoney($player), $msg);
-                    $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                    $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("no-money-economyapi", ["%need-money%" => ($config->getNested("perk." . $perk . ".price") - $eco->myMoney($player))]));
                 }
                 $targetd->save();
             }
             return true;
         });
-        $form->setTitle($api->getLanguage($player, "title-friends"));
-        $content = $api->getLanguage($player, "confirm-text-friends");
-        $content = str_replace("%target%", $target, $content);
-        $content = str_replace("%perk%", $api->getLanguage($player, "$perk-msg"), $content);
-        $content = str_replace("%moneyp%", $config->getNested("perk.$perk.price"), $content);
-        $form->setContent($content);
+        $form->setTitle($api->getLanguage("title-friends"));
+        $form->setContent($api->getLanguage("confirm-text-friends", ["%target" => $target, "%perk%" => $api->getLanguage("$perk-msg"), "%moneyp%" => $config->getNested("perk.$perk.price")]));
         if ($config->getNested("settings.friends.yes-img") !== false && strpos($config->getNested("settings.friends.yes-img"), "textures/") !== false) { $pictureyes = 0; } else { $pictureyes = 1; }
         if ($config->getNested("settings.friends.no-img") !== false && strpos($config->getNested("settings.friends.no-img"), "textures/") !== false) { $pictureno = 0; } else { $pictureno = 1; }
-        $form->addButton($api->getLanguage($player, "confirm-yes-friends"), $pictureyes, $config->getNested("settings.friends.yes-img"), "yes");
-        $form->addButton($api->getLanguage($player, "confirm-no-friends"), $pictureno, $config->getNested("settings.friends.no-img"), "no");
-        $form->sendToPlayer($player);
+        $form->addButton($api->getLanguage("confirm-yes-friends"), $pictureyes, $config->getNested("settings.friends.yes-img"), "yes");
+        $form->addButton($api->getLanguage("confirm-no-friends"), $pictureno, $config->getNested("settings.friends.no-img"), "no");
+        $player->sendForm($form);
         return $form;
     }
 
@@ -401,21 +352,14 @@ class PerkForm
             if ($data === null) return; 
 
             if ($data[1] !== null && $player instanceof Player) {
-                $msg = $api->getLanguage($player, "msg-thanks-friends");
-                $msg = str_replace("%message%", $data[1], $msg);
-                $msg = str_replace("%target%", $target->getName(), $msg);
-                $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("msg-thanks-friends", ["%message%" => ($data[1] == null ? "§c/" : $data[1]), "%target%" => $target->getName()]));
             }
             return true;
         });
-        $form->setTitle($api->getLanguage($player, "title-friends"));
-        $label = $api->getLanguage($player, "text-thanks-friends");
-        $label = str_replace("%player%", $player->getName(), $label);
-        $label = str_replace("%perk%", $api->getLanguage($player, "$perk-msg"), $label);
-        $label = str_replace("%message%", $message, $label);
-        $form->addLabel($label);
-        $form->addInput($api->getLanguage($player, "message-thanks-friends"));
-        $form->sendToPlayer($target);
+        $form->setTitle($api->getLanguage("title-friends"));
+        $form->addLabel($api->getLanguage("text-thanks-friends", ["%player%" => $player->getName(), "%perk%" => $api->getLanguage("$perk-msg"), "%message%" => ($message == null ? "§c/" : $message)]));
+        $form->addInput($api->getLanguage("message-thanks-friends"));
+        $target->sendForm($form);
         return $form;
     }
 }

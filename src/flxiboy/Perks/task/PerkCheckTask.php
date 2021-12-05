@@ -2,11 +2,10 @@
 
 namespace flxiboy\Perks\task;
 
+use pocketmine\scheduler\Task;
 use flxiboy\Perks\api\API;
 use flxiboy\Perks\Main;
-use pocketmine\scheduler\Task;
 use pocketmine\Server;
-use pocketmine\utils\Config;
 
 /**
  * Class PerkCheckTask
@@ -15,6 +14,9 @@ use pocketmine\utils\Config;
 class PerkCheckTask extends Task
 {
 
+    /**
+     * @return void
+     */
     public function onRun(): void
     {
         $config = Main::getInstance()->getConfig();
@@ -24,17 +26,15 @@ class PerkCheckTask extends Task
             $datas = explode(":", $date->format("Y:m:d:H:i"));
             $data = ((int)$datas[0] - 0) . ":" . ((int)$datas[1] - 0) . ":" . ((int)$datas[2] - 0) . ":" . ((int)$datas[3] - 0) . ":" . ((int)$datas[4] - 0);
             foreach (Server::getInstance()->getOnlinePlayers() as $player) {
-                $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-                foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $check) {
-                    $effect = $api->getPerkEffect($player, $check);
+                $players = Main::getInstance()->getPlayers($player->getName());
+                foreach (Main::getInstance()->perklist as $check) {
+                    $effect = $api->getPerkEffect($check);
                     if ($players->exists($check . "-buy-count") && $data >= $players->get($check . "-buy-count")) {
                         $players->set($check, false);
                         $players->set($check . "-buy", false);
                         $players->remove($check . "-buy-count");
-                        $players->save();
-                        $msg = $api->getLanguage($player, "close-time");
-                        $msg = str_replace("%perk%", $api->getLanguage($player, $check . "-msg"), $msg);
-                        $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                        $players->save();;
+                        $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("close-time", ["%perk%" => $api->getLanguage($check . "-msg")]));
                         if ($effect !== null) {
                             $player->getEffects()->remove($effect);
                         }

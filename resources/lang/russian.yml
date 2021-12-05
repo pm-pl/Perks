@@ -1,7 +1,6 @@
-################
+##################
 # Language Russian
-# Язык русский
-################
+##################
 
 # Этот перевод был сделан с помощью Google Translate.
 
@@ -19,7 +18,7 @@
 # %category% => это название категории
 
 # different
-prefix: "§dPerks §8» "
+prefix: "§8» §5Perks §8| "
 no-perms: "§cУ вас нет на это прав."
 
 # economyapi
@@ -99,8 +98,8 @@ fast-regeneration: "§cБыстрое заживление\n§8» %status%"
 fast-regeneration-msg: "Быстрое заживление"
 keep-inventory: "§8Держать инвентарь\n§8» %status%"
 keep-inventory-msg: "Держать инвентарь"
-dopple-xp: "§9Двойной опыт\n§8» %status%"
-dopple-xp-msg: "Двойной опыт"
+double-xp: "§9Двойной опыт\n§8» %status%"
+double-xp-msg: "Двойной опыт"
 strength: "§bСила\n§8» %status%"
 strength-msg: "Сила"
 no-firedamage: "§eНет повреждений от огня\n§8» %status%"

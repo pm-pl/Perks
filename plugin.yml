@@ -1,7 +1,45 @@
 name: Perks
-version: 3.0.0
+version: 3.0.1
 api: 4.0.0
 main: flxiboy\Perks\Main
 author: FlxiBoy
 depend:
   - EconomyAPI
+
+permissions:
+  Perks.command:
+    default: op
+  Perks.speed:
+    default: op
+  Perks.jump:
+    default: op
+  Perks.haste:
+    default: op
+  Perks.night-vision:
+    default: op
+  Perks.no-hunger:
+    default: op
+  Perks.no-falldamage:
+    default: op
+  Perks.fast-regeneration:
+    default: op
+  Perks.keep-inventory:
+    default: op
+  Perks.double-xp:
+    default: op
+  Perks.strength:
+    default: op
+  Perks.no-firedamage:
+    default: op
+  Perks.fly:
+    default: op
+  Perks.water-breathing:
+    default: op
+  Perks.invisibility:
+    default: op
+  Perks.keep-xp:
+    default: op
+  Perks.double-jump:
+    default: op
+  Perks.auto-smelting:
+    default: op

@@ -9,15 +9,16 @@ use pocketmine\event\player\{
     PlayerJumpEvent,
     PlayerRespawnEvent
 };
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\entity\EntityTeleportEvent;
-use pocketmine\event\Listener;
-use pocketmine\item\VanillaItems;
-use pocketmine\utils\Config;
-use flxiboy\Perks\Main;
+use pocketmine\event\entity\{
+    EntityDamageEvent,
+    EntityTeleportEvent
+};
 use pocketmine\event\block\BlockBreakEvent;
-use flxiboy\Perks\api\API;
+use pocketmine\item\VanillaItems;
+use pocketmine\event\Listener;
 use pocketmine\player\Player;
+use flxiboy\Perks\api\API;
+use flxiboy\Perks\Main;
 
 /**
  * Class EventListener
@@ -25,7 +26,6 @@ use pocketmine\player\Player;
  */
 class EventListener implements Listener 
 {
-
     /**
      * @var array $playerjump
      */
@@ -47,15 +47,9 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $api = new API();
         $config = Main::getInstance()->getConfig();
-        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $players = Main::getInstance()->getPlayers($player->getName());
         if (!$players->exists("speed")) {
-            foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility"] as $name) {
-                $players->set($name, false);
-                $players->set($name . "-buy", false);
-            }
-        }
-        if (!$players->exists("keep-xp")) {
-            foreach (["keep-xp", "double-jump", "auto-smelting"] as $name) {
+            foreach (Main::getInstance()->perklist as $name) {
                 $players->set($name, false);
                 $players->set($name . "-buy", false);
             }
@@ -65,16 +59,14 @@ class EventListener implements Listener
             $date = new \DateTime("now");
             $datas = explode(":", $date->format("Y:m:d:H:i"));
             $data = ((int)$datas[0] - 0) . ":" . ((int)$datas[1] - 0) . ":" . ((int)$datas[2] - 0) . ":" . ((int)$datas[3] - 0) . ":" . ((int)$datas[4] - 0);
-            foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $check) {
-                $effect = $api->getPerkEffect($player, $check);
+            foreach (Main::getInstance()->perklist as $check) {
+                $effect = $api->getPerkEffect($check);
                 if ($eco->myMoney($player) >= $config->getNested("perk." . $check . ".price") || $players->exists($check . "-buy-count")) {
                     if ($players->exists($check . "-buy-count") && $data >= $players->get($check . "-buy-count")) {
                         $players->set($check, false);
                         $players->set($check . "-buy", false);
                         $players->remove($check . "-buy-count");
-                        $msg = $api->getLanguage($player, "close-time");
-                        $msg = str_replace("%perk%", $api->getLanguage($player, $check . "-msg"), $msg);
-                        $player->sendMessage($api->getLanguage($player, "prefix") . $msg);
+                        $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("close-time", ["%perk%" => $api->getLanguage($check . "-msg")]));
                         if ($effect !== null) {
                             $player->getEffects()->clear();
                         }
@@ -91,7 +83,7 @@ class EventListener implements Listener
     public function onExhaust(PlayerExhaustEvent $event) 
     {
         $player = $event->getPlayer();
-        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $players = Main::getInstance()->getPlayers($player->getName());
         if ($players->get("no-hunger") == true && $player->getHungerManager()->getFood() != 20) {
             $player->getHungerManager()->setFood(20);
         }
@@ -105,7 +97,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $block = $event->getBlock();
         $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $players = Main::getInstance()->getPlayers($player->getName());
         $config = Main::getInstance()->getConfig();
         if ($players->get("dopple-xp") == true) {
             $event->setXpDropAmount($event->getXpDropAmount() * 2);
@@ -130,7 +122,7 @@ class EventListener implements Listener
     public function onDeath(PlayerDeathEvent $event) 
     {
         $player = $event->getPlayer();
-        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $players = Main::getInstance()->getPlayers($player->getName());
         if ($players->get("keep-inventory") == true) {
             $event->setKeepInventory(true);
         }
@@ -157,16 +149,14 @@ class EventListener implements Listener
     public function onDamage(EntityDamageEvent $event) 
     {
         $player = $event->getEntity();
-        if ($player instanceof Player) {
-            $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
-            if($event->getCause() == EntityDamageEvent::CAUSE_FALL) {
-                if ($players->get("no-falldamage") == true) {
-                    $event->cancel();
-                }
-                if (in_array($player->getName(), $this->playerjumpdamage)) {
-                    $event->cancel();
-                    unset($this->playerjumpdamage[array_search($player->getName(), $this->playerjumpdamage)]);
-                }
+        if ($player instanceof Player && $event->getCause() == EntityDamageEvent::CAUSE_FALL) {
+            $players = Main::getInstance()->getPlayers($player->getName());
+            if ($players->get("no-falldamage") == true) {
+                $event->cancel();
+            }
+            if (in_array($player->getName(), $this->playerjumpdamage)) {
+                $event->cancel();
+                unset($this->playerjumpdamage[array_search($player->getName(), $this->playerjumpdamage)]);
             }
         }
     }
@@ -177,13 +167,13 @@ class EventListener implements Listener
     public function onJump(PlayerJumpEvent $event) 
     {
         $player = $event->getPlayer();
-        $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+        $players = Main::getInstance()->getPlayers($player->getName());
         $config = Main::getInstance()->getConfig();
         if ($players->get("double-jump") == true) {
             if (isset($this->playerjump[$player->getName()])) {
                 $this->playerjump[$player->getName()]++;
                 if ($this->playerjump[$player->getName()] == 2) {
-                    $player->knockBack(0, $player->getDirectionVector()->getX(), $player->getDirectionVector()->getZ(), $config->getNested("settings.double-jump.strength"));
+                    $player->knockBack($player->getDirectionVector()->getX(), $player->getDirectionVector()->getY(), $player->getDirectionVector()->getZ(), $config->getNested("settings.double-jump.strength"));
                     unset($this->playerjump[$player->getName()]);
                     if ($config->getNested("settings.double-jump.falldamage") == true) {
                         $this->playerjumpdamage[] = $player->getName();
@@ -206,11 +196,11 @@ class EventListener implements Listener
         $api = new API();
         $config = Main::getInstance()->getConfig();
         if ($player instanceof Player && $config->getNested("settings.per-world.enable") == true) {
-            $players = new Config(Main::getInstance()->getDataFolder() . "players/" . $player->getName() . ".yml", Config::YAML);
+            $players = Main::getInstance()->getPlayers($player->getName());
             foreach ($config->getNested("settings.per-world.worlds") as $level) {
                 if ($event->getTo() !== $level) {
                     $player->getEffects()->clear();
-                    foreach (["speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"] as $check) {
+                    foreach (Main::getInstance()->perklist as $check) {
                         $players->set($check, false);
                     }
                     $players->save();

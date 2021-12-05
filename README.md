@@ -1,15 +1,14 @@
-# Perks System v3.0.0
+# Perks System v3.0.1
 This is a Perk System for PocketMine-MP.
-You can all funktion edit in **config.yml**
+You can all function edit in **config.yml**
 
 ### Download
-Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/67) file.
+Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks/Perks/70) file.
 
 ### Commands
-|**Command**|**Description**|
-|-----------|---------------|
-|/perks |Open the Perks |
-|/perks reload| Reload all Perks files|
+|**Command**|**Description**|**Aliases**|**Permission**|
+|-----------|---------------|-----------|---------------|
+|/perks |Open the Perks UI|/perk, /perkui|Perks.command|
 
 ### Feature
 - [X] PM4 Support
@@ -25,23 +24,23 @@ Here you can install the new [.phar](https://poggit.pmmp.io/ci/FlxiBoy1313/Perks
 - [X] Per world support
 
 ### Perks list [17]
-- [X] Auto smelting
-- [X] Double XP
-- [X] Double Jump
-- [X] Fast Regeneration
-- [X] Fly
-- [X] Haste
-- [X] Invisibility
-- [X] Jump Boost
-- [X] Keep Inventory
-- [X] Keep XP
-- [X] Night vision
-- [X] No FallDamage
-- [X] No FireDamage
-- [X] No Hunger
-- [X] Strength
-- [X] Speed
-- [X] Water breathing
+- [X] Auto smelting | permission: Perks.auto-smelting
+- [X] Double XP | permission: Perks.double-xp
+- [X] Double Jump | permission: Perks.double-jump
+- [X] Fast Regeneration | permission: Perks.fast-regeneration
+- [X] Fly | permission: Perks.fly
+- [X] Haste | permission: Perks.haste
+- [X] Invisibility | permission: Perks.invisibility
+- [X] Jump Boost | permission: Perks.jump-boost
+- [X] Keep Inventory | permission: Perks.keep-inventory
+- [X] Keep XP | permission: Perks.keep-xp
+- [X] Night vision | permission: Perks.night-vision
+- [X] No FallDamage | permission: Perks.no-falldamage
+- [X] No FireDamage | permission: Perks.no-firedamage
+- [X] No Hunger | permission: Perks.no-hunger
+- [X] Strength | permission: Perks.strength
+- [X] Speed | permission: Perks.speed
+- [X] Water breathing | permission: Perks.water-breathing
 
 ### INFO!!!
 There is currently no EconomyAPI for API 4, so please use the version from supercrafter333. Link: [Link](https://github.com/supercrafter333/EconomyS/tree/master/EconomyAPI)

@@ -11,7 +11,6 @@ use pocketmine\player\Player;
  */
 class removeDoubleJump extends Task
 {
-
     /**
      * @var EventListener
      */
@@ -23,7 +22,7 @@ class removeDoubleJump extends Task
 
     /**
      * Listener constructor.
-     * 
+     *
      * @param EventListener $plugin
      * @param Player $player
      */
@@ -33,12 +32,13 @@ class removeDoubleJump extends Task
         $this->player = $player;
     }
 
+    /**
+     * @return void
+     */
     public function onRun(): void
     {
-        if (isset($this->plugin->playerjump[$this->player->getName()])) {
-            if ($this->plugin->playerjump[$this->player->getName()] == 1) {
-                unset($this->plugin->playerjump[$this->player->getName()]);
-            }
+        if (isset($this->plugin->playerjump[$this->player->getName()]) && $this->plugin->playerjump[$this->player->getName()] == 1) {
+            unset($this->plugin->playerjump[$this->player->getName()]);
         }
     }
 }

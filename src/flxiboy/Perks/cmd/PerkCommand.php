@@ -6,10 +6,10 @@ use pocketmine\command\{
     Command,
     CommandSender
 };
-use pocketmine\player\Player;
-use flxiboy\Perks\Main;
 use flxiboy\Perks\form\PerkForm;
+use pocketmine\player\Player;
 use flxiboy\Perks\api\API;
+use flxiboy\Perks\Main;
 
 /**
  * Class PerkCommand
@@ -24,7 +24,7 @@ class PerkCommand extends Command
 	public function __construct() 
     {
         $config = Main::getInstance()->getConfig();
-        parent::__construct($config->getNested("command.cmd"), $config->getNested("command.desc"), $config->getNested("command.usage"), [$config->getNested("command.aliases")]);
+        parent::__construct($config->getNested("command.cmd"), $config->getNested("command.desc"), $config->getNested("command.usage"), $config->getNested("command.aliases"));
     }
 
     /**
@@ -39,8 +39,8 @@ class PerkCommand extends Command
         $config = Main::getInstance()->getConfig();
         $config->reload();
 
-        if ($config->getNested("command.permission") !== false && !$player->hasPermission($config->getNested("command.permission"))) {
-            $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "no-perms"));
+        if ($config->getNested("command.permission") !== false && !$player->hasPermission("Perks.command")) {
+            $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("no-perms"));
             return;
         }
 
@@ -52,7 +52,7 @@ class PerkCommand extends Command
         if ($config->getNested("settings.per-world.enable") == true) {
             foreach ($config->getNested("settings.per-world.worlds") as $level) {
                 if ($player->getWorld()->getFolderName() !== $level) {
-                    $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "not-enable"));
+                    $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("not-enable"));
                     return true;
                 }
             }

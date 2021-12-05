@@ -1,10 +1,10 @@
-######################
-######################
-####                               ####
-####     Perks System     ####
-####                               ####
-######################
-######################
+####################################
+####################################
+#######                      #######
+#######     Perks System     #######
+#######                      #######
+####################################
+####################################
 
 # language list: english, german, russian
 # more languages? please open a issues on github for a new language.
@@ -12,16 +12,16 @@ language: english
 
 # command, edit the perks command
 command:
-  cmd: "perks"
+  cmd: "perk"
   desc: "Open the Perks UI"
   usage: "§cUsage: /perks"
-  aliases: "perks"
-  # if false, then this does not apply. if you write something, then the command goes.
+  aliases: ["perks"]
+  # If this is set to false, anyone can use this command. If this is true, then this is only possible with the permission Perks.command
   permission: false
 
 settings:
   # If this is true, you can only buy with the price. If this is false, it goes to Permissions.
-  economy-api: true
+  economy-api: false
   friends:
     # if this and 'economy-api' true, then you can give friends perks.
     enable: true
@@ -32,7 +32,7 @@ settings:
     open-ui: true
   perk-time:
     # if this and 'economy-api' true, then perks will only be there for a certain time.
-    enable: true
+    enable: false
     # %year% => is the year
     # %month% => is the month
     # %day% => is the day
@@ -43,7 +43,7 @@ settings:
     time-task: 60
   buy-confirm:
     # if this true, then a query is made before buying
-    enable: true
+    enable: false
     yes-img: "textures/ui/confirm"
     no-img: "textures/ui/redX1"
   double-jump:
@@ -61,10 +61,11 @@ settings:
     strength: 5
   per-world:
   #  if this true, then you can only use perks in certain worlds
-    enable: true
+    enable: false
     # list of the worlds
     worlds:
     - world
+    - world2
 
 # category
 #   tutorial
@@ -73,7 +74,7 @@ settings:
 #           name: "<category-name>:<picture false is disable>"
 #           perks: 
 #             - "<perk-names>"
-#  perk-list: "speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "dopple-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"
+#  perk-list: "speed", "jump", "haste", "night-vision", "no-hunger", "no-falldamage", "fast-regeneration", "keep-inventory", "double-xp", "strength", "no-firedamage", "fly", "water-breathing", "invisibility", "keep-xp", "double-jump", "auto-smelting"
 category:
   0:
     name: "§5Effects:textures/ui/absorption_effect"
@@ -93,7 +94,7 @@ category:
       - "no-hunger"
       - "no-falldamage"
       - "keep-inventory"
-      - "dopple-xp"
+      - "double-xp"
       - "fly"
       - "keep-xp"
       - "double-jump"
@@ -101,7 +102,7 @@ category:
 
 # perks
 perk:
-  # perms => if you set it to false, anyone can use it. With a permission, this is only possible if a player has did permission.
+  # perms => if this false, then it works without permission, if this true, then it goes with Permission
   # price => will only go if you have 'economy-api' to true. This sets the price of the perks.
   # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
   # time => if 'economy-api' true, this tells how long you can use a perk after buying it and then buy it again.
@@ -110,87 +111,87 @@ perk:
     # If this is true, only perks that you have bought will be shown
     enable: false
   speed:
-    perms: Perks.speed
+    perms: false
     price: 10000
     img: "textures/ui/speed_effect"
     time: "0:0:7:0:0"
   jump:
-    perms: Perks.jump
+    perms: false
     price: 10000
     img: "textures/ui/jump_boost_effect"
     time: "0:0:7:0:0"
   haste:
-    perms: Perks.haste
+    perms: false
     price: 10000
     img: "textures/ui/haste_effect"
     time: "0:0:7:0:0"
   night-vision:
-    perms: Perks.night-vision
+    perms: false
     price: 10000
     img: "textures/items/potion_bottle_nightVision"
     time: "0:0:7:0:0"
   no-hunger:
-    perms: Perks.no-hunger
+    perms: false
     price: 10000
     img: "textures/ui/hunger_full"
     time: "0:0:7:0:0"
   no-falldamage:
-    perms: Perks.no-falldamage
+    perms: false
     price: 10000
     img: "textures/items/totem"
     time: "0:0:7:0:0"
   fast-regeneration:
-    perms: Perks.fast-regeneration
+    perms: false
     price: 10000
     img: "textures/ui/regeneration_effect"
     time: "0:0:7:0:0"
   keep-inventory:
-    perms: Perks.keep-inventory
+    perms: false
     price: 10000
     img: "textures/ui/inventory_icon"
     time: "0:0:7:0:0"
-  dopple-xp:
-    perms: Perks.dopple-xp
+  double-xp:
+    perms: false
     price: 10000
     img: "textures/ui/dust_selectable_2"
     time: "0:0:7:0:0"
   strength:
-    perms: Perks.stren
+    perms: false
     price: 10000
     img: "textures/ui/strength_effect"
     time: "0:0:7:0:0"
   no-firedamage:
-    perms: Perks.no-firedamage
+    perms: false
     price: 10000
     img: "textures/ui/fire_resistance_effect"
     time: "0:0:7:0:0"
   fly:
-    perms: Perks.fly
+    perms: false
     price: 10000
     img: "textures/items/feather"
     time: "0:0:7:0:0"
   water-breathing:
-    perms: Perks.water-breathing
+    perms: false
     price: 10000
     img: "textures/ui/water_breathing_effect"
     time: "0:0:7:0:0"
   invisibility:
-    perms: Perks.invisibility
+    perms: false
     price: 10000
     img: "textures/ui/invisibility_effect"
     time: "0:0:7:0:0"
   keep-xp:
-    perms: Perks.keep-xp
+    perms: false
     price: 10000
     img: "textures/ui/dust_selectable_1"
     time: "0:0:7:0:0"
   double-jump:
-    perms: Perks.double-xp
+    perms: false
     price: 10000
     img: "textures/items/iron_boots"
     time: "0:0:7:0:0"
   auto-smelting:
-    perms: Perks.auto-smelting
+    perms: false
     price: 10000
     img: "textures/blocks/furnace_front_on"
     time: "0:0:7:0:0"

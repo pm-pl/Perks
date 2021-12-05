@@ -1,7 +1,6 @@
-################
+#################
 # Language German
-# Sprache Deutsch
-################
+#################
 
 # bedeutungen
 # %player% => ist dein ingame name
@@ -17,7 +16,7 @@
 # %category% => ist der name der Kategorie
 
 # different
-prefix: "§dPerks §8» "
+prefix: "§8» §5Perks §8| "
 no-perms: "§cDu hast dafür keine Rechte."
 
 # economyapi
@@ -97,12 +96,12 @@ fast-regeneration: "§cSchnelles heilen\n§8» %status%"
 fast-regeneration-msg: "Schnelles heilen"
 keep-inventory: "§8Inventar behalten\n§8» %status%"
 keep-inventory-msg: "Inventar behalten"
-dopple-xp: "§9Doppel XP\n§8» %status%"
-dopple-xp-msg: "Doppel XP"
+double-xp: "§9Doppel XP\n§8» %status%"
+double-xp-msg: "Doppel XP"
 strength: "§bStärke\n§8» %status%"
 strength-msg: "Stärke"
 no-firedamage: "§eKein Feuerschaden\n§8» %status%"
-no-firedamage-msg: "kein Feuerschaden"
+no-firedamage-msg: "Kein Feuerschaden"
 fly: "§aFliegen\n§8» %status%"
 fly-msg: "Fliegen"
 water-breathing: "§9Unterwasser atmung\n§8» %status%"

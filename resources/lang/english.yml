@@ -1,6 +1,6 @@
-################
+##################
 # Language English
-################
+##################
 
 # meanings
 # %player% => is your ingame name
@@ -16,7 +16,7 @@
 # %category% => is the name of the category
 
 # different
-prefix: "§dPerks §8» "
+prefix: "§8» §5Perks §8| "
 no-perms: "§cYou don't have any permission."
 
 # economyapi
@@ -96,8 +96,8 @@ fast-regeneration: "§cFast Regeneration\n§8» %status%"
 fast-regeneration-msg: "Fast Regeneration"
 keep-inventory: "§8Keep Inventory\n§8» %status%"
 keep-inventory-msg: "Keep Inventory"
-dopple-xp: "§9Dopple XP\n§8» %status%"
-dopple-xp-msg: "Dopple XP"
+double-xp: "§9Dopple XP\n§8» %status%"
+double-xp-msg: "Dopple XP"
 strength: "§bStrength\n§8» %status%"
 strength-msg: "Strength"
 no-firedamage: "§eNo Firedamage\n§8» %status%"
