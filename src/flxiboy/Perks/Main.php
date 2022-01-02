@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace flxiboy\Perks;
 
 use flxiboy\Perks\event\EventListener;
