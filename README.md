@@ -1,11 +1,11 @@
-# Perks System v3.0.1
+# Perks System v3.0.2
 This is a Perk System for PocketMine-MP.
-You can all function edit in **config.yml**
+Perks is a plugin with which you can get benefits. You can get this through permission, money or friends. All functions can be changed in the settings.
 
 ### Commands
-|**Command**|**Description**|**Aliases**|**Permission**|
-|-----------|---------------|-----------|---------------|
-|/perks |Open the Perks UI|/perk, /perkui|Perks.command|
+| **Command** | **Description**   | **Aliases**    | **Permission**  |
+|-------------|-------------------|----------------|-----------------|
+| /perks      | Open the Perks UI | /perk, /perkui | Perks.command   |
 
 ### Feature
 - [X] PM4 Support
@@ -20,31 +20,26 @@ You can all function edit in **config.yml**
 - [X] Perks categories
 - [X] Per world support
 
-### Perks list [17]
-- [X] Auto smelting | permission: Perks.auto-smelting
-- [X] Double XP | permission: Perks.double-xp
-- [X] Double Jump | permission: Perks.double-jump
-- [X] Fast Regeneration | permission: Perks.fast-regeneration
-- [X] Fly | permission: Perks.fly
-- [X] Haste | permission: Perks.haste
-- [X] Invisibility | permission: Perks.invisibility
-- [X] Jump Boost | permission: Perks.jump-boost
-- [X] Keep Inventory | permission: Perks.keep-inventory
-- [X] Keep XP | permission: Perks.keep-xp
-- [X] Night vision | permission: Perks.night-vision
-- [X] No FallDamage | permission: Perks.no-falldamage
-- [X] No FireDamage | permission: Perks.no-firedamage
-- [X] No Hunger | permission: Perks.no-hunger
-- [X] Strength | permission: Perks.strength
-- [X] Speed | permission: Perks.speed
-- [X] Water breathing | permission: Perks.water-breathing
-
-### INFO!!!
-There is currently no EconomyAPI for API 4, so please use the version from supercrafter333. Link: [Link](https://github.com/supercrafter333/EconomyS/tree/master/EconomyAPI)
-
-### cooming soon...
-- [ ] Fix Bugs
-- [ ] And more...
+### Perks list
+| **Perks [17]**      | **Description**                                | **Permission**          |
+|---------------------|------------------------------------------------|-------------------------|
+| Auto smelting       | This means that mined ores are melted directly | Perks.auto-smelting     |
+| Double XP           | This will give you double XP                   | Perks.double-xp         |   
+| Double Jump         | This gives you a double jump                   | Perks.double-jump       |  
+| Fast Regeneration   | This will heal you quickly                     | Perks.fast-regeneration |
+| Fly                 | This will give you fly                         | Perks.fly               |
+| Haste               | So you can break down faster                   | Perks.haste             |
+| Invisibility        | This gives you invisibility                    | Perks.invisibility      |
+| Jump Boost          | With it you can jump higher                    | Perks.jump-boost        |
+| Keep Inventory      | This will save your inventory when you die     | Perks.keep-inventory    |
+| Keep XP             | This will save your XP when you die            | Perks.keep-xp           |
+| Night vision        | This gives you night vision                    | Perks.night-vision      |
+| No FallDamage       | You will not receive any fall damage with this | Perks.no-falldamage     |
+| No FireDamage       | You will not receive any fire damage with this | Perks.no-firedamage     | 
+| No Hunger           | This will not make you hungry                  | Perks.no-hunger         | 
+| Strength            | This gives you strength                        | Perks.strength          | 
+| Speed               | This will give you run faster                  | Perks.speed             | 
+| Water breathing     | This gives you water breathing                 | Perks.water-breathing   |
 
 ### Bugs or Idea?
 If you have a bug or an idea, please feel free to report this to: [Issues](https://github.com/FlxiBoy1313/Perks/issues/new)

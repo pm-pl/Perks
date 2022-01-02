@@ -10,13 +10,23 @@ use flxiboy\Perks\form\PerkForm;
 use pocketmine\player\Player;
 use flxiboy\Perks\api\API;
 use flxiboy\Perks\Main;
+use pocketmine\plugin\Plugin;
+use pocketmine\plugin\PluginOwned;
 
 /**
  * Class PerkCommand
  * @package flxiboy\Perks\cmd
  */
-class PerkCommand extends Command
+class PerkCommand extends Command implements PluginOwned
 {
+
+    /**
+     * @return Plugin
+     */
+    public function getOwningPlugin(): Plugin
+    {
+        return Main::getInstance();
+    }
 
     /**
 	 * Commands constructor.
