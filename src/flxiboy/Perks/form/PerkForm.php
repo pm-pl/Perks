@@ -34,11 +34,10 @@ class PerkForm
                 if ($data == "friend") {
                     $this->getPerkFriend($player);
                 } else {
-                    $cate = (int)$data - 1;
-                    $this->getPerkFriend2($player, $cate, $data);
+                    $this->getPerkFriend2($player, ((int)$data - 1));
                 }
             } else {
-                $this->getPerkFriend2($player, (int)$data, $data);
+                $this->getPerkFriend2($player, (int)$data);
             }
             return true;
         });
@@ -64,11 +63,10 @@ class PerkForm
 
     /**
      * @param Player $player
-     * @param string $type
-     * @param string $cate
+     * @param int $type
      * @return SimpleForm
      */
-    public function getPerkFriend2(Player $player, string $type, string $cate): SimpleForm
+    public function getPerkFriend2(Player $player, int $type): SimpleForm
     {
         $api = new API();
         $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
