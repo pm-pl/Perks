@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace flxiboy\Perks\form;
 
-use jojoe77777\FormAPI\{
+use Vecnavium\FormsUI\{
     CustomForm,
     SimpleForm
 };
