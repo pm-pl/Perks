@@ -43,3 +43,5 @@ Perks is a plugin with which you can get benefits. You can get this through perm
 
 ### Bugs or Idea?
 If you have a bug or an idea, please feel free to report this to: [Issues](https://github.com/FlxiBoy1313/Perks/issues/new)
+
+- [X] Icon by [@thunderfurry](https://github.com/thunderfurry), thanks for the icon ❤️
