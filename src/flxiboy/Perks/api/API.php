@@ -273,7 +273,7 @@ class API
             $messages = new Config($lang, Config::YAML);
             $msg = $messages->getNested($message);
             foreach ($params as $index => $param) {
-                $msg = str_replace($index, $param, $msg);
+                $msg = str_replace($index, (string)$param, $msg);
             }
         } else {
             Main::getInstance()->loadFiles();
