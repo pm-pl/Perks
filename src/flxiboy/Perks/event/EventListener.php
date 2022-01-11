@@ -204,7 +204,7 @@ class EventListener implements Listener
                         $players->set($check, false);
                     }
                     $players->save();
-                    $player->sendMessage($api->getLanguage($player, "prefix") . $api->getLanguage($player, "perks-disable"));
+                    $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("perks-disable"));
                     return true;
                 }
             }
