@@ -173,7 +173,7 @@ class EventListener implements Listener
             if (isset($this->playerjump[$player->getName()])) {
                 $this->playerjump[$player->getName()]++;
                 if ($this->playerjump[$player->getName()] == 2) {
-                    $player->knockBack($player->getDirectionVector()->getX(), $player->getDirectionVector()->getY(), $player->getDirectionVector()->getZ(), $config->getNested("settings.double-jump.strength"));
+                    $player->knockBack($player->getDirectionVector()->getX(), $player->getDirectionVector()->getZ(), (float)$config->getNested("settings.double-jump.strength"));
                     unset($this->playerjump[$player->getName()]);
                     if ($config->getNested("settings.double-jump.falldamage") == true) {
                         $this->playerjumpdamage[] = $player->getName();
