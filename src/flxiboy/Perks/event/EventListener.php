@@ -15,6 +15,7 @@ use pocketmine\event\entity\{
 };
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\item\VanillaItems;
+use pocketmine\player\GameMode;
 use pocketmine\event\Listener;
 use pocketmine\player\Player;
 use flxiboy\Perks\api\API;
@@ -103,7 +104,7 @@ class EventListener implements Listener
             $event->setXpDropAmount($event->getXpDropAmount() * 2);
         }
         if ($config->getNested("settings.auto-smelting.enable") == true && $players->get("auto-smelting") == true) {
-            if (in_array($block->getId(), [14, 15]) && $eco->myMoney($player) >= $config->getNested("settings.auto-smelting.price") && in_array($player->getGamemode(), [0, 2])) {
+            if (in_array($block->getId(), [14, 15]) && $eco->myMoney($player) >= $config->getNested("settings.auto-smelting.price") && in_array($player->getGamemode(), [GameMode::SURVIVAL(), GameMode::ADVENTURE()])) {
                 $drops = [];
                 if ($block->getId() == 14) {
                     $drops[] =  VanillaItems::GOLD_INGOT();
