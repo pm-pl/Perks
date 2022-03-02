@@ -21,9 +21,9 @@
 prefix: "§8» §5Perks §8| "
 no-perms: "§cУ вас нет на это прав."
 
-# economyapi
-no-money-economyapi: "§cУ вас недостаточно денег, вам все еще не хватает §a%need-money% ₽§c."
-buy-economyapi: "§aВы купили бонус §c%perk% §aза §c%moneyp% ₽§a."
+# economy
+no-money-economy: "§cУ вас недостаточно денег, вам все еще не хватает §a%need-money% ₽§c."
+buy-economy: "§aВы купили бонус §c%perk% §aза §c%moneyp% ₽§a."
 title-confirm: "§dПодтверждение покупки бонусов"
 text-confirm: "§cВы действительно хотите купить perk §e%perk% за §a%moneyp% ₽§c?"
 yes-button-confirm: "§2да"

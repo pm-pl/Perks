@@ -19,9 +19,9 @@
 prefix: "§8» §5Perks §8| "
 no-perms: "§cDu hast dafür keine Rechte."
 
-# economyapi
-no-money-economyapi: "§cDu hast nicht genügend geld, dir fehlen noch §e%need-money% €§c."
-buy-economyapi: "§aDu hast dir das Perk §e%perk% §afür §c%moneyp% € §agekauft."
+# economy
+no-money-economy: "§cDu hast nicht genügend geld, dir fehlen noch §e%need-money% €§c."
+buy-economy: "§aDu hast dir das Perk §e%perk% §afür §c%moneyp% € §agekauft."
 title-confirm: "§dPerks kauf bestätigung"
 text-confirm: "§cWillst du wirklich das Perk §e%perk% §cfür §a%moneyp% € §ckaufen?"
 yes-button-confirm: "§2Ja"

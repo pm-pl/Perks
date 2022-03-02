@@ -7,7 +7,7 @@
 ####################################
 
 # language list: english, german, russian
-# more languages? please open a issues on github for a new language.
+# more languages? please open a issues on GitHub for a new language.
 language: english
 
 # command, edit the perks command
@@ -20,8 +20,11 @@ command:
   permission: false
 
 settings:
-  # If this is true, you can only buy with the price. If this is false, it goes to Permissions.
-  economy-api: false
+  economy:
+    # If this is true, you can only buy with the price.
+    enable: false
+    # types: EconomyAPI, BedrockEconomy
+    typ: "EconomyAPI"
   friends:
     # if this and 'economy-api' true, then you can give friends perks.
     enable: true
@@ -48,9 +51,7 @@ settings:
     no-img: "textures/ui/redX1"
   double-jump:
     # This sets the strength of the double jump.
-    strength: 2
-    # if this is true, then the player does not take any fall damage
-    falldamage: true
+    strength: 1.4
   auto-smelting:
     # if this is true then the items will be melted.
     enable: true
@@ -102,7 +103,7 @@ category:
 
 # perks
 perk:
-  # perms => if this false, then it works without permission, if this true, then it goes with Permission
+  # perms => if this false, then it works without permission, if this not false, then it goes with Permission
   # price => will only go if you have 'economy-api' to true. This sets the price of the perks.
   # img => there you can add your picture or a picture of minecraft. false is disable the img. Is your picture not loading? Then install FormImagesFix.
   # time => if 'economy-api' true, this tells how long you can use a perk after buying it and then buy it again.

@@ -38,6 +38,6 @@ class addXP extends Task
     public function onRun(): void
     {
         $this->player->getXpManager()->addXp($this->plugin->playerxp[$this->player->getName()]);
-        unset($this->plugin->playerxp[$this->player->getName()]);
+        unset ($this->plugin->playerxp[$this->player->getName()]);
     }
 }

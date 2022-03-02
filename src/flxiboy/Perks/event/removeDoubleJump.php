@@ -38,7 +38,7 @@ class removeDoubleJump extends Task
     public function onRun(): void
     {
         if (isset($this->plugin->playerjump[$this->player->getName()]) && $this->plugin->playerjump[$this->player->getName()] == 1) {
-            unset($this->plugin->playerjump[$this->player->getName()]);
+            unset ($this->plugin->playerjump[$this->player->getName()]);
         }
     }
 }

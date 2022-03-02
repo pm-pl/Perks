@@ -6,12 +6,14 @@ use pocketmine\command\{
     Command,
     CommandSender
 };
+use pocketmine\plugin\{
+    Plugin,
+    PluginOwned
+};
 use flxiboy\Perks\form\PerkForm;
 use pocketmine\player\Player;
 use flxiboy\Perks\api\API;
 use flxiboy\Perks\Main;
-use pocketmine\plugin\Plugin;
-use pocketmine\plugin\PluginOwned;
 
 /**
  * Class PerkCommand

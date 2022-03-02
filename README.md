@@ -1,4 +1,4 @@
-# Perks System v3.0.2
+# Perks System v3.0.3-BETA
 This is a Perk System for PocketMine-MP.
 Perks is a plugin with which you can get benefits. You can get this through permission, money or friends. All functions can be changed in the settings.
 
@@ -21,25 +21,25 @@ Perks is a plugin with which you can get benefits. You can get this through perm
 - [X] Per world support
 
 ### Perks list
-| **Perks [17]**      | **Description**                                | **Permission**          |
-|---------------------|------------------------------------------------|-------------------------|
-| Auto smelting       | This means that mined ores are melted directly | Perks.auto-smelting     |
-| Double XP           | This will give you double XP                   | Perks.double-xp         |   
-| Double Jump         | This gives you a double jump                   | Perks.double-jump       |  
-| Fast Regeneration   | This will heal you quickly                     | Perks.fast-regeneration |
-| Fly                 | This will give you fly                         | Perks.fly               |
-| Haste               | So you can break down faster                   | Perks.haste             |
-| Invisibility        | This gives you invisibility                    | Perks.invisibility      |
-| Jump Boost          | With it you can jump higher                    | Perks.jump-boost        |
-| Keep Inventory      | This will save your inventory when you die     | Perks.keep-inventory    |
-| Keep XP             | This will save your XP when you die            | Perks.keep-xp           |
-| Night vision        | This gives you night vision                    | Perks.night-vision      |
-| No FallDamage       | You will not receive any fall damage with this | Perks.no-falldamage     |
-| No FireDamage       | You will not receive any fire damage with this | Perks.no-firedamage     | 
-| No Hunger           | This will not make you hungry                  | Perks.no-hunger         | 
-| Strength            | This gives you strength                        | Perks.strength          | 
-| Speed               | This will give you run faster                  | Perks.speed             | 
-| Water breathing     | This gives you water breathing                 | Perks.water-breathing   |
+| **Perks [17]**      | **Description**                                |
+|---------------------|------------------------------------------------|
+| Auto smelting       | This means that mined ores are melted directly |
+| Double XP           | This will give you double XP                   |
+| Double Jump         | This gives you a double jump                   |
+| Fast Regeneration   | This will heal you quickly                     |
+| Fly                 | This will give you fly                         |
+| Haste               | So you can break down faster                   |
+| Invisibility        | This gives you invisibility                    |
+| Jump Boost          | With it you can jump higher                    |
+| Keep Inventory      | This will save your inventory when you die     |
+| Keep XP             | This will save your XP when you die            |
+| Night vision        | This gives you night vision                    |
+| No FallDamage       | You will not receive any fall damage with this |
+| No FireDamage       | You will not receive any fire damage with this |
+| No Hunger           | This will not make you hungry                  |
+| Strength            | This gives you strength                        |
+| Speed               | This will give you run faster                  |
+| Water breathing     | This gives you water breathing                 |
 
 ### Bugs or Idea?
 If you have a bug or an idea, please feel free to report this to: [Issues](https://github.com/FlxiBoy1313/Perks/issues/new)

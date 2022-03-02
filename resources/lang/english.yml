@@ -19,9 +19,9 @@
 prefix: "§8» §5Perks §8| "
 no-perms: "§cYou don't have any permission."
 
-# economyapi
-no-money-economyapi: "§cYou don't have enough money, you are still missing §a$%need-money%§c."
-buy-economyapi: "§aYou bought the §e%perk% §aPerk for §c$%moneyp%§a."
+# economy
+no-money-economy: "§cYou don't have enough money, you are still missing §a$%need-money%§c."
+buy-economy: "§aYou bought the §e%perk% §aPerk for §c$%moneyp%§a."
 title-confirm: "§dPerks buy confirm"
 text-confirm: "§cAre you sure you want to buy the Perk §e%perk% §cfor §a$%moneyp%§c?"
 yes-button-confirm: "§2Yes"

@@ -1,0 +1,103 @@
+#################
+# Language template
+#################
+
+# different
+prefix: ""
+no-perms: ""
+
+# economy
+no-money-economy: ""
+buy-economy: ""
+title-confirm: ""
+text-confirm: ""
+yes-button-confirm: ""
+no-button-confirm: ""
+
+# buttons
+no-perms-button: ""
+enable-button: ""
+disable-button: ""
+buy-button: ""
+
+# message
+enable-perk: ""
+disable-perk: ""
+
+# world
+not-enable: ""
+perks-disable: ""
+
+# ui
+title-ui: ""
+text-ui: ""
+text-money-ui: ""
+
+# category
+title-category: ""
+text-category: ""
+
+# perks strength
+title-strength: ""
+text-strength: ""
+new-strength: ""
+
+# friends
+button-friends: ""
+title-friends: ""
+text-friends: ""
+text2-friends: ""
+user-friends: ""
+perks-friends: ""
+perk-form-friends: ""
+message-friends: ""
+confirm-text-friends: ""
+confirm-yes-friends: ""
+confirm-no-friends: ""
+not-yourself-friends: ""
+target-notfound-friends: ""
+perk-buyed-friends: ""
+success-friends: ""
+text-thanks-friends: ""
+message-thanks-friends: ""
+msg-thanks-friends: ""
+
+# time
+buy-time: ""
+close-time: ""
+
+# perks
+speed: ""
+speed-msg: ""
+jump: ""
+jump-msg: ""
+haste: ""
+haste-msg: ""
+night-vision: ""
+night-vision-msg: ""
+no-hunger: ""
+no-hunger-msg: ""
+no-falldamage: ""
+no-falldamage-msg: ""
+fast-regeneration: ""
+fast-regeneration-msg: ""
+keep-inventory: ""
+keep-inventory-msg: ""
+double-xp: ""
+double-xp-msg: ""
+strength: ""
+strength-msg: ""
+no-firedamage: ""
+no-firedamage-msg: ""
+fly: ""
+fly-msg: ""
+water-breathing: ""
+water-breathing-msg: ""
+invisibility: ""
+invisibility-msg: ""
+keep-xp: ""
+keep-xp-msg: ""
+double-jump: ""
+double-jump-msg: ""
+auto-smelting: ""
+auto-smelting-msg: ""

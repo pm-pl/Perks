@@ -2,8 +2,7 @@
 declare(strict_types=1);
 namespace flxiboy\Perks\event;
 
-use pocketmine\event\player\{
-    PlayerJoinEvent,
+use pocketmine\event\player\{PlayerJoinEvent,
     PlayerExhaustEvent,
     PlayerDeathEvent,
     PlayerJumpEvent,
@@ -42,6 +41,7 @@ class EventListener implements Listener
 
     /**
      * @param PlayerJoinEvent $event
+     * @return void
      */
     public function onJoin(PlayerJoinEvent $event) 
     {
@@ -49,20 +49,21 @@ class EventListener implements Listener
         $api = new API();
         $config = Main::getInstance()->getConfig();
         $players = Main::getInstance()->getPlayers($player->getName());
+
         if (!$players->exists("speed")) {
             foreach (Main::getInstance()->perklist as $name) {
                 $players->set($name, false);
                 $players->set($name . "-buy", false);
             }
         }
-        if ($config->getNested("settings.economy-api") == true && $config->getNested("settings.perk-time.enable") == true) {
-            $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+        if ($config->getNested("settings.economy.enable") == true && $config->getNested("settings.perk-time.enable") == true) {
+            $eco = Main::getInstance()->getEconomyProvider();
             $date = new \DateTime("now");
             $datas = explode(":", $date->format("Y:m:d:H:i"));
             $data = ((int)$datas[0] - 0) . ":" . ((int)$datas[1] - 0) . ":" . ((int)$datas[2] - 0) . ":" . ((int)$datas[3] - 0) . ":" . ((int)$datas[4] - 0);
             foreach (Main::getInstance()->perklist as $check) {
                 $effect = $api->getPerkEffect($check);
-                if ($eco->myMoney($player) >= $config->getNested("perk." . $check . ".price") || $players->exists($check . "-buy-count")) {
+                if ($eco->getMoney($player) >= $config->getNested("perk." . $check . ".price") || $players->exists($check . "-buy-count")) {
                     if ($players->exists($check . "-buy-count") && $data >= $players->get($check . "-buy-count")) {
                         $players->set($check, false);
                         $players->set($check . "-buy", false);
@@ -80,11 +81,13 @@ class EventListener implements Listener
 
     /**
      * @param PlayerExHaustEvent $event
+     * @return void
      */
     public function onExhaust(PlayerExhaustEvent $event) 
     {
         $player = $event->getPlayer();
         $players = Main::getInstance()->getPlayers($player->getName());
+
         if ($players->get("no-hunger") == true && $player->getHungerManager()->getFood() != 20) {
             $player->getHungerManager()->setFood(20);
         }
@@ -92,24 +95,27 @@ class EventListener implements Listener
 
     /**
      * @param BlockBreakEvent $event
+     * @return void
      */
     public function onBreak(BlockBreakEvent $event) 
     {
         $player = $event->getPlayer();
         $block = $event->getBlock();
-        $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+        $eco = Main::getInstance()->getEconomyProvider();
         $players = Main::getInstance()->getPlayers($player->getName());
         $config = Main::getInstance()->getConfig();
-        if ($players->get("dopple-xp") == true) {
+
+        if ($players->get("double-xp") == true) {
             $event->setXpDropAmount($event->getXpDropAmount() * 2);
         }
         if ($config->getNested("settings.auto-smelting.enable") == true && $players->get("auto-smelting") == true) {
-            if (in_array($block->getId(), [14, 15]) && $eco->myMoney($player) >= $config->getNested("settings.auto-smelting.price") && in_array($player->getGamemode(), [GameMode::SURVIVAL(), GameMode::ADVENTURE()])) {
-                $drops = [];
+            if (in_array($block->getId(), [14, 15]) && $eco->getMoney($player) >= $config->getNested("settings.auto-smelting.price") && in_array($player->getGamemode(), [GameMode::SURVIVAL(), GameMode::ADVENTURE()])) {
                 if ($block->getId() == 14) {
                     $drops[] =  VanillaItems::GOLD_INGOT();
                 } elseif ($block->getId() == 15) {
                     $drops[] =  VanillaItems::IRON_INGOT();
+                } else {
+                    $drops = [];
                 }
                 $event->setDrops($drops);
                 $eco->reduceMoney($player, $config->getNested("settings.auto-smelting.price"));
@@ -119,11 +125,13 @@ class EventListener implements Listener
 
     /**
      * @param PlayerDeathEvent $event
+     * @return void
      */
     public function onDeath(PlayerDeathEvent $event) 
     {
         $player = $event->getPlayer();
         $players = Main::getInstance()->getPlayers($player->getName());
+
         if ($players->get("keep-inventory") == true) {
             $event->setKeepInventory(true);
         }
@@ -135,10 +143,12 @@ class EventListener implements Listener
 
     /**
      * @param PlayerRespawnEvent $event
+     * @return void
      */
     public function onRespawn(PlayerRespawnEvent $event)
     {
         $player = $event->getPlayer();
+
         if (isset($this->playerxp[$player->getName()])) {
             Main::getInstance()->getScheduler()->scheduleDelayedTask(new addXP($this, $player), 20 / 2);
         }
@@ -146,10 +156,12 @@ class EventListener implements Listener
     
     /**
      * @param EntityDamageEvent $event
+     * @return void
      */
     public function onDamage(EntityDamageEvent $event) 
     {
         $player = $event->getEntity();
+
         if ($player instanceof Player && $event->getCause() == EntityDamageEvent::CAUSE_FALL) {
             $players = Main::getInstance()->getPlayers($player->getName());
             if ($players->get("no-falldamage") == true) {
@@ -157,28 +169,28 @@ class EventListener implements Listener
             }
             if (in_array($player->getName(), $this->playerjumpdamage)) {
                 $event->cancel();
-                unset($this->playerjumpdamage[array_search($player->getName(), $this->playerjumpdamage)]);
+                unset ($this->playerjumpdamage[array_search($player->getName(), $this->playerjumpdamage)]);
             }
         }
     }
 
     /**
      * @param PlayerJumpEvent $event
+     * @return void
      */
     public function onJump(PlayerJumpEvent $event) 
     {
         $player = $event->getPlayer();
         $players = Main::getInstance()->getPlayers($player->getName());
         $config = Main::getInstance()->getConfig();
+
         if ($players->get("double-jump") == true) {
             if (isset($this->playerjump[$player->getName()])) {
                 $this->playerjump[$player->getName()]++;
                 if ($this->playerjump[$player->getName()] == 2) {
                     $player->knockBack($player->getDirectionVector()->getX(), $player->getDirectionVector()->getZ(), (float)$config->getNested("settings.double-jump.strength"));
                     unset($this->playerjump[$player->getName()]);
-                    if ($config->getNested("settings.double-jump.falldamage") == true) {
-                        $this->playerjumpdamage[] = $player->getName();
-                    }
+                    $this->playerjumpdamage[] = $player->getName();
                 }
             } else {
                 $this->playerjump[$player->getName()] = 1;
@@ -196,6 +208,7 @@ class EventListener implements Listener
         $player = $event->getEntity();
         $api = new API();
         $config = Main::getInstance()->getConfig();
+
         if ($player instanceof Player && $config->getNested("settings.per-world.enable") == true) {
             $players = Main::getInstance()->getPlayers($player->getName());
             foreach ($config->getNested("settings.per-world.worlds") as $level) {

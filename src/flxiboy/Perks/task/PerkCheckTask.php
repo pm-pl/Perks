@@ -33,7 +33,7 @@ class PerkCheckTask extends Task
                         $players->set($check, false);
                         $players->set($check . "-buy", false);
                         $players->remove($check . "-buy-count");
-                        $players->save();;
+                        $players->save();
                         $player->sendMessage($api->getLanguage("prefix") . $api->getLanguage("close-time", ["%perk%" => $api->getLanguage($check . "-msg")]));
                         if ($effect !== null) {
                             $player->getEffects()->remove($effect);

@@ -31,14 +31,14 @@ class API
         $players = Main::getInstance()->getPlayers($player->getName());
         $effect = $this->getPerkEffect($check);
         $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly", "keep-xp", "double-jump", "auto-smelting"];
-        if ($config->getNested("settings.economy-api") == true) {
-            $eco = Main::getInstance()->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+        if ($config->getNested("settings.economy.enable") == true) {
+            $eco = Main::getInstance()->getEconomyProvider();
             if ($config->getNested("settings.perk-time.enable") == true) {
                 if ($players->get($check) == false) {
                     $date = new \DateTime("now");
                     $datas = explode(":", $date->format("Y:m:d:H:i"));
                     $data = ((int)$datas[0] - 0) . ":" . ((int)$datas[1] - 0) . ":" . ((int)$datas[2] - 0) . ":" . ((int)$datas[3] - 0) . ":" . ((int)$datas[4] - 0);
-                    if ($eco->myMoney($player) >= $config->getNested("perk." . $check . ".price") || $players->exists($check . "-buy-count")) {
+                    if ($eco->getMoney($player) >= $config->getNested("perk." . $check . ".price") || $players->exists($check . "-buy-count")) {
                         if ($players->exists($check . "-buy-count")) {
                             if ($data >= $players->get($check . "-buy-count")) {
                                 $players->set($check, false);
@@ -82,7 +82,7 @@ class API
                             }
                         }
                     } else {
-                        $player->sendMessage($this->getLanguage("prefix") . $this->getLanguage("no-money-economyapi", ["%need-money%" => ($config->getNested("perk." . $check . ".price") - $eco->myMoney($player))]));
+                        $player->sendMessage($this->getLanguage("prefix") . $this->getLanguage("no-money-economy", ["%need-money%" => ($config->getNested("perk." . $check . ".price") - $eco->getMoney($player))]));
                     }
                 } else {
                     $playernewperk[] = $player->getName();
@@ -94,13 +94,13 @@ class API
                     if ($config->getNested("settings.buy-confirm.enable") == true) {
                         $perk->getPerkBuyConfirm($player, $check, "notime");
                     } else {
-                        if ($eco->myMoney($player) >= $config->getNested("perk.$check.price")) {
+                        if ($eco->getMoney($player) >= $config->getNested("perk.$check.price")) {
                             $players->set($check, false);
                             $players->set("$check-buy", true);
-                            $player->sendMessage($this->getLanguage("prefix") . $this->getLanguage("buy-economyapi", ["%perk%" => $this->getLanguage("$check-msg"), "%moneyp%" => $config->getNested("perk.$check.price")]));
+                            $player->sendMessage($this->getLanguage("prefix") . $this->getLanguage("buy-economy", ["%perk%" => $this->getLanguage("$check-msg"), "%moneyp%" => $config->getNested("perk.$check.price")]));
                             $eco->reduceMoney($player, $config->getNested("perk.$check.price"));
                         } else {
-                            $player->sendMessage($this->getLanguage("prefix") . $this->getLanguage("no-money-economyapi", ["%need-money%" => ($config->getNested("perk.$check.price") - $eco->myMoney($player))]));
+                            $player->sendMessage($this->getLanguage("prefix") . $this->getLanguage("no-money-economy", ["%need-money%" => ($config->getNested("perk.$check.price") - $eco->getMoney($player))]));
                         }
                     }
                 }
@@ -110,7 +110,7 @@ class API
                 if ($players->get("$check-buy") == true) {
                         $playernewperk[] = $player->getName();
                 } else {
-                    if ($player->hasPermission("Perks." . $check)) {
+                    if ($player->hasPermission($config->getNested("perk.$check.perms"))) {
                         $playernewperk[] = $player->getName();
                     } else {
                         $player->sendMessage($this->getLanguage("prefix") . $this->getLanguage("no-perms"));
@@ -158,7 +158,7 @@ class API
         $config = Main::getInstance()->getConfig();
         $players = Main::getInstance()->getPlayers($player->getName());
         $effect = $this->getPerkEffect($check);
-        $block = ["no-hunger", "no-falldamage", "keep-inventory", "dopple-xp", "fly", "keep-xp", "double-jump", "auto-smelting"];
+        $block = ["no-hunger", "no-falldamage", "keep-inventory", "double-xp", "fly", "keep-xp", "double-jump", "auto-smelting"];
         $date = new \DateTime("now");
         $datas = explode(":", $date->format("Y:m:d:H:i:s"));
         $data = ((int)$datas[0] - 0) . ":" . ((int)$datas[1] - 0) . ":" . ((int)$datas[2] - 0) . ":" . ((int)$datas[3] - 0) . ":" . ((int)$datas[4] - 0) . ":" . ((int)$datas[5] - 0);
@@ -168,7 +168,7 @@ class API
                 $players->set($check, false);
             }
         }
-        if ($config->getNested("settings.perk-time.enable") == true && $config->getNested("settings.economy-api") == true && $players->exists("$check-buy-count") && $data >= $players->get("$check-buy-count")) {
+        if ($config->getNested("settings.perk-time.enable") == true && $config->getNested("settings.economy.enable") == true && $players->exists("$check-buy-count") && $data >= $players->get("$check-buy-count")) {
             $players->set($check, false);
             $players->set($check . "-buy", false);
             $players->remove($check . "-buy-count");
@@ -177,7 +177,7 @@ class API
                 $player->getEffects()->clear();
             }
         }
-        if (($config->getNested("settings.economy-api") == true && $players->get($check . "-buy") == true) || ($config->getNested("perk.$check.perms") !== false && $player->hasPermission($config->getNested("perk.$check.perms"))) || ($players->get($check . "-buy") == false && $players->get($check) == true)) {
+        if (($config->getNested("settings.economy.enable") == true && $players->get($check . "-buy") == true) || ($config->getNested("perk.$check.perms") !== false && $player->hasPermission($config->getNested("perk.$check.perms"))) || ($players->get($check . "-buy") == false && $players->get($check) == true)) {
             if ($players->get($check) == false && $effect !== null) {
                 if ($player->getEffects()->has($effect) && !in_array($check, $block)) {
                     $players->set($check, true);
@@ -185,7 +185,7 @@ class API
             }
         }
         $players->save();
-        if ($config->getNested("settings.economy-api") == true) {
+        if ($config->getNested("settings.economy.enable") == true) {
             if ($players->get("$check-buy") == true) {
                 if ($players->get($check) == true) {
                     $speedcheck = $this->getLanguage("enable-button");
@@ -210,7 +210,7 @@ class API
                         $speedcheck = $this->getLanguage("disable-button");
                     }
                 } else {
-                    if ($player->hasPermission("Perks.$check")) {
+                    if ($player->hasPermission($config->getNested("perk.$check.perms"))) {
                         if ($players->get($check) == true) {
                             $speedcheck = $this->getLanguage("enable-button");
                         } else {
