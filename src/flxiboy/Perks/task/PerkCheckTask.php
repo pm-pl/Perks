@@ -24,7 +24,7 @@ class PerkCheckTask extends Task
             $api = new API();
             $date = new \DateTime("now");
             $datas = explode(":", $date->format("Y:m:d:H:i"));
-            $data = ((int)$datas[0] - 0) . ":" . ((int)$datas[1] - 0) . ":" . ((int)$datas[2] - 0) . ":" . ((int)$datas[3] - 0) . ":" . ((int)$datas[4] - 0);
+            $data = (int)$datas[0] . ":" . (int)$datas[1] . ":" . (int)$datas[2] . ":" . (int)$datas[3] . ":" . (int)$datas[4];
             foreach (Server::getInstance()->getOnlinePlayers() as $player) {
                 $players = Main::getInstance()->getPlayers($player->getName());
                 foreach (Main::getInstance()->perklist as $check) {
