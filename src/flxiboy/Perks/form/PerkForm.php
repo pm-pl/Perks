@@ -137,10 +137,10 @@ class PerkForm
                             $day = ((int)$formats[2] + (int)$format[2]);
                             $hour = ((int)$formats[3] + (int)$format[3]);
                             $minute = ((int)$formats[4] + (int)$format[4]);
-                            if ($minute >= 60) { $minute = ((int)$minute - 61); $hour++; }
-                            if ($hour >= 24) { $hour = ((int)$hour - 25); $minute++; }
-                            if ($day >= $months) { $day = ((int)$day - (int)$months); $month++; }
-                            if ($month >= 12) { $month = ((int)$month - 13); $year++; }
+                            if ($minute >= 60) { $minute = ($minute - 61); $hour++; }
+                            if ($hour >= 24) { $hour = ($hour - 25); $minute++; }
+                            if ($day >= $months) { $day = ($day - $months); $month++; }
+                            if ($month >= 12) { $month = ($month - 13); $year++; }
                             $players->set("$perk", false);
                             $players->set("$perk-buy", true);
                             $players->set("$perk-buy-count", $year . ":" . $month . ":" . $day . ":" . $hour . ":" . $minute . ":0");
