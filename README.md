@@ -2,6 +2,9 @@
 This is a Perk System for PocketMine-MP.
 Perks is a plugin with which you can get benefits. You can get this through permission, money or friends. All functions can be changed in the settings.
 
+### !! Info !!
+**Perks is stopped for 1, 2 months. After that, hopefully, many updates will follow.**
+
 ### Commands
 | **Command** | **Description**   | **Aliases**    | **Permission**  |
 |-------------|-------------------|----------------|-----------------|
